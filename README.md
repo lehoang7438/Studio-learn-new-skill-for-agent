@@ -7,6 +7,10 @@ tự bắt lỗi trước khi đăng.
 Repo này là nơi học và tái sử dụng: mỗi lần thêm một năng lực mới (nhân vật theo ảnh tham chiếu,
 giọng đọc local, epilogue nối vũ trụ…) thì cập nhật thẳng vào skill để lần sau agent dùng lại được.
 
+| Bảng nhân vật (frame duyệt) | Hành lang theo ảnh | Cabin nối `chuyen-pha` | Thẻ A/B |
+|---|---|---|---|
+| ![](docs/preview/sheet.jpg) | ![](docs/preview/corridor.jpg) | ![](docs/preview/cabin.jpg) | ![](docs/preview/choice.jpg) |
+
 ## Có gì trong này
 
 ```
