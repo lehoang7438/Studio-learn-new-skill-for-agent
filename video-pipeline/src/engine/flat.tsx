@@ -76,19 +76,96 @@ const shade = (hex: string, amount: number) => {
   return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
 };
 
+/** Directional light for the flat body: x/y in -1..1 (0,0 = flat), rim/shade 0..1, warm = light colour. */
+export type FlatLight = { x?: number; y?: number; rim?: number; shade?: number; warm?: string };
+
 /** The flat body. Same props as `Hero`, so a scene can swap one line and keep its blocking. */
-export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimId?: string | null }> = ({
+export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimId?: string | null; light?: FlatLight }> = ({
   pose,
   look = LOOKS.pipHood,
   shadow = 1,
   rimId,
+  light = {},
 }) => {
   const L = look;
+  const lx = Math.max(-1, Math.min(1, light.x ?? -0.6));
+  const ly = Math.max(-1, Math.min(1, light.y ?? -0.35));
+  const rimAmt = Math.max(0, Math.min(1, light.rim ?? 0.6));
+  const shadeAmt = Math.max(0, Math.min(1, light.shade ?? 0.42));
+  const warm = light.warm ?? '#FFE7C2';
+  const gid = React.useId().replace(/[:]/g, '');
   const j = flatJoints(pose);
   const ink = L.line;
   const long = Boolean(L.longFace);
   const rx = L.headR ?? 58;
   const ry = long ? 70 : 60;
+  const headPath = `M ${-rx} ${HEAD.y - 4} C ${-rx} ${HEAD.y - ry * 0.9} ${-rx * 0.62} ${HEAD.y - ry} 0 ${HEAD.y - ry} C ${rx * 0.62} ${HEAD.y - ry} ${rx} ${HEAD.y - ry * 0.9} ${rx} ${HEAD.y - 4} C ${rx} ${HEAD.y + ry * 0.5} ${rx * 0.62} ${HEAD.y + ry} 0 ${HEAD.y + ry} C ${-rx * 0.62} ${HEAD.y + ry} ${-rx} ${HEAD.y + ry * 0.5} ${-rx} ${HEAD.y - 4} Z`;
+  const torsoPath = 'M -74 -102 Q -38 -108 0 -108 Q 38 -108 74 -102 L 64 -22 Q 62 12 56 20 Q 0 29 -56 20 Q -62 12 -64 -22 Z';
+  // One light, painted on every surface: a soft warm pool on the lit side, a soft cool shade on the
+  // far side, and a rim that follows the lit edge. Percent coordinates, so each shape gets its own.
+  const lightDefs = (
+    <defs>
+      <clipPath id={`${gid}-head`}>
+        <path d={headPath} />
+      </clipPath>
+      <clipPath id={`${gid}-torso`}>
+        <path d={torsoPath} />
+      </clipPath>
+      <linearGradient
+        id={`${gid}-shade`}
+        x1={`${50 + lx * 50}%`}
+        y1={`${50 + ly * 50}%`}
+        x2={`${50 - lx * 50}%`}
+        y2={`${50 - ly * 50}%`}
+      >
+        <stop offset="0%" stopColor="#241109" stopOpacity={0} />
+        <stop offset="34%" stopColor="#2A1710" stopOpacity={0.04 * shadeAmt} />
+        <stop offset="58%" stopColor="#2A1710" stopOpacity={0.26 * shadeAmt} />
+        <stop offset="78%" stopColor="#2A1710" stopOpacity={0.5 * shadeAmt} />
+        <stop offset="100%" stopColor="#2A1710" stopOpacity={0.68 * shadeAmt} />
+      </linearGradient>
+      <radialGradient id={`${gid}-warm`} cx={`${50 + lx * 42}%`} cy={`${50 + ly * 42}%`} r="72%">
+        <stop offset="0%" stopColor={warm} stopOpacity={0.1 + 0.16 * rimAmt} />
+        <stop offset="100%" stopColor={warm} stopOpacity={0} />
+      </radialGradient>
+      <linearGradient
+        id={`${gid}-rim`}
+        x1={`${50 + lx * 50}%`}
+        y1={`${50 + ly * 50}%`}
+        x2={`${50 - lx * 50}%`}
+        y2={`${50 - ly * 50}%`}
+      >
+        <stop offset="0%" stopColor={warm} stopOpacity={0.8 * rimAmt} />
+        <stop offset="26%" stopColor={warm} stopOpacity={0.22 * rimAmt} />
+        <stop offset="52%" stopColor={warm} stopOpacity={0} />
+      </linearGradient>
+    </defs>
+  );
+  // a cylinder of shade down one side of a limb, and a thin rim on the other
+  const limbLight = (a: Pt, b: Pt, w: number, dark: string) => (
+    <g>
+      <line
+        x1={a.x - lx * 4}
+        y1={a.y - ly * 4}
+        x2={b.x - lx * 4}
+        y2={b.y - ly * 4}
+        stroke={dark}
+        strokeWidth={w * 0.52}
+        opacity={0.3 * shadeAmt}
+        strokeLinecap="round"
+      />
+      <line
+        x1={a.x + lx * 5}
+        y1={a.y + ly * 5}
+        x2={b.x + lx * 5}
+        y2={b.y + ly * 5}
+        stroke={warm}
+        strokeWidth={w * 0.26}
+        opacity={0.28 * rimAmt}
+        strokeLinecap="round"
+      />
+    </g>
+  );
   const eyeY = HEAD.y - 4;
   const eyeCX = long ? 17 : 19;
   const eyeRX = long ? 11.5 : 14;
@@ -107,7 +184,9 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
     return (
       <g>
         {capsule(o.root, o.mid, 30, L.arm ?? L.skin)}
+        {limbLight(o.root, o.mid, 30, shade(L.arm ?? L.skin, -42))}
         {capsule(o.mid, o.end, 26, L.arm ?? L.skin)}
+        {limbLight(o.mid, o.end, 26, shade(L.arm ?? L.skin, -42))}
         {/* the short sleeve: the tee's colour over the top half of the upper arm, with a stitched hem */}
         <circle cx={o.root.x} cy={o.root.y} r={sleeveR} fill={L.jacket} />
         {capsule(o.root, elbow, sleeveR * 2, L.jacket)}
@@ -132,7 +211,9 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
   const leg = (o: { root: Pt; mid: Pt; end: Pt }) => (
     <g>
       {capsule(o.root, o.mid, 34, L.leg ?? L.limb)}
+      {limbLight(o.root, o.mid, 34, shade(L.leg ?? L.limb, -34))}
       {capsule(o.mid, o.end, 26, L.leg ?? L.limb)}
+      {limbLight(o.mid, o.end, 26, shade(L.leg ?? L.limb, -34))}
       {/* a soft crease down the outside, so the denim reads as cloth and not a pipe */}
       <path
         d={`M ${o.root.x + 12} ${o.root.y - 4} Q ${o.mid.x + 9} ${o.mid.y} ${o.end.x + 6} ${o.end.y - 12}`}
@@ -156,12 +237,15 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
       <path d="M -18 -128 L 18 -128 L 20 -90 L -20 -90 Z" fill={L.skin} />
       <path d="M 6 -126 L 18 -126 L 20 -90 L 6 -90 Z" fill={L.skinShade} opacity={0.55} />
       <path d="M -18 -126 L -8 -126 L -8 -90 L -20 -90 Z" fill={L.skinShade} opacity={0.3} />
-      <path
-        d="M -74 -102 Q -38 -108 0 -108 Q 38 -108 74 -102 L 64 -22 Q 62 12 56 20 Q 0 29 -56 20 Q -62 12 -64 -22 Z"
-        fill={L.jacket}
-      />
-      {/* the right side turns away from the light */}
-      <path d="M 32 -106 Q 56 -103 74 -102 L 64 -22 Q 62 12 56 20 L 32 24 Z" fill={L.jacketShade} opacity={0.42} />
+      {/* the chin's shadow lands on the neck before the collar covers its base */}
+      <ellipse cx={0} cy={-120} rx={24} ry={12} fill="#1B0F0A" opacity={0.22 * shadeAmt} />
+      <path d={torsoPath} fill={L.jacket} />
+      {/* one light: soft pool on the lit side, soft shade on the far side, rim on the lit edge */}
+      <g clipPath={`url(#${gid}-torso)`}>
+        <rect x={-80} y={-115} width={160} height={150} fill={`url(#${gid}-shade)`} />
+        <rect x={-80} y={-115} width={160} height={150} fill={`url(#${gid}-warm)`} />
+        <path d={torsoPath} fill="none" stroke={`url(#${gid}-rim)`} strokeWidth={5} opacity={0.78} />
+      </g>
       {L.extra === 'slick' ? (
         <g>
           {/* a pale shirt in the V and a dark tie: the night-passenger's coat */}
@@ -187,6 +271,9 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
         d="M -67 -196 C -73 -236 -42 -260 0 -262 C 42 -260 73 -236 67 -196
            Q 58 -210 50 -198 Q 40 -218 28 -202 Q 12 -222 -2 -206 Q -18 -220 -30 -204 Q -44 -212 -56 -198 Z"
         fill={L.hair}
+        stroke={`url(#${gid}-rim)`}
+        strokeWidth={3.5}
+        opacity={0.55}
       />
       {/* the fringe crosses the forehead from the part; no outline, so the mass stays one shape */}
       {/* two short tufts leave the silhouette; the reference's hair is messy, not a crown */}
@@ -205,6 +292,9 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
         d="M -54 -206 C -56 -244 -34 -254 0 -254 C 34 -254 56 -244 54 -206
            C 48 -220 30 -224 6 -224 C -18 -224 -38 -232 -54 -206 Z"
         fill={L.hair}
+        stroke={`url(#${gid}-rim)`}
+        strokeWidth={3.5}
+        opacity={0.55}
       />
       {/* the side parting and a thin sweep, not a widow's peak */}
       <path d="M -16 -248 Q -12 -238 -10 -226" stroke={shade(L.hair, -30)} strokeWidth={2.6} fill="none" strokeLinecap="round" opacity={0.6} />
@@ -219,6 +309,9 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
       <path
         d={`M ${-rx * 0.9} ${HEAD.y - 22} Q ${-rx * 0.94} ${HEAD.y - 62} 0 ${HEAD.y - 66} Q ${rx * 0.94} ${HEAD.y - 62} ${rx * 0.9} ${HEAD.y - 22} Q 0 ${HEAD.y - 44} ${-rx * 0.9} ${HEAD.y - 22} Z`}
         fill={L.hair}
+        stroke={`url(#${gid}-rim)`}
+        strokeWidth={3.5}
+        opacity={0.55}
       />
     );
 
@@ -404,16 +497,14 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
         <ellipse cx={rx - 3} cy={HEAD.y + 8} rx={7} ry={11} fill={L.skin} />
         <path d={`M ${-rx + 6} ${HEAD.y + 4} Q ${-rx + 2} ${HEAD.y + 9} ${-rx + 6} ${HEAD.y + 14}`} stroke={L.skinShade} strokeWidth={2.2} fill="none" strokeLinecap="round" />
         <path d={`M ${rx - 6} ${HEAD.y + 4} Q ${rx - 2} ${HEAD.y + 9} ${rx - 6} ${HEAD.y + 14}`} stroke={L.skinShade} strokeWidth={2.2} fill="none" strokeLinecap="round" />
-        <path
-          d={`M ${-rx} ${HEAD.y - 4} C ${-rx} ${HEAD.y - ry * 0.9} ${-rx * 0.62} ${HEAD.y - ry} 0 ${HEAD.y - ry} C ${rx * 0.62} ${HEAD.y - ry} ${rx} ${HEAD.y - ry * 0.9} ${rx} ${HEAD.y - 4} C ${rx} ${HEAD.y + ry * 0.5} ${rx * 0.62} ${HEAD.y + ry} 0 ${HEAD.y + ry} C ${-rx * 0.62} ${HEAD.y + ry} ${-rx} ${HEAD.y + ry * 0.5} ${-rx} ${HEAD.y - 4} Z`}
-          fill={L.skin}
-        />
-        {/* the jaw's shade: the same flat light as the reference */}
-        <path
-          d={`M ${rx * 0.5} ${HEAD.y + 2} Q ${rx * 0.94} ${HEAD.y + 24} ${rx * 0.58} ${HEAD.y + ry * 0.66} Q ${rx * 0.32} ${HEAD.y + ry * 0.96} ${rx * 0.04} ${HEAD.y + ry * 0.9} Q ${rx * 0.36} ${HEAD.y + ry * 0.52} ${rx * 0.4} ${HEAD.y + 2} Z`}
-          fill={L.skinShade}
-          opacity={0.28}
-        />
+        <path d={headPath} fill={L.skin} />
+        {/* one light on the face: warm pool on the lit cheek, soft shade on the far cheek,
+            and a rim that follows the lit edge of the skull */}
+        <g clipPath={`url(#${gid}-head)`}>
+          <rect x={-rx - 4} y={HEAD.y - ry - 4} width={rx * 2 + 8} height={ry * 2 + 8} fill={`url(#${gid}-shade)`} />
+          <rect x={-rx - 4} y={HEAD.y - ry - 4} width={rx * 2 + 8} height={ry * 2 + 8} fill={`url(#${gid}-warm)`} />
+          <path d={headPath} fill="none" stroke={`url(#${gid}-rim)`} strokeWidth={7} />
+        </g>
       </g>
       {face}
       {hair}
@@ -423,6 +514,7 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
 
   return (
     <g>
+      {lightDefs}
       {shadow > 0 ? (
         <ellipse cx={pose.x} cy={pose.y + FLAT_LEG_LEN * pose.scale + 12} rx={78 * pose.scale} ry={13 * pose.scale} fill="#000" opacity={0.26 * shadow} />
       ) : null}

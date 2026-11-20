@@ -90,6 +90,8 @@ không có word-timing ngầm, nên không bị trôi tiếng.
 - Góc nhìn thứ nhất trong xe/tàu ban đêm, mưa trên kính, HUD góc trên, đèn bến xa.
 - Một ý/cảnh; cắt nhanh 3.5–5s; push-in nhẹ; flash/shake đúng lúc twist.
 - 3–4 cảnh đầu là bối cảnh, giữa là twist, cuối là **thẻ chọn A/B** + prompt bình luận.
+- Nhân vật phẳng nhận **một hướng sáng/cảnh** (`light={{x,y,rim,shade,warm}}`): viền sáng ở phía
+  được chiếu, mảng bóng mờ ở phía khuất; viền mỏng hơn bóng, terminator mềm. Chi tiết: `reference/character-ref.md` §6B.
 - Chi tiết: `reference/style.md`.
 
 ## Nhân vật & ảnh tham chiếu

@@ -188,11 +188,11 @@ export const CharacterSheet: React.FC<{
       {label(1, '3/4')}
       {label(2, 'NGHIÊNG')}
       {label(3, 'CẬN MẶT')}
-      <FlatHero pose={view(0, 0)} look={S} shadow={0} />
-      <FlatHero pose={view(1, 0.36)} look={S} shadow={0} />
-      <FlatHero pose={view(2, 0.95)} look={S} shadow={0} />
+      <FlatHero pose={view(0, 0)} look={S} shadow={0} light={{ x: -0.55, y: -0.5, rim: 0.45, shade: 0.35, warm: '#FFF4E0' }} />
+      <FlatHero pose={view(1, 0.36)} look={S} shadow={0} light={{ x: -0.55, y: -0.5, rim: 0.45, shade: 0.35, warm: '#FFF4E0' }} />
+      <FlatHero pose={view(2, 0.95)} look={S} shadow={0} light={{ x: -0.55, y: -0.5, rim: 0.45, shade: 0.35, warm: '#FFF4E0' }} />
       <g clipPath={`url(#${clipId})`}>
-        <FlatHero pose={view(3, 0.06, { headTilt: 1 }, closeScale, closeHip)} look={S} shadow={0} />
+        <FlatHero pose={view(3, 0.06, { headTilt: 1 }, closeScale, closeHip)} look={S} shadow={0} light={{ x: -0.55, y: -0.5, rim: 0.45, shade: 0.35, warm: '#FFF4E0' }} />
       </g>
       <line x1={44} y1={ground + 4} x2={w - 44} y2={ground + 4} stroke="#2A303A" strokeWidth={2} />
 

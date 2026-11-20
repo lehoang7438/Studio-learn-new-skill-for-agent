@@ -169,9 +169,9 @@ export const S2: React.FC<ShotProps> = ({ t, len }) => {
   return (
     <g transform={push(t, len, 1.0, 1.04)}>
       <Corridor t={t} />
-      <FlatHero pose={pose} look={LOOK} />
+      <FlatHero pose={pose} look={LOOK} light={{ x: -0.8, y: -0.35, rim: 0.75, shade: 0.5, warm: '#D7E8DE' }} />
       <Grab pose={pose} t={t} />
-      <rect x={420} y={-420} width={1080} height={1920} fill="#061012" opacity={0.16} />
+      <rect x={420} y={-420} width={1080} height={1920} fill="#061012" opacity={0.08} />
       <Scanlines o={0.05} />
     </g>
   );
@@ -199,7 +199,7 @@ export const S3: React.FC<ShotProps> = ({ t, len }) => {
       <rect x={420} y={-420} width={1080} height={1920} fill="#132628" />
       <LightPool x={720} y={360} r={780} color="#8FBEB4" o={0.16} />
       <rect x={420} y={-420} width={1080} height={1920} fill="#081214" opacity={0.28} />
-      <FlatHero pose={pose} look={LOOK} />
+      <FlatHero pose={pose} look={LOOK} light={{ x: -0.85, y: -0.3, rim: 0.85, shade: 0.55, warm: '#CFE3D8' }} />
       <Scanlines o={0.07} />
     </g>
   );
@@ -252,7 +252,7 @@ export const S4: React.FC<ShotProps> = ({ t, len }) => {
   return (
     <g transform={push(t, len, 1.0, 1.03)}>
       <CabinSeat t={t} />
-      <FlatHero pose={pose} look={ONG.look} />
+      <FlatHero pose={pose} look={ONG.look} light={{ x: 0.75, y: -0.4, rim: 0.9, shade: 0.6, warm: '#BFD9FF' }} />
       {/* the cold grade that makes the same skin read as night-blue */}
       <rect x={420} y={-420} width={1080} height={1920} fill="#24356B" opacity={0.26} />
       {/* the seat back in front, so the standing rig reads as a seated passenger */}

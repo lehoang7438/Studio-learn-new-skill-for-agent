@@ -39,6 +39,9 @@ nhân vật không thể "trôi" giữa các cảnh.
   không viền, tay áo ngắn, mắt tròn, tóc rối. `Hero` cũ vẫn dùng cho phim chalkboard.
 - `<CharacterSheet>` vẽ 4 góc nhìn + bảng màu + **ảnh gốc cạnh bên** + checklist 4 dòng. Đây là frame
   để duyệt trước khi dựng cảnh.
+- **Ánh sáng có hướng**: mỗi cảnh truyền `light={{ x, y, rim, shade, warm }}`; rig tự vẽ viền sáng ở
+  phía được chiếu và mảng bóng mờ ở phía khuất (mặt, tóc, áo, tay chân cùng một hướng) — không phải
+  hình dán phẳng.
 - Quy trình đầy đủ (đọc palette, viết spec, checklist 6 điểm, lỗi thường gặp):
   [`video-pipeline/reference/character-ref.md`](video-pipeline/reference/character-ref.md).
 

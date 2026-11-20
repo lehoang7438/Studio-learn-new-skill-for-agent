@@ -82,7 +82,7 @@ export const S1: React.FC<ShotProps> = ({ t, len }) => {
       <NightSea id="p1" t={t} rain={0.9} fog={0.65} harbour={false} />
       <LightPool x={960} y={700} r={680} color="#FFD7A0" o={0.12} />
       <Deck y={1160} />
-      <FlatHero pose={pose} look={LOOK} />
+      <FlatHero pose={pose} look={LOOK} light={{ x: 0.65, y: -0.55, rim: 0.55, shade: 0.45, warm: '#DCE8FF' }} />
       <Rail y={1160} />
       <rect x={420} y={-420} width={1080} height={1920} fill="#050B12" opacity={0.12} />
       <Scanlines o={0.05} />
@@ -107,7 +107,7 @@ export const S2: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.01, 1.05)}>
       <NightSea id="p2" t={t} rain={0.75} fog={0.55} moon={false} />
       <Deck y={1180} />
-      <FlatHero pose={pose} look={LOOK} shadow={0.6} />
+      <FlatHero pose={pose} look={LOOK} shadow={0.6} light={{ x: 0.8, y: -0.45, rim: 0.7, shade: 0.5, warm: '#BFD9FF' }} />
       <Rail y={1180} />
       {/* the glass: a wet sheet between him and the driver */}
       <rect x={420} y={-420} width={1080} height={1920} fill="#0A1730" opacity={0.22} />
@@ -136,7 +136,7 @@ export const S3: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.03)}>
       <rect x={420} y={-420} width={1080} height={1920} fill="#0A1620" />
       <LightPool x={700} y={420} r={780} color="#8FBEB4" o={0.14} />
-      <FlatHero pose={pose} look={LOOK} />
+      <FlatHero pose={pose} look={LOOK} light={{ x: -0.7, y: -0.4, rim: 0.7, shade: 0.5, warm: '#CFE3D8' }} />
       {/* rain running down the glass, over the face */}
       {Array.from({ length: 26 }).map((_, i) => (
         <line

@@ -136,6 +136,48 @@ gắn tay vẫn dùng được. Nhân vật phẳng **không** dùng `Hero` — 
 
 ---
 
+## 6B. Ánh sáng trên khối phẳng
+
+Mỗi cảnh truyền **một hướng sáng** cho `FlatHero`; rig tự vẽ viền sáng ở phía được chiếu và
+mảng bóng mờ ở phía khuất — không cần gradient thủ công trong shot.
+
+```tsx
+<FlatHero
+  pose={pose}
+  look={LOOK}
+  light={{ x: -0.8, y: -0.35, rim: 0.75, shade: 0.5, warm: '#D7E8DE' }}
+/>
+```
+
+| Khoá | Ý nghĩa |
+|---|---|
+| `x`, `y` | hướng nguồn sáng, −1..1 (âm = trái/trên). `0,0` = phẳng hoàn toàn |
+| `rim` | độ mạnh viền sáng trên mép được chiếu (0..1) |
+| `shade` | độ đậm mảng bóng ở phía khuất (0..1) |
+| `warm` | màu ánh sáng (đèn hành lang xanh nhạt, cabin xanh lạnh, trăng xanh nhạt) |
+
+Nguyên tắc để không thành "hình dán" (sticker):
+
+1. **Một hướng cho cả cảnh.** Đèn ở đâu thì viền sáng ở đó; mặt, tóc, áo, quần cùng một phía.
+2. **Viền mỏng hơn bóng.** Rim chỉ 3–7 px (theo scale), opacity ~0.5–0.8; bóng là mảng mờ rộng,
+   không phải đường kẻ.
+3. **Terminator mềm.** Bóng đi từ 0 → 0.5 → 0.7 qua 3 stop; không cắt nửa mặt bằng một đường cứng.
+4. **Tóc cũng bắt sáng**, nhưng mảnh hơn da (3.5 px, opacity 0.55), nếu không sẽ thành viền đen.
+5. **Đừng nhân đôi bóng**: cảnh đã có overlay tối thì hạ `shade` hoặc hạ overlay, tránh nhân vật
+   tối hơn cả nền.
+6. **Chân đế**: bóng đổ dưới chân vẫn là ellipse mờ ở đáy, không phụ thuộc hướng sáng.
+
+Bảng hướng sáng dùng trong repo:
+
+| Cảnh | `x,y` | `warm` | Ghi chú |
+|---|---|---|---|
+| Hành lang (S2, S3) | `-0.8,-0.35` | `#D7E8DE` | cửa sổ bên trái |
+| Cabin tàu, ông khách | `0.75,-0.4` | `#BFD9FF` | cửa sổ bên phải |
+| Boong phà đêm | `0.65,-0.55` | `#DCE8FF` | trăng bên phải |
+| Bảng nhân vật | `-0.55,-0.5` | `#FFF4E0` | studio trung tính |
+
+---
+
 ## 7. Prompt ảnh tham chiếu (image-to-image)
 
 Khi cần tạo ảnh mới (plate, storyboard) từ ảnh nhân vật, đưa ảnh vào làm **reference**, không tả lại
