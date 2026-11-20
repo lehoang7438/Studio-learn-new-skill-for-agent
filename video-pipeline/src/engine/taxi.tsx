@@ -276,9 +276,9 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
 };
 
 
-/** A five-fingered hand gripping the wheel rim: wrist joins the forearm, palm sits outside the
- *  rim, four fingers curl over it and come down on the inside, thumb inside pointing at the hub.
- *  `rot` follows the rim's tangent at that point, so the hand can not look pasted on. */
+/** A five-fingered hand on the wheel rim. Built around the anchor the rig gives for the end of the
+ *  forearm, so the wrist always overlaps the sleeve: skin cuff -> palm -> four fingers over the rim ->
+ *  thumb inside. No rotation by default; pass `rot` to follow a sloping rim. */
 export const WheelHand: React.FC<{
   x: number;
   y: number;
@@ -288,24 +288,24 @@ export const WheelHand: React.FC<{
   torn?: boolean;
 }> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false }) => (
   <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${s})`}>
-    {/* wrist, running into the sleeve */}
-    <path d="M -36 -104 l 72 0 l 8 56 l -88 0 Z" fill="#C08A63" />
-    <path d="M -36 -104 l 72 0 l 2 12 l -76 0 Z" fill="#A67150" opacity={0.35} />
-    {/* palm, sitting above the rim */}
-    <path d="M -44 -54 q 44 -20 84 4 q 12 26 0 48 q -42 18 -84 2 q -12 -28 0 -54 Z" fill="#C08A63" />
-    <path d="M -44 -54 q 44 -20 84 4 q 2 8 0 14 q -42 -16 -84 -2 Z" fill="#B47A55" opacity={0.3} />
-    {/* four fingers, curling over the rim */}
+    {/* wrist: starts well inside the sleeve so there is no seam to see */}
+    <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
+    {/* palm */}
+    <path d="M -40 -30 q 40 -18 78 2 q 12 26 0 46 q -38 16 -78 2 q -12 -24 0 -50 Z" fill="#C08A63" />
+    <path d="M -40 -30 q 40 -18 78 2 q 2 6 0 12 q -38 -16 -78 -2 Z" fill="#B47A55" opacity={0.28} />
+    {/* four fingers curling over the rim */}
     {[0, 1, 2, 3].map((i) => (
-      <g key={i} transform={`translate(${-34 + i * 23} 0) rotate(${(1.5 - i) * 7})`}>
-        <rect x={-10.5} y={-10} width={21} height={60} rx={10.5} fill="#C08A63" />
-        <rect x={-10.5} y={-10} width={21} height={14} rx={7} fill="#B47A55" opacity={0.4} />
-        <rect x={-10.5} y={38} width={21} height={12} rx={6} fill="#A67150" opacity={0.45} />
+      <g key={i} transform={`translate(${-31 + i * 21} 0) rotate(${(1.5 - i) * 5})`}>
+        <rect x={-9.5} y={-4} width={19} height={54} rx={9.5} fill="#C08A63" />
+        <rect x={-9.5} y={34} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
       </g>
     ))}
-    {/* thumb: inside the wheel */}
-    <path d="M 42 0 q 32 8 32 32 q 0 22 -22 23 q -21 0 -23 -24 q -2 -19 13 -31 Z" fill="#B47A55" />
-    <path d="M 46 30 q 12 2 14 12" stroke="#A66A46" strokeWidth={2.6} fill="none" opacity={0.55} />
-    {torn ? <path d="M -28 -18 l 28 7 M -24 0 l 24 4" stroke="#B3261E" strokeWidth={3.6} strokeLinecap="round" /> : null}
+    {/* thumb: a capsule off the inner edge, angled at the hub */}
+    <g transform="rotate(38 42 -14)">
+      <rect x={32} y={-38} width={22} height={54} rx={11} fill="#B47A55" />
+      <path d="M 36 -30 q 14 4 14 16" stroke="#A66A46" strokeWidth={2.4} fill="none" opacity={0.5} />
+    </g>
+    {torn ? <path d="M -26 -18 l 26 6 M -22 -2 l 22 3" stroke="#B3261E" strokeWidth={3.4} strokeLinecap="round" /> : null}
   </g>
 );
 
