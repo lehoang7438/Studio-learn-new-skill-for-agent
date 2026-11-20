@@ -154,11 +154,21 @@ Phụ đề rời: `out/<slug>/subtitles.srt|.vtt|.ass` (ASS giữ đúng font, 
 
 | Lớp | Cách làm |
 |---|---|
-| Voice | edge-tts theo từng line, file riêng trong `public/<slug>/lines/`; retry 12 lần backoff; ghép theo `at` |
-| Pitch/volume | xử lý cục bộ (phase-vocoder + gain) vì edge-tts từ chối pitch/volume khác 0 |
+| Voice | `voice.engine` chọn `edge-tts` (mặc định) hoặc `vieneu`; mỗi line một file trong `public/<slug>/lines/`; ghép theo `at` |
+| Pitch/volume | xử lý cục bộ (phase-vocoder + gain), nên hai engine cho cùng một chất line |
 | Role DSP | `loa` (band-pass + drive), `echo`, `reverb`, `glass`, `double` |
 | Music | numpy procedural, khớp độ dài video |
 | SFX | numpy procedural, hoặc mẫu CC0 từ Lots of Sounds (`--remote`) |
+
+### Voice engine
+
+| `voice.engine` | Cần gì | `roles.*.id` | Ghi chú |
+|---|---|---|---|
+| `edge-tts` | mạng | `vi-VN-NamMinhNeural`, `vi-VN-HoaiMyNeural` | retry 12 lần backoff |
+| `vieneu` | `pip install vieneu` (~1 GB model lần đầu) | preset: `Hải Đăng`, `Mai Anh`, `Adam bựa`, `Thùy Dung`… | 48 kHz, clone `ref_audio` 3–8s, `[cười]` `[thở dài]`, CPU RTF ≈ 0.5 |
+
+Cache tách theo engine: `lines/L1.wav` (edge) và `lines/L1.vieneu.wav` (VieNeu) — đổi engine không
+dùng lại nhầm file. Nguồn VieNeu: https://github.com/pnnbao97/VieNeu-TTS (Apache 2.0).
 
 `python video.py audio <slug> --remote --force` tải mẫu, cache vào `public/<slug>/sfx-src/`,
 ghi `ATTRIBUTION.md` + `index.json`, rồi mix theo `sfxApi.cues`.

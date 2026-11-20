@@ -92,7 +92,19 @@ Tổng hợp giọng:
 ```powershell
 python video.py voice ten-episode            # tất cả
 python video.py voice ten-episode --only L2  # sửa 1 câu
+python video.py voice ten-episode --force    # bỏ cache, đọc lại mọi line
 ```
+
+Hai engine (chọn bằng `voice.engine`):
+
+| Engine | Cần gì | `roles.*.id` |
+|---|---|---|
+| `edge-tts` (mặc định) | mạng | `vi-VN-NamMinhNeural`, `vi-VN-HoaiMyNeural` |
+| `vieneu` | `pip install vieneu`, model tải lần đầu | `Hải Đăng`, `Mai Anh`, `Adam bựa`, `Thùy Dung`… |
+
+VieNeu chạy local (CPU được), 48 kHz, có 25 giọng và clone từ clip 3–8s. Đổi engine thì nhớ `--force`
+hoặc xoá `public/<slug>/lines/` — cache của hai engine nằm ở hai tên file khác nhau
+(`L1.wav` / `L1.vieneu.wav`) nên không lẫn, nhưng `voice.wav` cũ vẫn còn tới khi chạy lại.
 
 edge-tts hay lỗi mạng (~30%); pipeline đã retry 12 lần với backoff. Nếu vẫn fail, chạy lại lệnh —
 file đã có sẽ được giữ, chỉ line thiếu được tạo.
