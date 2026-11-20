@@ -152,8 +152,10 @@ export const Cabin: React.FC<{
   dash?: number;
   speed?: number;
   hands?: boolean;
-  wipers?: number;
-}> = ({ t, wheel = 0, dash = 0.7, speed = 0.4, hands = true, wipers = 0 }) => {
+  wipers?: number | false;
+  /** text on the wheel hub — the taxi's plate for this film, 'FERRY 7' by default */
+  label?: string;
+}> = ({ t, wheel = 0, dash = 0.7, speed = 0.4, hands = true, wipers = 0, label = 'FERRY 7' }) => {
   const shakeY = Math.sin(t * 0.7) * 1.2 * speed;
   const glow = 0.55 + 0.45 * Math.sin(t / 40);
   return (
@@ -178,15 +180,19 @@ export const Cabin: React.FC<{
       <rect x={420} y={-420} width={1080} height={86} fill={FP.ink} />
       <rect x={420} y={-334} width={1080} height={10} fill="#0B1524" />
 
-      {/* wipers, parked low */}
-      <g transform={`translate(960 1030) rotate(${-8 + wipers * 44})`} opacity={0.85}>
-        <rect x={-4} y={-560} width={8} height={560} rx={4} fill="#05090F" />
-        <rect x={-6} y={-580} width={12} height={44} rx={5} fill="#05090F" />
-      </g>
-      <g transform={`translate(1230 1050) rotate(${6 - wipers * 40})`} opacity={0.85}>
-        <rect x={-4} y={-520} width={8} height={520} rx={4} fill="#05090F" />
-        <rect x={-6} y={-540} width={12} height={40} rx={5} fill="#05090F" />
-      </g>
+      {/* wipers, parked low — `wipers={false}` lets a shot draw its own blades */}
+      {wipers === false ? null : (
+        <>
+          <g transform={`translate(960 1030) rotate(${-8 + wipers * 44})`} opacity={0.85}>
+            <rect x={-4} y={-560} width={8} height={560} rx={4} fill="#05090F" />
+            <rect x={-6} y={-580} width={12} height={44} rx={5} fill="#05090F" />
+          </g>
+          <g transform={`translate(1230 1050) rotate(${6 - wipers * 40})`} opacity={0.85}>
+            <rect x={-4} y={-520} width={8} height={520} rx={4} fill="#05090F" />
+            <rect x={-6} y={-540} width={12} height={40} rx={5} fill="#05090F" />
+          </g>
+        </>
+      )}
 
       {/* dashboard */}
       <path d="M 420 1064 L 1500 1064 L 1500 1500 L 420 1500 Z" fill="#0A111D" />
@@ -221,7 +227,7 @@ export const Cabin: React.FC<{
         <path d="M -300 0 Q 0 60 300 0" fill="none" stroke="#1D2A3E" strokeWidth={26} />
         <path d="M -18 40 L -12 150 M 18 40 L 12 150" stroke="#1D2A3E" strokeWidth={26} strokeLinecap="round" />
         <rect x={-60} y={-12} width={120} height={54} rx={16} fill="#131F30" stroke="#31445F" strokeWidth={3} />
-        <text y={26} textAnchor="middle" fontFamily={FONT.ui} fontSize={20} fill={FP.muted} opacity={0.8}>FERRY 7</text>
+        <text y={26} textAnchor="middle" fontFamily={FONT.ui} fontSize={20} fill={FP.muted} opacity={0.8}>{label}</text>
         {hands ? (
           <>
             <Hand x={-268} y={-52} rot={-16} side={-1} scale={1.02} pose="grip" t={t} />

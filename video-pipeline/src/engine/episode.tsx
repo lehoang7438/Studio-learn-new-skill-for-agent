@@ -85,8 +85,10 @@ const fxAt = (tl: Timeline, f: number) => {
 };
 
 /** Vignette and a fine grain that changes on twos, to take the vector edge off (the genre's finish). */
-const Grade: React.FC<{ f: number; grain: boolean; vignette: boolean }> = ({ f, grain, vignette }) => (
-  <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+const Grade: React.FC<{ f: number; grain: boolean; vignette: boolean; stage?: StageName }> = ({ f, grain, vignette, stage = 'vertical' }) => {
+  const s = STAGES[stage];
+  return (
+  <svg width={s.w} height={s.h} viewBox={s.vb} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
     <defs>
       <radialGradient id="epVig" cx="50%" cy="50%" r="75%">
         <stop offset="55%" stopColor="#000" stopOpacity={0} />
@@ -97,26 +99,39 @@ const Grade: React.FC<{ f: number; grain: boolean; vignette: boolean }> = ({ f, 
         <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0" />
       </filter>
     </defs>
-    {vignette ? <rect width="1080" height="1920" fill="url(#epVig)" /> : null}
-    {grain ? <rect width="1080" height="1920" filter="url(#epGrain)" /> : null}
+    {vignette ? <rect width={s.w} height={s.h} fill="url(#epVig)" /> : null}
+    {grain ? <rect width={s.w} height={s.h} filter="url(#epGrain)" /> : null}
   </svg>
-);
+  );
+};
 
-/** One shot drawn in the shared defs (filters, gradients). The canvas is 1080 x 1920 (vertical / Reels), but the
+/** One shot drawn in the shared defs (filters, gradients). The canvas is 1080 x 1920 (vertical / Reels) by default, but the
  *  world every set is built in stays 1920 x 1080: a translate(-420 420) wrapper maps the world's centre (960,540)
  *  — where camT already aims every shot — onto the canvas centre (540,960). So no camera math changes; the visible
- *  world window is x 420..1500, y -420..1500 (taller than wide: extra vertical world reads as darkness). */
-export const ShotFrame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <svg width={1080} height={1920} viewBox="0 0 1080 1920">
-    <KitDefs />
-    <SetDefs />
-    <g transform="translate(-420 420)">{children}</g>
-  </svg>
-);
+ *  world window is x 420..1500, y -420..1500 (taller than wide: extra vertical world reads as darkness).
+ *
+ *  `stage="wide"` shows the whole 1920 x 1080 world instead of the vertical window: same sets, same camera maths,
+ *  no crop. Episodes that are 16:9 pass it through `defineEpisode({ stage: 'wide' })`. */
+export type StageName = 'vertical' | 'wide';
+export const STAGES = {
+  vertical: { w: 1080, h: 1920, vb: '0 0 1080 1920', tx: -420, ty: 420 },
+  wide: { w: 1920, h: 1080, vb: '0 0 1920 1080', tx: 0, ty: 0 },
+} as const;
 
-export type EpisodeProps = { timeline: Timeline; shots: ShotMap; looks?: Record<string, LookDef>; grain?: boolean; vignette?: boolean; bg?: string; captions?: CaptionCue[] };
+export const ShotFrame: React.FC<{ children: React.ReactNode; stage?: StageName }> = ({ children, stage = 'vertical' }) => {
+  const s = STAGES[stage];
+  return (
+    <svg width={s.w} height={s.h} viewBox={s.vb}>
+      <KitDefs />
+      <SetDefs />
+      <g transform={`translate(${s.tx} ${s.ty})`}>{children}</g>
+    </svg>
+  );
+};
 
-export const Episode: React.FC<EpisodeProps> = ({ timeline: tl, shots, looks = {}, grain = true, vignette = true, bg = '#0E0C1E', captions }) => {
+export type EpisodeProps = { timeline: Timeline; shots: ShotMap; looks?: Record<string, LookDef>; grain?: boolean; vignette?: boolean; bg?: string; captions?: CaptionCue[]; stage?: StageName };
+
+export const Episode: React.FC<EpisodeProps> = ({ timeline: tl, shots, looks = {}, grain = true, vignette = true, bg = '#0E0C1E', captions, stage = 'vertical' }) => {
   const f = useCurrentFrame();
   const seg = segAt(tl, f);
   const Shot = shots[seg.shot];
@@ -130,12 +145,12 @@ export const Episode: React.FC<EpisodeProps> = ({ timeline: tl, shots, looks = {
   return (
     <AbsoluteFill style={{ backgroundColor: bg }}>
       <AbsoluteFill style={{ transform: `translate(${x + jitter}px, ${y}px) scale(${x || y ? 1.02 : 1})`, filter: def?.grade && lv > 0 ? def.grade(lv) : undefined }}>
-        <ShotFrame>{Shot ? <Shot t={clockAt(seg, f)} len={info?.len ?? seg.b - seg.a} f={f} /> : null}</ShotFrame>
+        <ShotFrame stage={stage}>{Shot ? <Shot t={clockAt(seg, f)} len={info?.len ?? seg.b - seg.a} f={f} /> : null}</ShotFrame>
       </AbsoluteFill>
-      <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      <svg width={STAGES[stage].w} height={STAGES[stage].h} viewBox={STAGES[stage].vb} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <CaptionLayer f={f} cues={captions ?? tl.captions ?? []} />
       </svg>
-      <Grade f={f} grain={grain} vignette={vignette} />
+      <Grade f={f} grain={grain} vignette={vignette} stage={stage} />
       {def?.Overlay && run ? (
         <svg width={1920} height={1080} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0, opacity: lv }}>
           <def.Overlay f={f} lv={lv} p={clamp((f - run.a) / (run.b - run.a))} n={run.n} />
@@ -150,28 +165,34 @@ export const Episode: React.FC<EpisodeProps> = ({ timeline: tl, shots, looks = {
 };
 
 /** The storyboard: frame i is shot i at its key frame, no audio, no look. Render it with scripts/stills.mjs. */
-export const Board: React.FC<{ timeline: Timeline; shots: ShotMap; grain?: boolean; vignette?: boolean; bg?: string; captions?: CaptionCue[] }> = ({ timeline: tl, shots, grain = true, vignette = true, bg = '#0E0C1E', captions }) => {
+export const Board: React.FC<{ timeline: Timeline; shots: ShotMap; grain?: boolean; vignette?: boolean; bg?: string; captions?: CaptionCue[]; stage?: StageName }> = ({ timeline: tl, shots, grain = true, vignette = true, bg = '#0E0C1E', captions, stage = 'vertical' }) => {
   const f = useCurrentFrame();
   const info = tl.shots[Math.min(f, tl.shots.length - 1)];
   const Shot = shots[info.id];
   const cueFrame = info.first + info.key;
+  const s = STAGES[stage];
   return (
     <AbsoluteFill style={{ backgroundColor: bg }}>
-      <ShotFrame>{Shot ? <Shot t={info.key} len={info.len} f={cueFrame} /> : null}</ShotFrame>
-      <svg width={1080} height={1920} viewBox="0 0 1080 1920" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      <ShotFrame stage={stage}>{Shot ? <Shot t={info.key} len={info.len} f={cueFrame} /> : null}</ShotFrame>
+      <svg width={s.w} height={s.h} viewBox={s.vb} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <CaptionLayer f={cueFrame} cues={captions ?? tl.captions ?? []} instant />
       </svg>
-      <Grade f={info.key} grain={grain} vignette={vignette} />
+      <Grade f={info.key} grain={grain} vignette={vignette} stage={stage} />
     </AbsoluteFill>
   );
 };
 
 /** Bundle an episode for the registry: the main composition and its storyboard. */
-export const defineEpisode = (id: string, p: EpisodeProps) => ({
-  id,
-  total: p.timeline.total,
-  shotCount: p.timeline.shots.length,
-  Main: () => <Episode {...p} />,
-  Board: () => <Board timeline={p.timeline} shots={p.shots} grain={p.grain} vignette={p.vignette} bg={p.bg} captions={p.captions} />,
-});
+export const defineEpisode = (id: string, p: EpisodeProps) => {
+  const s = STAGES[p.stage ?? 'vertical'];
+  return {
+    id,
+    total: p.timeline.total,
+    shotCount: p.timeline.shots.length,
+    width: s.w,
+    height: s.h,
+    Main: () => <Episode {...p} />,
+    Board: () => <Board timeline={p.timeline} shots={p.shots} grain={p.grain} vignette={p.vignette} bg={p.bg} captions={p.captions} stage={p.stage} />,
+  };
+};
 export type EpisodeDef = ReturnType<typeof defineEpisode>;

@@ -92,7 +92,9 @@ không có word-timing ngầm, nên không bị trôi tiếng.
 - 3–4 cảnh đầu là bối cảnh, giữa là twist, cuối là **thẻ chọn A/B** + prompt bình luận.
 - Nhân vật phẳng nhận **một hướng sáng/cảnh** (`light={{x,y,rim,shade,warm}}`): viền sáng ở phía
   được chiếu, mảng bóng mờ ở phía khuất; viền mỏng hơn bóng, terminator mềm. Chi tiết: `reference/character-ref.md` §6B.
-- Chi tiết: `reference/style.md`.
+- Buồng lái chỉ đọc ra “xe” khi có **trần võng + gương treo từ trần + trụ A mỏng + gạt mưa nằm ngang**.
+  Set dọc dựng riêng (`engine/taxi.tsx` → `CabinV`), không cắt từ set ngang ra.
+- Chi tiết: `reference/style.md`. Set xe đêm & nhân vật kinh dị: `reference/set-xe-va-ma.md`.
 
 ## Nhân vật & ảnh tham chiếu
 
@@ -171,6 +173,8 @@ New-Item -ItemType Junction -Path .opencode\skills\video-pipeline -Target D:\too
 | `src/engine/rig.tsx` | rig stick-figure (`Hero`): cast `LOOKS`, pose, walk, prop gắn tay |
 | `src/engine/flat.tsx` | rig phẳng (`FlatHero`): cùng `Pose`, khối tô kín, tay áo, mắt tròn |
 | `src/engine/character.tsx` | `CHARACTERS` (spec khoá theo ảnh) + `CharacterSheet` 4 góc nhìn |
+| `src/engine/taxi.tsx` | set xe đêm dọc: `CabinV` (trần + gương treo + trụ A mỏng), `RoadV`, `Mirror`/`BigMirror`, `WomanInGlass`, `GripHand`, `Clock` |
+| `src/episodes/chuyen-xe/` | phim 9 phút, 33 cảnh, 16:9/9:16 — ví dụ dài nhất |
 | `src/episodes/chuyen-pha/` | ví dụ đầy đủ 9 cảnh, 42s |
 | `src/episodes/storyboard-mau/` | storyboard test: mặt cận, toàn thân, bối cảnh, POV |
 | `src/episodes/ref-nhan-vat/` | nhân vật dựng từ ảnh tham chiếu: sheet 4 góc + 5 khung hình |
@@ -178,6 +182,7 @@ New-Item -ItemType Junction -Path .opencode\skills\video-pipeline -Target D:\too
 | `QUY-TRINH.md` | quy trình tiếng Việt, từng bước |
 | `reference/style.md` | visual DNA + thông số |
 | `reference/character-ref.md` | khoá nhân vật theo ảnh: palette, spec, sheet, checklist, prompt |
+| `reference/set-xe-va-ma.md` | set xe đêm dọc + nhân vật kinh dị: trần/gương/trụ A, mắt đỏ, máu loang, tay cầm vô lăng, bẫy kỹ thuật |
 | `reference/qa.md` | checklist review |
 | `reference/prompt-pack.md` | prompt tạo ảnh/nền/storyboard |
 
@@ -185,5 +190,7 @@ New-Item -ItemType Junction -Path .opencode\skills\video-pipeline -Target D:\too
 
 - Không sửa `node_modules/`, `out/` bằng tay.
 - Không nhét caption vào `shots.tsx` — caption luôn đi qua `project.json → captions.json → CaptionLayer`.
+  Nếu tập **không có** phụ đề: để `captions: []` trong project.json **và** truyền `captions: []` vào
+  `defineEpisode`, vì `CaptionLayer` vẫn đọc `timeline.captions` khi prop là `undefined`.
 - Không dùng pitch/volume trong edge-tts request (dịch vụ trả `NoAudioReceived`).
 - Không copy `node_modules` khi pack/clone.

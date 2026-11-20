@@ -1,0 +1,1332 @@
+{
+  "slug": "chuyen-xe",
+  "composition": "ChuyenXe",
+  "title": "CHUYẾN XE KHÔNG CÓ KHÁCH",
+  "fps": 30,
+  "total": 16200,
+  "segments": [
+    {
+      "shot": "T01",
+      "a": 0,
+      "b": 300,
+      "t0": 0,
+      "t1": 300,
+      "line": "Tôi kể chuyện này một lần thôi. Dù tôi không nhớ mình đã kể bao nhiêu lần rồi."
+    },
+    {
+      "shot": "T02",
+      "a": 300,
+      "b": 660,
+      "t0": 0,
+      "t1": 360,
+      "line": "Đêm đó mưa. Tôi chạy chuyến cuối, đường vắng đến mức chỉ nghe tiếng gạt mưa."
+    },
+    {
+      "shot": "T03",
+      "a": 660,
+      "b": 1020,
+      "t0": 0,
+      "t1": 360,
+      "line": "Trán tôi rát. Tay tôi rỉ máu. Tôi không nhớ mình bị thương lúc nào."
+    },
+    {
+      "shot": "T04",
+      "a": 1020,
+      "b": 1320,
+      "t0": 0,
+      "t1": 300,
+      "line": "Radio rè rè. Tôi tắt nó đi. Và đó là lúc tôi nghe thấy tiếng người. Anh ơi..."
+    },
+    {
+      "shot": "T05",
+      "a": 1320,
+      "b": 1740,
+      "t0": 0,
+      "t1": 420,
+      "line": "Cô lên xe lúc nào vậy?"
+    },
+    {
+      "shot": "T06",
+      "a": 1740,
+      "b": 2160,
+      "t0": 0,
+      "t1": 420,
+      "line": "Tôi quay lại. Ghế sau trống. Tôi nhìn gương. Cô ấy vẫn ngồi đó."
+    },
+    {
+      "shot": "T07",
+      "a": 2160,
+      "b": 2700,
+      "t0": 0,
+      "t1": 540,
+      "line": "Anh đưa tôi về nhà được không? Cô ở đâu lên? Chỗ anh bỏ tôi lại."
+    },
+    {
+      "shot": "T08",
+      "a": 2700,
+      "b": 3150,
+      "t0": 0,
+      "t1": 450,
+      "line": "Đó là lời nói dối đầu tiên của đêm đó. Tôi không nhớ đã gặp cô. Tay anh chảy máu kìa. Anh sợ máu lắm nhỉ."
+    },
+    {
+      "shot": "T09",
+      "a": 3150,
+      "b": 3600,
+      "t0": 0,
+      "t1": 450,
+      "line": "Anh không nghe thấy gì sao? Cái gì? Tiếng tôi gọi anh. Anh có nghe thấy tiếng va chạm thứ hai không? Cô im đi!"
+    },
+    {
+      "shot": "T10",
+      "a": 3600,
+      "b": 4050,
+      "t0": 0,
+      "t1": 450,
+      "line": "Tôi mở camera hành trình. Tôi cần thấy cô ta trên màn hình. Cần thấy một thứ thật. Được rồi... xem mày là cái gì."
+    },
+    {
+      "shot": "T11",
+      "a": 4050,
+      "b": 4650,
+      "t0": 0,
+      "t1": 600,
+      "line": "Ghế sau trống. Nhưng loa điện thoại vẫn thu được tiếng cô ấy. Anh ơi..."
+    },
+    {
+      "shot": "T12",
+      "a": 4650,
+      "b": 5550,
+      "t0": 0,
+      "t1": 900,
+      "line": "Đoạn ghi hình phía trước. Hai mươi ba giờ ba mươi mốt phút tám giây. Một chiếc xe đạp đỏ lao ra. Tôi không kịp phanh. Tôi xuống xe, nhìn quanh. Không có ai. Cô ấy nắm lấy ống quần tôi... và tôi giật chân ra. Cứu... cứu tôi..."
+    },
+    {
+      "shot": "T13",
+      "a": 5550,
+      "b": 6000,
+      "t0": 0,
+      "t1": 450,
+      "line": "Không... mình đã bỏ đi rồi. Đúng vậy. Anh còn nhớ chuyện gì xảy ra sau đó không? Hay anh quên luôn cả lần va chạm thứ hai rồi?"
+    },
+    {
+      "shot": "T14",
+      "a": 6000,
+      "b": 6600,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi lái. Tôi chỉ muốn rời khỏi chỗ đó."
+    },
+    {
+      "shot": "T15",
+      "a": 6600,
+      "b": 7050,
+      "t0": 0,
+      "t1": 450,
+      "line": "Một phút sau, tấm biển ấy lại hiện ra. Đồng hồ vẫn hai mươi ba giờ ba mươi bốn. Điện thoại không có sóng."
+    },
+    {
+      "shot": "T16",
+      "a": 7050,
+      "b": 7650,
+      "t0": 0,
+      "t1": 600,
+      "line": "Biển quảng cáo cũ. Cây xăng bỏ hoang. Và chiếc xe đạp đỏ nằm bên vệ đường. Cô là ai? Anh không nhìn kỹ tôi lần nào sao? Vậy anh có nhận ra con đường này không?"
+    },
+    {
+      "shot": "T17",
+      "a": 7650,
+      "b": 8100,
+      "t0": 0,
+      "t1": 450,
+      "line": "Tôi đạp phanh, và hiểu ra: mình chưa từng rời khỏi nơi này. Anh đã từng đi qua đây rồi. Không thể nào..."
+    },
+    {
+      "shot": "T18",
+      "a": 8100,
+      "b": 8700,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi xuống xe. Mưa đã nhẹ hơn. Tôi đi về phía chiếc xe đạp, như bị ai kéo."
+    },
+    {
+      "shot": "T19",
+      "a": 8700,
+      "b": 9150,
+      "t0": 0,
+      "t1": 450,
+      "line": "Bánh xe cong. Một vệt máu kéo dài ra mép đường, dẫn xuống cống."
+    },
+    {
+      "shot": "T20",
+      "a": 9150,
+      "b": 9750,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi chiếu đèn vào trong. Một bàn tay. Rồi một con mắt. Rồi khuôn mặt."
+    },
+    {
+      "shot": "T21",
+      "a": 9750,
+      "b": 10200,
+      "t0": 0,
+      "t1": 450,
+      "line": "Lần này tôi không cần gương để nhìn thấy cô ấy. Anh quay lại rồi."
+    },
+    {
+      "shot": "T22",
+      "a": 10200,
+      "b": 10650,
+      "t0": 0,
+      "t1": 450,
+      "line": "Cô... cô là thứ gì? Tôi chỉ là người mà anh đã bỏ lại. Anh nhớ lần thứ hai chưa?"
+    },
+    {
+      "shot": "T23",
+      "a": 10650,
+      "b": 11550,
+      "t0": 0,
+      "t1": 900,
+      "line": "Tôi xem tiếp. Hai mươi ba giờ ba mươi hai phút bốn mươi mốt giây. Tôi lái đi, mắt dán vào gương. Rồi có một bóng người giữa đường. Tôi đánh lái. Chiếc xe lao vào thân cây."
+    },
+    {
+      "shot": "T24",
+      "a": 11550,
+      "b": 12150,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi nhìn xuống tay mình. Những mảnh kính nhỏ mắc trong tay áo. Tôi chết rồi sao? Anh đã bỏ chạy. Rồi anh cũng bỏ lại chính mình."
+    },
+    {
+      "shot": "T25",
+      "a": 12150,
+      "b": 12600,
+      "t0": 0,
+      "t1": 450,
+      "line": "Cuối đường, một chiếc taxi đâm vào gốc cây. Đèn cảnh báo vẫn nhấp nháy. Còi xe vẫn kêu."
+    },
+    {
+      "shot": "T26",
+      "a": 12600,
+      "b": 13200,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi bước từng bước. Cánh cửa tài xế méo xệch. Tôi đọc biển số. Là biển số xe tôi."
+    },
+    {
+      "shot": "T27",
+      "a": 13200,
+      "b": 13800,
+      "t0": 0,
+      "t1": 600,
+      "line": "Chuyến xe này chưa từng có hành khách. Chỉ có hai người không thể rời khỏi nơi này."
+    },
+    {
+      "shot": "T28",
+      "a": 13800,
+      "b": 14400,
+      "t0": 0,
+      "t1": 600,
+      "line": "Tôi chiếu đèn vào người ngồi sau vô lăng. Là tôi. Không..."
+    },
+    {
+      "shot": "T29",
+      "a": 14400,
+      "b": 14850,
+      "t0": 0,
+      "t1": 450,
+      "line": "Tôi xin lỗi... Tôi đã chờ anh quay lại. Không phải để nghe anh xin lỗi. Chỉ cần anh đừng bỏ đi nữa. Tôi sẽ không đi nữa."
+    },
+    {
+      "shot": "T30",
+      "a": 14850,
+      "b": 15300,
+      "t0": 0,
+      "t1": 450,
+      "line": "Cô ấy cười rất nhẹ. Rồi xe nổ máy. Đèn pha tự bật. Cửa sau tự mở."
+    },
+    {
+      "shot": "T31",
+      "a": 15300,
+      "b": 15660,
+      "t0": 0,
+      "t1": 360,
+      "line": "Anh ơi... đưa tôi về nhà nhé? Anh nhớ đường chứ? Nhớ."
+    },
+    {
+      "shot": "T32",
+      "a": 15660,
+      "b": 15900,
+      "t0": 0,
+      "t1": 240,
+      "line": "Lần nào tôi cũng hứa sẽ dừng lại. Lần nào chân tôi cũng đạp ga."
+    },
+    {
+      "shot": "T33",
+      "a": 15900,
+      "b": 16200,
+      "t0": 0,
+      "t1": 300,
+      "line": ""
+    }
+  ],
+  "shots": [
+    {
+      "id": "T01",
+      "size": "CARD",
+      "key": 120,
+      "len": 300,
+      "first": 0,
+      "line": "Tôi kể chuyện này một lần thôi. Dù tôi không nhớ mình đã kể bao nhiêu lần rồi.",
+      "caption": "",
+      "note": "Màn đen. Chữ trắng nhỏ '23:34' hiện ở giây 0:06 rồi tắt ở 0:09. Không logo, không crédit. Đây là CARD, không phải ảnh AI — render bằng Remotion. Ô ảnh trong contact sheet để trống có chủ đích.",
+      "scene": "black"
+    },
+    {
+      "id": "T02",
+      "size": "3P",
+      "key": 144,
+      "len": 360,
+      "first": 300,
+      "line": "Đêm đó mưa. Tôi chạy chuyến cuối, đường vắng đến mức chỉ nghe tiếng gạt mưa.",
+      "caption": "",
+      "note": "Camera cố định rất thấp, xe lướt qua khung. Chỉ MỘT xe. Không thấy Hùng rõ mặt — nếu lộ mặt thì phải có vết trán.",
+      "scene": "wide"
+    },
+    {
+      "id": "T03",
+      "size": "POV-H",
+      "key": 144,
+      "len": 360,
+      "first": 660,
+      "line": "Trán tôi rát. Tay tôi rỉ máu. Tôi không nhớ mình bị thương lúc nào.",
+      "caption": "",
+      "note": "Vết thương ở đây là CỐ Ý: anh đã bị thương từ trước khi phim bắt đầu. Nhưng tay/trán phải khớp đúng mô tả trong sheet (cắt ngắn trên trán phải, đường rách ở tay phải). Đồng hồ 23:34 nằm trong khung, KHÔNG đọc thành lời. Đã cắt câu 'Đồng hồ chỉ hai mươi ba giờ ba mươi bốn' để giữ nhịp 2 từ/giây.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T04",
+      "size": "INS",
+      "key": 120,
+      "len": 300,
+      "first": 1020,
+      "line": "Radio rè rè. Tôi tắt nó đi. Và đó là lúc tôi nghe thấy tiếng người. Anh ơi...",
+      "caption": "",
+      "note": "Cô nói trước khi xuất hiện trong gương — chỉ có tiếng, không có hình. Giọng khô, sát mic, không reverb.",
+      "scene": "insert"
+    },
+    {
+      "id": "T05",
+      "size": "POV-H",
+      "key": 168,
+      "len": 420,
+      "first": 1320,
+      "line": "Cô lên xe lúc nào vậy?",
+      "caption": "",
+      "note": "ĐÂY LÀ ẢNH MẪU SỐ 1 để duyệt quy tắc gương. Trong gương có cô, ngoài gương không có ghế sau. Im lặng 2 giây trước khi cắt.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T06",
+      "size": "3P",
+      "key": 168,
+      "len": 420,
+      "first": 1740,
+      "line": "Tôi quay lại. Ghế sau trống. Tôi nhìn gương. Cô ấy vẫn ngồi đó.",
+      "caption": "",
+      "note": "Hai keyframe bắt buộc: (a) ghế sau TRỐNG khi nhìn trực tiếp, (b) gương có cô. Tuyệt đối không đặt cô lên ghế thật.",
+      "scene": "wide"
+    },
+    {
+      "id": "T07",
+      "size": "POV-W",
+      "key": 216,
+      "len": 540,
+      "first": 2160,
+      "line": "Anh đưa tôi về nhà được không? Cô ở đâu lên? Chỗ anh bỏ tôi lại.",
+      "caption": "",
+      "note": "Cú đảo vai đầu tiên: người xem ngồi vào ghế cô. Không thấy cô trong khung. Góc hơi chếch, cố định.",
+      "scene": "mirror"
+    },
+    {
+      "id": "T08",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 2700,
+      "line": "Đó là lời nói dối đầu tiên của đêm đó. Tôi không nhớ đã gặp cô. Tay anh chảy máu kìa. Anh sợ máu lắm nhỉ.",
+      "caption": "",
+      "note": "Đã cắt 'Không phải chuyện của cô.' (5 từ) để shot xuống 1,67 từ/giây. Khoảng lặng thay cho câu đó mạnh hơn. VO 'Đó là lời nói dối đầu tiên' là mấu chốt: Hùng NHỚ vụ đầu, chỉ quên vụ hai.",
+      "scene": "wide"
+    },
+    {
+      "id": "T09",
+      "size": "INS",
+      "key": 180,
+      "len": 450,
+      "first": 3150,
+      "line": "Anh không nghe thấy gì sao? Cái gì? Tiếng tôi gọi anh. Anh có nghe thấy tiếng va chạm thứ hai không? Cô im đi!",
+      "caption": "",
+      "note": "SỬA QUY TẮC: bản gốc cho cô áp mặt trực tiếp lên kính nhìn từ trong — vi phạm 'trước T21 chỉ thấy trong gương/kính'. Đổi thành phản chiếu trên kính ướt, camera đặt NGOÀI cửa sau nhìn vào. Ba tiếng gõ là motif, phải khớp T21.",
+      "scene": "insert"
+    },
+    {
+      "id": "T10",
+      "size": "INS",
+      "key": 180,
+      "len": 450,
+      "first": 3600,
+      "line": "Tôi mở camera hành trình. Tôi cần thấy cô ta trên màn hình. Cần thấy một thứ thật. Được rồi... xem mày là cái gì.",
+      "caption": "",
+      "note": "Ánh sáng L3 chỉ từ màn hình. Không thấy mặt Hùng trong shot này.",
+      "scene": "insert"
+    },
+    {
+      "id": "T11",
+      "size": "POV-CAM",
+      "key": 240,
+      "len": 600,
+      "first": 4050,
+      "line": "Ghế sau trống. Nhưng loa điện thoại vẫn thu được tiếng cô ấy. Anh ơi...",
+      "caption": "",
+      "note": "Màn hình phải có timestamp nhỏ. Ghế sau trong video TRỐNG. Giọng cô chỉ có trong âm thanh — không có hình. Đây là bằng chứng 'cô không tồn tại trên hình'.",
+      "scene": "screen"
+    },
+    {
+      "id": "T12",
+      "size": "POV-CAM",
+      "key": 360,
+      "len": 900,
+      "first": 4650,
+      "line": "Đoạn ghi hình phía trước. Hai mươi ba giờ ba mươi mốt phút tám giây. Một chiếc xe đạp đỏ lao ra. Tôi không kịp phanh. Tôi xuống xe, nhìn quanh. Không có ai. Cô ấy nắm lấy ống quần tôi... và tôi giật chân ra. Cứu... cứu tôi...",
+      "caption": "",
+      "note": "QUAN TRỌNG: đây là 23:31:08 — TRƯỚC cú đâm thứ hai. Hùng KHÔNG có vết thương, tay sạch. Đây là ngoại lệ duy nhất của quy tắc 'vết thương luôn có'. Cô còn sống, chưa có vết thương ở thái dương. Xe đạp đỏ là vật đỏ duy nhất.",
+      "scene": "screen"
+    },
+    {
+      "id": "T13",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 5550,
+      "line": "Không... mình đã bỏ đi rồi. Đúng vậy. Anh còn nhớ chuyện gì xảy ra sau đó không? Hay anh quên luôn cả lần va chạm thứ hai rồi?",
+      "caption": "",
+      "note": "Câu của cô là mồi: khán giả chưa biết vụ va chạm thứ hai, nên đây là hook chứ không phải spoiler.",
+      "scene": "wide"
+    },
+    {
+      "id": "T14",
+      "size": "3P",
+      "key": 240,
+      "len": 600,
+      "first": 6000,
+      "line": "Tôi lái. Tôi chỉ muốn rời khỏi chỗ đó.",
+      "caption": "",
+      "note": "Biển KM 17 đọc được nhưng không cần rõ chữ ở shot này.",
+      "scene": "wide"
+    },
+    {
+      "id": "T15",
+      "size": "POV-H",
+      "key": 180,
+      "len": 450,
+      "first": 6600,
+      "line": "Một phút sau, tấm biển ấy lại hiện ra. Đồng hồ vẫn hai mươi ba giờ ba mươi bốn. Điện thoại không có sóng.",
+      "caption": "",
+      "note": "Đã cắt 'Cùng cây số. Cùng con số.' (7 từ) vì hình đã lặp lại ý đó. Đồng hồ trong khung phải đọc được 23:34.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T16",
+      "size": "3P",
+      "key": 240,
+      "len": 600,
+      "first": 7050,
+      "line": "Biển quảng cáo cũ. Cây xăng bỏ hoang. Và chiếc xe đạp đỏ nằm bên vệ đường. Cô là ai? Anh không nhìn kỹ tôi lần nào sao? Vậy anh có nhận ra con đường này không?",
+      "caption": "",
+      "note": "SỬA: xe đạp ở đây phải đã cong bánh (bị đâm ở T12), nếu không khán giả tưởng là chiếc khác. Đây là vật đỏ duy nhất trong khung; mọi thứ khác xanh/cam/đen.",
+      "scene": "wide"
+    },
+    {
+      "id": "T17",
+      "size": "POV-H",
+      "key": 180,
+      "len": 450,
+      "first": 7650,
+      "line": "Tôi đạp phanh, và hiểu ra: mình chưa từng rời khỏi nơi này. Anh đã từng đi qua đây rồi. Không thể nào...",
+      "caption": "",
+      "note": "Gạt mưa dừng giữa chừng là chi tiết gài: thời gian đã đứng. Không dùng màu đỏ nào khác ngoài đèn phanh phản chiếu (cho phép, là ánh sáng chứ không phải vật đỏ).",
+      "scene": "cabin"
+    },
+    {
+      "id": "T18",
+      "size": "3P",
+      "key": 240,
+      "len": 600,
+      "first": 8100,
+      "line": "Tôi xuống xe. Mưa đã nhẹ hơn. Tôi đi về phía chiếc xe đạp, như bị ai kéo.",
+      "caption": "",
+      "note": "Mưa bắt đầu giảm từ đây để tới T27 tắt hẳn. Đèn pin là nguồn sáng chính.",
+      "scene": "wide"
+    },
+    {
+      "id": "T19",
+      "size": "INS",
+      "key": 180,
+      "len": 450,
+      "first": 8700,
+      "line": "Bánh xe cong. Một vệt máu kéo dài ra mép đường, dẫn xuống cống.",
+      "caption": "",
+      "note": "Chuông chỉ ở T12, T19, T33. Shot này là cú nối giữa xe đạp và cống.",
+      "scene": "insert"
+    },
+    {
+      "id": "T20",
+      "size": "POV-HW",
+      "key": 240,
+      "len": 600,
+      "first": 9150,
+      "line": "Tôi chiếu đèn vào trong. Một bàn tay. Rồi một con mắt. Rồi khuôn mặt.",
+      "caption": "",
+      "note": "Bỏ câu thoại 'Trời ơi... Tôi xin lỗi...' ở đây (trùng với T29) — chỉ giữ hơi thở. Ba keyframe đúng thứ tự: tay → mắt → mặt. Xác nằm nửa người trên mép cống để T21 vẫn thấy được.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T21",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 9750,
+      "line": "Lần này tôi không cần gương để nhìn thấy cô ấy. Anh quay lại rồi.",
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 2. Đây là shot ĐẦU TIÊN cô hiện trực tiếp, không qua gương. Ba tiếng gõ quay lại từ T09. Xác phải cùng khung: nửa người trên mép cống.",
+      "scene": "wide"
+    },
+    {
+      "id": "T22",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 10200,
+      "line": "Cô... cô là thứ gì? Tôi chỉ là người mà anh đã bỏ lại. Anh nhớ lần thứ hai chưa?",
+      "caption": "",
+      "note": "Cô đứng yên, không bay, không tóc bay — càng tĩnh càng sợ.",
+      "scene": "wide"
+    },
+    {
+      "id": "T23",
+      "size": "POV-CAM",
+      "key": 360,
+      "len": 900,
+      "first": 10650,
+      "line": "Tôi xem tiếp. Hai mươi ba giờ ba mươi hai phút bốn mươi mốt giây. Tôi lái đi, mắt dán vào gương. Rồi có một bóng người giữa đường. Tôi đánh lái. Chiếc xe lao vào thân cây.",
+      "caption": "",
+      "note": "Video hỏng dừng đúng 23:34:06. Đây là mốc kết thúc vòng lặp. Hùng trong video SẠCH vết thương cho tới cú đâm — sau đó mới có. Không để đồng hồ táp-lô trong khung cùng lúc với timestamp điện thoại (tránh 2 giờ khác nhau trong 1 hình).",
+      "scene": "screen"
+    },
+    {
+      "id": "T24",
+      "size": "INS",
+      "key": 240,
+      "len": 600,
+      "first": 11550,
+      "line": "Tôi nhìn xuống tay mình. Những mảnh kính nhỏ mắc trong tay áo. Tôi chết rồi sao? Anh đã bỏ chạy. Rồi anh cũng bỏ lại chính mình.",
+      "caption": "",
+      "note": "Mảnh kính là bằng chứng vật lý: anh chết trong vụ đâm cây. Cô không trả lời câu hỏi.",
+      "scene": "insert"
+    },
+    {
+      "id": "T25",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 12150,
+      "line": "Cuối đường, một chiếc taxi đâm vào gốc cây. Đèn cảnh báo vẫn nhấp nháy. Còi xe vẫn kêu.",
+      "caption": "",
+      "note": "SỬA LỖI: bản gốc có 'tiếng còi báo động' + 'chùm đèn pha' của một xe khác → tự tạo ra chiếc xe thứ ba và cảnh sát không tồn tại. Đổi thành CÒI XE của chính nó + đèn pha của chính nó hắt lên trời. Đây là shot đầu tiên được thấy xe nát.",
+      "scene": "wide"
+    },
+    {
+      "id": "T26",
+      "size": "POV-HW",
+      "key": 240,
+      "len": 600,
+      "first": 12600,
+      "line": "Tôi bước từng bước. Cánh cửa tài xế méo xệch. Tôi đọc biển số. Là biển số xe tôi.",
+      "caption": "",
+      "note": "Biển số phải đọc được rõ: 51B-234.56. Con đường ngắn lại có chủ đích (logic ma) — không cần giải thích.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T27",
+      "size": "INS",
+      "key": 240,
+      "len": 600,
+      "first": 13200,
+      "line": "Chuyến xe này chưa từng có hành khách. Chỉ có hai người không thể rời khỏi nơi này.",
+      "caption": "",
+      "note": "Shot này cô nói câu chốt. Sau đó IM 3 GIÂY trước khi cắt sang T28. Mưa tắt từ đây và không quay lại. Gương nứt chia mặt cô làm ba — đúng ý 'ba mảnh' của vòng lặp.",
+      "scene": "insert"
+    },
+    {
+      "id": "T28",
+      "size": "POV-HW",
+      "key": 240,
+      "len": 600,
+      "first": 13800,
+      "line": "Tôi chiếu đèn vào người ngồi sau vô lăng. Là tôi. Không...",
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 3. Mặt Hùng phải NẶNG hơn bình thường: mắt hé, đầu gục, máu — nhưng vẫn giữ nét stickman phẳng, không biến thành ảnh thật. Giữ khung lâu, không cắt nhanh. Im 3 giây đầu.",
+      "scene": "cabin"
+    },
+    {
+      "id": "T29",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 14400,
+      "line": "Tôi xin lỗi... Tôi đã chờ anh quay lại. Không phải để nghe anh xin lỗi. Chỉ cần anh đừng bỏ đi nữa. Tôi sẽ không đi nữa.",
+      "caption": "",
+      "note": "Đây là chỗ DUY NHẤT Hùng nói 'Tôi xin lỗi'. T29 phải là câu trả lời thật, không phải mẹo — vì T32 sẽ phản bội nó.",
+      "scene": "wide"
+    },
+    {
+      "id": "T30",
+      "size": "3P",
+      "key": 180,
+      "len": 450,
+      "first": 14850,
+      "line": "Cô ấy cười rất nhẹ. Rồi xe nổ máy. Đèn pha tự bật. Cửa sau tự mở.",
+      "caption": "",
+      "note": "Đồng hồ táp-lô 23:30:50 — mốc vòng lặp mới. Xe nát KHÔNG được nằm trong khung (nó ở phía sau camera). Cô đi vào bóng tối rồi mới 'đã ngồi trong xe' — cắt che bước chân, không quay cảnh cô bước vào ghế.",
+      "scene": "wide"
+    },
+    {
+      "id": "T31",
+      "size": "POV-W",
+      "key": 144,
+      "len": 360,
+      "first": 15300,
+      "line": "Anh ơi... đưa tôi về nhà nhé? Anh nhớ đường chứ? Nhớ.",
+      "caption": "",
+      "note": "Đồng hồ CHẠY: 23:30:50 ở T31a, 23:31:04 ở T31b. Cắt giữa hai frame bị che bằng MỘT NHỊP GẠT MƯA KHÔ (đã có trong sfx) — gạt qua, gạt lại, số đã nhảy 14 giây. Hai ảnh phải giống nhau tuyệt đối trừ con số, nếu không sẽ thành jump-cut lỗi. T32 không có đồng hồ: 4 giây cuối là khoảng lặng trước khi chân đạp, va chạm ở 23:31:08.",
+      "scene": "mirror"
+    },
+    {
+      "id": "T32",
+      "size": "INS",
+      "key": 96,
+      "len": 240,
+      "first": 15660,
+      "line": "Lần nào tôi cũng hứa sẽ dừng lại. Lần nào chân tôi cũng đạp ga.",
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 4. Câu chốt đọc khô, chậm, gần như không cảm xúc. Không cắt sang mặt. Bàn chân là toàn bộ câu trả lời.",
+      "scene": "insert"
+    },
+    {
+      "id": "T33",
+      "size": "CARD",
+      "key": 120,
+      "len": 300,
+      "first": 15900,
+      "line": "",
+      "caption": "",
+      "note": "Màn đen. Không chữ. Đây là CARD, render bằng Remotion. Chuông xe đạp lần thứ ba — khép motif.",
+      "scene": "black"
+    }
+  ],
+  "fx": [],
+  "audio": {},
+  "captions": [
+    {
+      "a": 10,
+      "b": 82,
+      "text": "Tôi kể chuyện này một lần thôi. Dù tôi không nhớ mình đã kể bao nhiêu lần rồi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 310,
+      "b": 382,
+      "text": "Đêm đó mưa. Tôi chạy chuyến cuối, đường vắng đến mức chỉ nghe tiếng gạt mưa.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 670,
+      "b": 742,
+      "text": "Trán tôi rát. Tay tôi rỉ máu. Tôi không nhớ mình bị thương lúc nào.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 1030,
+      "b": 1102,
+      "text": "Radio rè rè. Tôi tắt nó đi. Và đó là lúc tôi nghe thấy tiếng người.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 1244,
+      "b": 1316,
+      "text": "Anh ơi...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 1330,
+      "b": 1402,
+      "text": "Cô lên xe lúc nào vậy?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 1750,
+      "b": 1822,
+      "text": "Tôi quay lại. Ghế sau trống. Tôi nhìn gương. Cô ấy vẫn ngồi đó.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2170,
+      "b": 2242,
+      "text": "Anh đưa tôi về nhà được không?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2269,
+      "b": 2341,
+      "text": "Cô ở đâu lên?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2329,
+      "b": 2401,
+      "text": "Chỗ anh bỏ tôi lại.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2710,
+      "b": 2782,
+      "text": "Đó là lời nói dối đầu tiên của đêm đó.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2847,
+      "b": 2919,
+      "text": "Tôi không nhớ đã gặp cô.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 2933,
+      "b": 3005,
+      "text": "Tay anh chảy máu kìa.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3006,
+      "b": 3078,
+      "text": "Anh sợ máu lắm nhỉ.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3160,
+      "b": 3232,
+      "text": "Anh không nghe thấy gì sao?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3246,
+      "b": 3318,
+      "text": "Cái gì?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3280,
+      "b": 3352,
+      "text": "Tiếng tôi gọi anh. Anh có nghe thấy tiếng va chạm thứ hai không?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3468,
+      "b": 3540,
+      "text": "Cô im đi!",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3610,
+      "b": 3682,
+      "text": "Tôi mở camera hành trình. Tôi cần thấy cô ta trên màn hình. Cần thấy một thứ thật.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 3849,
+      "b": 3921,
+      "text": "Được rồi... xem mày là cái gì.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4060,
+      "b": 4132,
+      "text": "Ghế sau trống. Nhưng loa điện thoại vẫn thu được tiếng cô ấy.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4235,
+      "b": 4307,
+      "text": "Anh ơi...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4660,
+      "b": 4732,
+      "text": "Đoạn ghi hình phía trước.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4733,
+      "b": 4805,
+      "text": "Hai mươi ba giờ ba mươi mốt phút tám giây.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4870,
+      "b": 4942,
+      "text": "Một chiếc xe đạp đỏ lao ra.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 4968,
+      "b": 5040,
+      "text": "Tôi không kịp phanh.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5028,
+      "b": 5100,
+      "text": "Tôi xuống xe, nhìn quanh.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5101,
+      "b": 5173,
+      "text": "Không có ai.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5149,
+      "b": 5221,
+      "text": "Cô ấy nắm lấy ống quần tôi...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5247,
+      "b": 5319,
+      "text": "và tôi giật chân ra.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5320,
+      "b": 5392,
+      "text": "Cứu... cứu tôi...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5560,
+      "b": 5632,
+      "text": "Không... mình đã bỏ đi rồi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 5646,
+      "b": 5718,
+      "text": "Đúng vậy. Anh còn nhớ chuyện gì xảy ra sau đó không? Hay anh quên luôn cả lần va chạm thứ hai rồi?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 6010,
+      "b": 6082,
+      "text": "Tôi lái. Tôi chỉ muốn rời khỏi chỗ đó.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 6610,
+      "b": 6682,
+      "text": "Một phút sau, tấm biển ấy lại hiện ra. Đồng hồ vẫn hai mươi ba giờ ba mươi bốn. Điện thoại không có sóng.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7060,
+      "b": 7132,
+      "text": "Biển quảng cáo cũ. Cây xăng bỏ hoang. Và chiếc xe đạp đỏ nằm bên vệ đường.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7286,
+      "b": 7358,
+      "text": "Cô là ai?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7334,
+      "b": 7406,
+      "text": "Anh không nhìn kỹ tôi lần nào sao? Vậy anh có nhận ra con đường này không?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7660,
+      "b": 7732,
+      "text": "Tôi đạp phanh, và hiểu ra: mình chưa từng rời khỏi nơi này.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7835,
+      "b": 7907,
+      "text": "Anh đã từng đi qua đây rồi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 7934,
+      "b": 8006,
+      "text": "Không thể nào...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 8111,
+      "b": 8182,
+      "text": "Tôi xuống xe. Mưa đã nhẹ hơn. Tôi đi về phía chiếc xe đạp, như bị ai kéo.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 8710,
+      "b": 8782,
+      "text": "Bánh xe cong. Một vệt máu kéo dài ra mép đường, dẫn xuống cống.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 9160,
+      "b": 9232,
+      "text": "Tôi chiếu đèn vào trong. Một bàn tay. Rồi một con mắt. Rồi khuôn mặt.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 9760,
+      "b": 9832,
+      "text": "Lần này tôi không cần gương để nhìn thấy cô ấy.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 9910,
+      "b": 9982,
+      "text": "Anh quay lại rồi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10210,
+      "b": 10282,
+      "text": "Cô... cô là thứ gì?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10283,
+      "b": 10355,
+      "text": "Tôi chỉ là người mà anh đã bỏ lại. Anh nhớ lần thứ hai chưa?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10660,
+      "b": 10732,
+      "text": "Tôi xem tiếp.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10708,
+      "b": 10780,
+      "text": "Hai mươi ba giờ ba mươi hai phút bốn mươi mốt giây.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10870,
+      "b": 10942,
+      "text": "Tôi lái đi, mắt dán vào gương.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 10968,
+      "b": 11040,
+      "text": "Rồi có một bóng người giữa đường.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 11067,
+      "b": 11139,
+      "text": "Tôi đánh lái.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 11114,
+      "b": 11186,
+      "text": "Chiếc xe lao vào thân cây.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 11560,
+      "b": 11632,
+      "text": "Tôi nhìn xuống tay mình. Những mảnh kính nhỏ mắc trong tay áo.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 11735,
+      "b": 11807,
+      "text": "Tôi chết rồi sao?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 11795,
+      "b": 11867,
+      "text": "Anh đã bỏ chạy. Rồi anh cũng bỏ lại chính mình.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 12160,
+      "b": 12232,
+      "text": "Cuối đường, một chiếc taxi đâm vào gốc cây. Đèn cảnh báo vẫn nhấp nháy. Còi xe vẫn kêu.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 12610,
+      "b": 12682,
+      "text": "Tôi bước từng bước. Cánh cửa tài xế méo xệch. Tôi đọc biển số. Là biển số xe tôi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 13210,
+      "b": 13282,
+      "text": "Chuyến xe này chưa từng có hành khách. Chỉ có hai người không thể rời khỏi nơi này.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 13810,
+      "b": 13882,
+      "text": "Tôi chiếu đèn vào người ngồi sau vô lăng. Là tôi.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 13960,
+      "b": 14032,
+      "text": "Không...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 14410,
+      "b": 14482,
+      "text": "Tôi xin lỗi...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 14458,
+      "b": 14530,
+      "text": "Tôi đã chờ anh quay lại. Không phải để nghe anh xin lỗi. Chỉ cần anh đừng bỏ đi nữa.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 14722,
+      "b": 14794,
+      "text": "Tôi sẽ không đi nữa.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 14860,
+      "b": 14932,
+      "text": "Cô ấy cười rất nhẹ. Rồi xe nổ máy. Đèn pha tự bật. Cửa sau tự mở.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 15310,
+      "b": 15382,
+      "text": "Anh ơi... đưa tôi về nhà nhé? Anh nhớ đường chứ?",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 15460,
+      "b": 15532,
+      "text": "Nhớ.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    },
+    {
+      "a": 15670,
+      "b": 15742,
+      "text": "Lần nào tôi cũng hứa sẽ dừng lại. Lần nào chân tôi cũng đạp ga.",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 64,
+      "underline": false
+    }
+  ]
+}

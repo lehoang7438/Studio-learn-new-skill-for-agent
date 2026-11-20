@@ -1,0 +1,845 @@
+{
+  "slug": "chuyen-xe",
+  "composition": "ChuyenXe",
+  "title": "CHUYẾN XE KHÔNG CÓ KHÁCH",
+  "logline": "Tài xế chạy chuyến cuối cùng gặp một người phụ nữ ngồi sau xe, người mà anh đã bỏ lại bên miệng cống.",
+  "style": "first-person-hud",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "voice": {
+    "engine": "edge-tts",
+    "roles": {
+      "narrator": {
+        "id": "vi-VN-NamMinhNeural",
+        "rate": "-6%",
+        "pitch": "-6Hz",
+        "volume": "+6%"
+      },
+      "hung": {
+        "id": "vi-VN-NamMinhNeural",
+        "rate": "-2%",
+        "pitch": "-2Hz",
+        "volume": "+12%"
+      },
+      "woman": {
+        "id": "vi-VN-HoaiMyNeural",
+        "rate": "-8%",
+        "pitch": "-2Hz",
+        "volume": "+2%"
+      },
+      "cam": {
+        "id": "vi-VN-NamMinhNeural",
+        "rate": "-2%",
+        "pitch": "-2Hz",
+        "volume": "+8%",
+        "loa": true,
+        "echo": 0.16
+      }
+    }
+  },
+  "audio": {
+    "music": false,
+    "sfx": true,
+    "musicVol": 0,
+    "sfxVol": 1
+  },
+  "subtitles": {
+    "maxChars": 26,
+    "maxDur": 3.2,
+    "minDur": 0.9,
+    "size": 64,
+    "maxWidth": 1200,
+    "y": 900,
+    "accentColor": "#FFD24A",
+    "warnColor": "#E8402F",
+    "accentWords": [],
+    "warnWords": []
+  },
+  "shots": [
+    {
+      "id": "T01",
+      "scene": "black",
+      "size": "CARD",
+      "dur": 10,
+      "key": 120,
+      "caption": "",
+      "note": "Màn đen. Chữ trắng nhỏ '23:34' hiện ở giây 0:06 rồi tắt ở 0:09. Không logo, không crédit. Đây là CARD, không phải ảnh AI — render bằng Remotion. Ô ảnh trong contact sheet để trống có chủ đích."
+    },
+    {
+      "id": "T02",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 12,
+      "key": 144,
+      "caption": "",
+      "note": "Camera cố định rất thấp, xe lướt qua khung. Chỉ MỘT xe. Không thấy Hùng rõ mặt — nếu lộ mặt thì phải có vết trán."
+    },
+    {
+      "id": "T03",
+      "scene": "cabin",
+      "size": "POV-H",
+      "dur": 12,
+      "key": 144,
+      "caption": "",
+      "note": "Vết thương ở đây là CỐ Ý: anh đã bị thương từ trước khi phim bắt đầu. Nhưng tay/trán phải khớp đúng mô tả trong sheet (cắt ngắn trên trán phải, đường rách ở tay phải). Đồng hồ 23:34 nằm trong khung, KHÔNG đọc thành lời. Đã cắt câu 'Đồng hồ chỉ hai mươi ba giờ ba mươi bốn' để giữ nhịp 2 từ/giây."
+    },
+    {
+      "id": "T04",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 10,
+      "key": 120,
+      "caption": "",
+      "note": "Cô nói trước khi xuất hiện trong gương — chỉ có tiếng, không có hình. Giọng khô, sát mic, không reverb."
+    },
+    {
+      "id": "T05",
+      "scene": "cabin",
+      "size": "POV-H",
+      "dur": 14,
+      "key": 168,
+      "caption": "",
+      "note": "ĐÂY LÀ ẢNH MẪU SỐ 1 để duyệt quy tắc gương. Trong gương có cô, ngoài gương không có ghế sau. Im lặng 2 giây trước khi cắt."
+    },
+    {
+      "id": "T06",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 14,
+      "key": 168,
+      "caption": "",
+      "note": "Hai keyframe bắt buộc: (a) ghế sau TRỐNG khi nhìn trực tiếp, (b) gương có cô. Tuyệt đối không đặt cô lên ghế thật."
+    },
+    {
+      "id": "T07",
+      "scene": "mirror",
+      "size": "POV-W",
+      "dur": 18,
+      "key": 216,
+      "caption": "",
+      "note": "Cú đảo vai đầu tiên: người xem ngồi vào ghế cô. Không thấy cô trong khung. Góc hơi chếch, cố định."
+    },
+    {
+      "id": "T08",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Đã cắt 'Không phải chuyện của cô.' (5 từ) để shot xuống 1,67 từ/giây. Khoảng lặng thay cho câu đó mạnh hơn. VO 'Đó là lời nói dối đầu tiên' là mấu chốt: Hùng NHỚ vụ đầu, chỉ quên vụ hai."
+    },
+    {
+      "id": "T09",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "SỬA QUY TẮC: bản gốc cho cô áp mặt trực tiếp lên kính nhìn từ trong — vi phạm 'trước T21 chỉ thấy trong gương/kính'. Đổi thành phản chiếu trên kính ướt, camera đặt NGOÀI cửa sau nhìn vào. Ba tiếng gõ là motif, phải khớp T21."
+    },
+    {
+      "id": "T10",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Ánh sáng L3 chỉ từ màn hình. Không thấy mặt Hùng trong shot này."
+    },
+    {
+      "id": "T11",
+      "scene": "screen",
+      "size": "POV-CAM",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Màn hình phải có timestamp nhỏ. Ghế sau trong video TRỐNG. Giọng cô chỉ có trong âm thanh — không có hình. Đây là bằng chứng 'cô không tồn tại trên hình'."
+    },
+    {
+      "id": "T12",
+      "scene": "screen",
+      "size": "POV-CAM",
+      "dur": 30,
+      "key": 360,
+      "caption": "",
+      "note": "QUAN TRỌNG: đây là 23:31:08 — TRƯỚC cú đâm thứ hai. Hùng KHÔNG có vết thương, tay sạch. Đây là ngoại lệ duy nhất của quy tắc 'vết thương luôn có'. Cô còn sống, chưa có vết thương ở thái dương. Xe đạp đỏ là vật đỏ duy nhất."
+    },
+    {
+      "id": "T13",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Câu của cô là mồi: khán giả chưa biết vụ va chạm thứ hai, nên đây là hook chứ không phải spoiler."
+    },
+    {
+      "id": "T14",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Biển KM 17 đọc được nhưng không cần rõ chữ ở shot này."
+    },
+    {
+      "id": "T15",
+      "scene": "cabin",
+      "size": "POV-H",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Đã cắt 'Cùng cây số. Cùng con số.' (7 từ) vì hình đã lặp lại ý đó. Đồng hồ trong khung phải đọc được 23:34."
+    },
+    {
+      "id": "T16",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "SỬA: xe đạp ở đây phải đã cong bánh (bị đâm ở T12), nếu không khán giả tưởng là chiếc khác. Đây là vật đỏ duy nhất trong khung; mọi thứ khác xanh/cam/đen."
+    },
+    {
+      "id": "T17",
+      "scene": "cabin",
+      "size": "POV-H",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Gạt mưa dừng giữa chừng là chi tiết gài: thời gian đã đứng. Không dùng màu đỏ nào khác ngoài đèn phanh phản chiếu (cho phép, là ánh sáng chứ không phải vật đỏ)."
+    },
+    {
+      "id": "T18",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Mưa bắt đầu giảm từ đây để tới T27 tắt hẳn. Đèn pin là nguồn sáng chính."
+    },
+    {
+      "id": "T19",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Chuông chỉ ở T12, T19, T33. Shot này là cú nối giữa xe đạp và cống."
+    },
+    {
+      "id": "T20",
+      "scene": "cabin",
+      "size": "POV-HW",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Bỏ câu thoại 'Trời ơi... Tôi xin lỗi...' ở đây (trùng với T29) — chỉ giữ hơi thở. Ba keyframe đúng thứ tự: tay → mắt → mặt. Xác nằm nửa người trên mép cống để T21 vẫn thấy được."
+    },
+    {
+      "id": "T21",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 2. Đây là shot ĐẦU TIÊN cô hiện trực tiếp, không qua gương. Ba tiếng gõ quay lại từ T09. Xác phải cùng khung: nửa người trên mép cống."
+    },
+    {
+      "id": "T22",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Cô đứng yên, không bay, không tóc bay — càng tĩnh càng sợ."
+    },
+    {
+      "id": "T23",
+      "scene": "screen",
+      "size": "POV-CAM",
+      "dur": 30,
+      "key": 360,
+      "caption": "",
+      "note": "Video hỏng dừng đúng 23:34:06. Đây là mốc kết thúc vòng lặp. Hùng trong video SẠCH vết thương cho tới cú đâm — sau đó mới có. Không để đồng hồ táp-lô trong khung cùng lúc với timestamp điện thoại (tránh 2 giờ khác nhau trong 1 hình)."
+    },
+    {
+      "id": "T24",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Mảnh kính là bằng chứng vật lý: anh chết trong vụ đâm cây. Cô không trả lời câu hỏi."
+    },
+    {
+      "id": "T25",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "SỬA LỖI: bản gốc có 'tiếng còi báo động' + 'chùm đèn pha' của một xe khác → tự tạo ra chiếc xe thứ ba và cảnh sát không tồn tại. Đổi thành CÒI XE của chính nó + đèn pha của chính nó hắt lên trời. Đây là shot đầu tiên được thấy xe nát."
+    },
+    {
+      "id": "T26",
+      "scene": "cabin",
+      "size": "POV-HW",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Biển số phải đọc được rõ: 51B-234.56. Con đường ngắn lại có chủ đích (logic ma) — không cần giải thích."
+    },
+    {
+      "id": "T27",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "Shot này cô nói câu chốt. Sau đó IM 3 GIÂY trước khi cắt sang T28. Mưa tắt từ đây và không quay lại. Gương nứt chia mặt cô làm ba — đúng ý 'ba mảnh' của vòng lặp."
+    },
+    {
+      "id": "T28",
+      "scene": "cabin",
+      "size": "POV-HW",
+      "dur": 20,
+      "key": 240,
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 3. Mặt Hùng phải NẶNG hơn bình thường: mắt hé, đầu gục, máu — nhưng vẫn giữ nét stickman phẳng, không biến thành ảnh thật. Giữ khung lâu, không cắt nhanh. Im 3 giây đầu."
+    },
+    {
+      "id": "T29",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Đây là chỗ DUY NHẤT Hùng nói 'Tôi xin lỗi'. T29 phải là câu trả lời thật, không phải mẹo — vì T32 sẽ phản bội nó."
+    },
+    {
+      "id": "T30",
+      "scene": "wide",
+      "size": "3P",
+      "dur": 15,
+      "key": 180,
+      "caption": "",
+      "note": "Đồng hồ táp-lô 23:30:50 — mốc vòng lặp mới. Xe nát KHÔNG được nằm trong khung (nó ở phía sau camera). Cô đi vào bóng tối rồi mới 'đã ngồi trong xe' — cắt che bước chân, không quay cảnh cô bước vào ghế."
+    },
+    {
+      "id": "T31",
+      "scene": "mirror",
+      "size": "POV-W",
+      "dur": 12,
+      "key": 144,
+      "caption": "",
+      "note": "Đồng hồ CHẠY: 23:30:50 ở T31a, 23:31:04 ở T31b. Cắt giữa hai frame bị che bằng MỘT NHỊP GẠT MƯA KHÔ (đã có trong sfx) — gạt qua, gạt lại, số đã nhảy 14 giây. Hai ảnh phải giống nhau tuyệt đối trừ con số, nếu không sẽ thành jump-cut lỗi. T32 không có đồng hồ: 4 giây cuối là khoảng lặng trước khi chân đạp, va chạm ở 23:31:08."
+    },
+    {
+      "id": "T32",
+      "scene": "insert",
+      "size": "INS",
+      "dur": 8,
+      "key": 96,
+      "caption": "",
+      "note": "ẢNH MẪU SỐ 4. Câu chốt đọc khô, chậm, gần như không cảm xúc. Không cắt sang mặt. Bàn chân là toàn bộ câu trả lời."
+    },
+    {
+      "id": "T33",
+      "scene": "black",
+      "size": "CARD",
+      "dur": 10,
+      "key": 120,
+      "caption": "",
+      "note": "Màn đen. Không chữ. Đây là CARD, render bằng Remotion. Chuông xe đạp lần thứ ba — khép motif."
+    }
+  ],
+  "captions": [],
+  "lines": [
+    {
+      "id": "L001",
+      "shot": "T01",
+      "who": "narrator",
+      "at": 0.35,
+      "text": "Tôi kể chuyện này một lần thôi. Dù tôi không nhớ mình đã kể bao nhiêu lần rồi."
+    },
+    {
+      "id": "L002",
+      "shot": "T02",
+      "who": "narrator",
+      "at": 10.35,
+      "text": "Đêm đó mưa. Tôi chạy chuyến cuối, đường vắng đến mức chỉ nghe tiếng gạt mưa."
+    },
+    {
+      "id": "L003",
+      "shot": "T03",
+      "who": "narrator",
+      "at": 22.35,
+      "text": "Trán tôi rát. Tay tôi rỉ máu. Tôi không nhớ mình bị thương lúc nào."
+    },
+    {
+      "id": "L004",
+      "shot": "T04",
+      "who": "narrator",
+      "at": 34.35,
+      "text": "Radio rè rè. Tôi tắt nó đi. Và đó là lúc tôi nghe thấy tiếng người."
+    },
+    {
+      "id": "L005",
+      "shot": "T04",
+      "who": "woman",
+      "at": 41.46,
+      "text": "Anh ơi..."
+    },
+    {
+      "id": "L006",
+      "shot": "T05",
+      "who": "hung",
+      "at": 44.35,
+      "text": "Cô lên xe lúc nào vậy?"
+    },
+    {
+      "id": "L007",
+      "shot": "T06",
+      "who": "narrator",
+      "at": 58.35,
+      "text": "Tôi quay lại. Ghế sau trống. Tôi nhìn gương. Cô ấy vẫn ngồi đó."
+    },
+    {
+      "id": "L008",
+      "shot": "T07",
+      "who": "woman",
+      "at": 72.35,
+      "text": "Anh đưa tôi về nhà được không?"
+    },
+    {
+      "id": "L009",
+      "shot": "T07",
+      "who": "hung",
+      "at": 75.63,
+      "text": "Cô ở đâu lên?"
+    },
+    {
+      "id": "L010",
+      "shot": "T07",
+      "who": "woman",
+      "at": 77.63,
+      "text": "Chỗ anh bỏ tôi lại."
+    },
+    {
+      "id": "L011",
+      "shot": "T08",
+      "who": "narrator",
+      "at": 90.35,
+      "text": "Đó là lời nói dối đầu tiên của đêm đó."
+    },
+    {
+      "id": "L012",
+      "shot": "T08",
+      "who": "hung",
+      "at": 94.91,
+      "text": "Tôi không nhớ đã gặp cô."
+    },
+    {
+      "id": "L013",
+      "shot": "T08",
+      "who": "woman",
+      "at": 97.76,
+      "text": "Tay anh chảy máu kìa."
+    },
+    {
+      "id": "L014",
+      "shot": "T08",
+      "who": "woman",
+      "at": 100.19,
+      "text": "Anh sợ máu lắm nhỉ."
+    },
+    {
+      "id": "L015",
+      "shot": "T09",
+      "who": "woman",
+      "at": 105.35,
+      "text": "Anh không nghe thấy gì sao?"
+    },
+    {
+      "id": "L016",
+      "shot": "T09",
+      "who": "hung",
+      "at": 108.2,
+      "text": "Cái gì?"
+    },
+    {
+      "id": "L017",
+      "shot": "T09",
+      "who": "woman",
+      "at": 109.35,
+      "text": "Tiếng tôi gọi anh. Anh có nghe thấy tiếng va chạm thứ hai không?"
+    },
+    {
+      "id": "L018",
+      "shot": "T09",
+      "who": "hung",
+      "at": 115.61,
+      "text": "Cô im đi!"
+    },
+    {
+      "id": "L019",
+      "shot": "T10",
+      "who": "narrator",
+      "at": 120.35,
+      "text": "Tôi mở camera hành trình. Tôi cần thấy cô ta trên màn hình. Cần thấy một thứ thật."
+    },
+    {
+      "id": "L020",
+      "shot": "T10",
+      "who": "hung",
+      "at": 128.31,
+      "text": "Được rồi... xem mày là cái gì."
+    },
+    {
+      "id": "L021",
+      "shot": "T11",
+      "who": "narrator",
+      "at": 135.35,
+      "text": "Ghế sau trống. Nhưng loa điện thoại vẫn thu được tiếng cô ấy."
+    },
+    {
+      "id": "L022",
+      "shot": "T11",
+      "who": "cam",
+      "at": 141.18,
+      "text": "Anh ơi..."
+    },
+    {
+      "id": "L023",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 155.35,
+      "text": "Đoạn ghi hình phía trước."
+    },
+    {
+      "id": "L024",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 157.78,
+      "text": "Hai mươi ba giờ ba mươi mốt phút tám giây."
+    },
+    {
+      "id": "L025",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 162.33,
+      "text": "Một chiếc xe đạp đỏ lao ra."
+    },
+    {
+      "id": "L026",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 165.61,
+      "text": "Tôi không kịp phanh."
+    },
+    {
+      "id": "L027",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 167.61,
+      "text": "Tôi xuống xe, nhìn quanh."
+    },
+    {
+      "id": "L028",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 170.04,
+      "text": "Không có ai."
+    },
+    {
+      "id": "L029",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 171.62,
+      "text": "Cô ấy nắm lấy ống quần tôi..."
+    },
+    {
+      "id": "L030",
+      "shot": "T12",
+      "who": "narrator",
+      "at": 174.9,
+      "text": "và tôi giật chân ra."
+    },
+    {
+      "id": "L031",
+      "shot": "T12",
+      "who": "cam",
+      "at": 177.32,
+      "text": "Cứu... cứu tôi..."
+    },
+    {
+      "id": "L032",
+      "shot": "T13",
+      "who": "hung",
+      "at": 185.35,
+      "text": "Không... mình đã bỏ đi rồi."
+    },
+    {
+      "id": "L033",
+      "shot": "T13",
+      "who": "woman",
+      "at": 188.2,
+      "text": "Đúng vậy. Anh còn nhớ chuyện gì xảy ra sau đó không? Hay anh quên luôn cả lần va chạm thứ hai rồi?"
+    },
+    {
+      "id": "L034",
+      "shot": "T14",
+      "who": "narrator",
+      "at": 200.35,
+      "text": "Tôi lái. Tôi chỉ muốn rời khỏi chỗ đó."
+    },
+    {
+      "id": "L035",
+      "shot": "T15",
+      "who": "narrator",
+      "at": 220.35,
+      "text": "Một phút sau, tấm biển ấy lại hiện ra. Đồng hồ vẫn hai mươi ba giờ ba mươi bốn. Điện thoại không có sóng."
+    },
+    {
+      "id": "L036",
+      "shot": "T16",
+      "who": "narrator",
+      "at": 235.35,
+      "text": "Biển quảng cáo cũ. Cây xăng bỏ hoang. Và chiếc xe đạp đỏ nằm bên vệ đường."
+    },
+    {
+      "id": "L037",
+      "shot": "T16",
+      "who": "hung",
+      "at": 242.88,
+      "text": "Cô là ai?"
+    },
+    {
+      "id": "L038",
+      "shot": "T16",
+      "who": "woman",
+      "at": 244.46,
+      "text": "Anh không nhìn kỹ tôi lần nào sao? Vậy anh có nhận ra con đường này không?"
+    },
+    {
+      "id": "L039",
+      "shot": "T17",
+      "who": "narrator",
+      "at": 255.35,
+      "text": "Tôi đạp phanh, và hiểu ra: mình chưa từng rời khỏi nơi này."
+    },
+    {
+      "id": "L040",
+      "shot": "T17",
+      "who": "woman",
+      "at": 261.18,
+      "text": "Anh đã từng đi qua đây rồi."
+    },
+    {
+      "id": "L041",
+      "shot": "T17",
+      "who": "hung",
+      "at": 264.46,
+      "text": "Không thể nào..."
+    },
+    {
+      "id": "L042",
+      "shot": "T18",
+      "who": "narrator",
+      "at": 270.35,
+      "text": "Tôi xuống xe. Mưa đã nhẹ hơn. Tôi đi về phía chiếc xe đạp, như bị ai kéo."
+    },
+    {
+      "id": "L043",
+      "shot": "T19",
+      "who": "narrator",
+      "at": 290.35,
+      "text": "Bánh xe cong. Một vệt máu kéo dài ra mép đường, dẫn xuống cống."
+    },
+    {
+      "id": "L044",
+      "shot": "T20",
+      "who": "narrator",
+      "at": 305.35,
+      "text": "Tôi chiếu đèn vào trong. Một bàn tay. Rồi một con mắt. Rồi khuôn mặt."
+    },
+    {
+      "id": "L045",
+      "shot": "T21",
+      "who": "narrator",
+      "at": 325.35,
+      "text": "Lần này tôi không cần gương để nhìn thấy cô ấy."
+    },
+    {
+      "id": "L046",
+      "shot": "T21",
+      "who": "woman",
+      "at": 330.33,
+      "text": "Anh quay lại rồi."
+    },
+    {
+      "id": "L047",
+      "shot": "T22",
+      "who": "hung",
+      "at": 340.35,
+      "text": "Cô... cô là thứ gì?"
+    },
+    {
+      "id": "L048",
+      "shot": "T22",
+      "who": "woman",
+      "at": 342.78,
+      "text": "Tôi chỉ là người mà anh đã bỏ lại. Anh nhớ lần thứ hai chưa?"
+    },
+    {
+      "id": "L049",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 355.35,
+      "text": "Tôi xem tiếp."
+    },
+    {
+      "id": "L050",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 356.93,
+      "text": "Hai mươi ba giờ ba mươi hai phút bốn mươi mốt giây."
+    },
+    {
+      "id": "L051",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 362.33,
+      "text": "Tôi lái đi, mắt dán vào gương."
+    },
+    {
+      "id": "L052",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 365.61,
+      "text": "Rồi có một bóng người giữa đường."
+    },
+    {
+      "id": "L053",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 368.89,
+      "text": "Tôi đánh lái."
+    },
+    {
+      "id": "L054",
+      "shot": "T23",
+      "who": "narrator",
+      "at": 370.47,
+      "text": "Chiếc xe lao vào thân cây."
+    },
+    {
+      "id": "L055",
+      "shot": "T24",
+      "who": "narrator",
+      "at": 385.35,
+      "text": "Tôi nhìn xuống tay mình. Những mảnh kính nhỏ mắc trong tay áo."
+    },
+    {
+      "id": "L056",
+      "shot": "T24",
+      "who": "hung",
+      "at": 391.18,
+      "text": "Tôi chết rồi sao?"
+    },
+    {
+      "id": "L057",
+      "shot": "T24",
+      "who": "woman",
+      "at": 393.18,
+      "text": "Anh đã bỏ chạy. Rồi anh cũng bỏ lại chính mình."
+    },
+    {
+      "id": "L058",
+      "shot": "T25",
+      "who": "narrator",
+      "at": 405.35,
+      "text": "Cuối đường, một chiếc taxi đâm vào gốc cây. Đèn cảnh báo vẫn nhấp nháy. Còi xe vẫn kêu."
+    },
+    {
+      "id": "L059",
+      "shot": "T26",
+      "who": "narrator",
+      "at": 420.35,
+      "text": "Tôi bước từng bước. Cánh cửa tài xế méo xệch. Tôi đọc biển số. Là biển số xe tôi."
+    },
+    {
+      "id": "L060",
+      "shot": "T27",
+      "who": "woman",
+      "at": 440.35,
+      "text": "Chuyến xe này chưa từng có hành khách. Chỉ có hai người không thể rời khỏi nơi này."
+    },
+    {
+      "id": "L061",
+      "shot": "T28",
+      "who": "narrator",
+      "at": 460.35,
+      "text": "Tôi chiếu đèn vào người ngồi sau vô lăng. Là tôi."
+    },
+    {
+      "id": "L062",
+      "shot": "T28",
+      "who": "hung",
+      "at": 465.33,
+      "text": "Không..."
+    },
+    {
+      "id": "L063",
+      "shot": "T29",
+      "who": "hung",
+      "at": 480.35,
+      "text": "Tôi xin lỗi..."
+    },
+    {
+      "id": "L064",
+      "shot": "T29",
+      "who": "woman",
+      "at": 481.93,
+      "text": "Tôi đã chờ anh quay lại. Không phải để nghe anh xin lỗi. Chỉ cần anh đừng bỏ đi nữa."
+    },
+    {
+      "id": "L065",
+      "shot": "T29",
+      "who": "hung",
+      "at": 490.74,
+      "text": "Tôi sẽ không đi nữa."
+    },
+    {
+      "id": "L066",
+      "shot": "T30",
+      "who": "narrator",
+      "at": 495.35,
+      "text": "Cô ấy cười rất nhẹ. Rồi xe nổ máy. Đèn pha tự bật. Cửa sau tự mở."
+    },
+    {
+      "id": "L067",
+      "shot": "T31",
+      "who": "woman",
+      "at": 510.35,
+      "text": "Anh ơi... đưa tôi về nhà nhé? Anh nhớ đường chứ?"
+    },
+    {
+      "id": "L068",
+      "shot": "T31",
+      "who": "hung",
+      "at": 515.33,
+      "text": "Nhớ."
+    },
+    {
+      "id": "L069",
+      "shot": "T32",
+      "who": "narrator",
+      "at": 522.35,
+      "text": "Lần nào tôi cũng hứa sẽ dừng lại. Lần nào chân tôi cũng đạp ga."
+    }
+  ],
+  "fx": []
+}

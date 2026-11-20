@@ -9,13 +9,26 @@ import { EPISODES } from './episodes';
 //   <Id>Board  one frame per shot, at its key frame, for the storyboard / review
 //   npx remotion studio src/index.ts --port 3430
 export const Root: React.FC = () => {
-  const common = { width: STUDIO.width, height: STUDIO.height, fps: STUDIO.fps };
   return (
     <>
       {EPISODES.map((e) => (
         <React.Fragment key={e.id}>
-          <Composition id={e.id} component={e.Main} durationInFrames={Math.max(1, e.total)} {...common} />
-          <Composition id={`${e.id}Board`} component={e.Board} durationInFrames={Math.max(1, e.shotCount)} {...common} />
+          <Composition
+            id={e.id}
+            component={e.Main}
+            durationInFrames={Math.max(1, e.total)}
+            width={e.width}
+            height={e.height}
+            fps={STUDIO.fps}
+          />
+          <Composition
+            id={`${e.id}Board`}
+            component={e.Board}
+            durationInFrames={Math.max(1, e.shotCount)}
+            width={e.width}
+            height={e.height}
+            fps={STUDIO.fps}
+          />
         </React.Fragment>
       ))}
     </>

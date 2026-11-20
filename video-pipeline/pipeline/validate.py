@@ -20,6 +20,9 @@ KNOWN_SCENES = {
     "character",
     "corridor",
     "closeup",
+    # chuyen-xe (16:9): the road set and the dashcam screen
+    "wide",
+    "screen",
 }
 
 VOICE_RE = re.compile(r"^[a-z]{2}-[A-Z]{2}-[A-Za-z]+Neural$")

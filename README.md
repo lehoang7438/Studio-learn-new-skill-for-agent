@@ -20,11 +20,13 @@ video-pipeline/                 # skill + engine (Remotion + Python)
 ├─ video.py                     #   CLI: doctor/new/voice/subs/timeline/audio/stills/review/render/pack
 ├─ pipeline/                    #   voice (edge-tts + VieNeu), subs, timeline, score, review, validate
 ├─ src/engine/                  #   rig.tsx (Hero), flat.tsx (FlatHero), character.tsx (spec + sheet),
-│                               #   firstPerson.tsx (Cabin, Hud, NightSea, Caption, ChoiceCard…)
+│                               #   firstPerson.tsx (Cabin, Hud, NightSea, Caption, ChoiceCard…),
+│                               #   taxi.tsx (CabinV, RoadV, Mirror, WomanInGlass, GripHand)
 ├─ src/episodes/chuyen-pha/     #   9 cảnh, 42s — ví dụ gốc
 ├─ src/episodes/ref-nhan-vat/   #   nhân vật khoá theo ảnh: sheet 4 góc + 4 cảnh + thẻ A/B
 ├─ src/episodes/chuyen-pha-sau/ #   epilogue 19s nối vào chuyen-pha, dùng nhân vật của sheet
-└─ reference/                   #   style.md, character-ref.md, qa.md, prompt-pack.md
+├─ src/episodes/chuyen-xe/      #   phim 9 phút, 33 cảnh — ví dụ dài, 16:9 hoặc 9:16
+└─ reference/                   #   style.md, character-ref.md, qa.md, prompt-pack.md, set-xe-va-ma.md
 ```
 
 ## Ba thứ đáng học nhất

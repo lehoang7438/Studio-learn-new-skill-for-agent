@@ -4,5 +4,6 @@ import { chuyenPha } from './chuyen-pha';
 import { chuyenPhaSau } from './chuyen-pha-sau';
 import { refNhanVat } from './ref-nhan-vat';
 import { storyboardMau } from './storyboard-mau';
+import { chuyenXe } from './chuyen-xe';
 
-export const EPISODES = [chuyenPha, storyboardMau, refNhanVat, chuyenPhaSau];
+export const EPISODES = [chuyenPha, storyboardMau, refNhanVat, chuyenPhaSau, chuyenXe];
