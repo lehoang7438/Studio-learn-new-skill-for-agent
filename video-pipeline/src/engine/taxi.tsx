@@ -327,12 +327,12 @@ export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1 }> = ({ x, y,
   const ang = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
   return (
     <g transform={`translate(${x0} ${y0}) rotate(${ang})`}>
-      {/* bare forearm: he is in a short-sleeved shirt, so from the wrist back it is skin */}
-      <rect x={-46} y={-len - 10} width={92} height={len + 40} rx={26} fill="#C08A63" />
-      <rect x={-30} y={-len + 20} width={60} height={len - 40} rx={22} fill="#A67150" opacity={0.18} />
+      {/* bare forearm: narrower at the wrist, so nothing pokes out past the hand */}
+      <path d={`M -23 ${-len} L 23 ${-len} L 45 0 L -45 0 Z`} fill="#C08A63" />
+      <path d={`M 6 ${-len + 12} L 20 ${-len + 12} L 36 -6 L 18 -6 Z`} fill="#A67150" opacity={0.16} />
       {/* the sleeve, only at the frame edge */}
-      <rect x={-48} y={-96} width={96} height={92} rx={22} fill="#14181F" />
-      <rect x={-48} y={-104} width={96} height={18} rx={9} fill="#0B0F14" />
+      <path d="M -45 -96 L 45 -96 L 45 0 L -45 0 Z" fill="#14181F" />
+      <rect x={-47} y={-104} width={94} height={16} rx={8} fill="#0B0F14" />
     </g>
   );
 };
