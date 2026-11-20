@@ -202,15 +202,14 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
         `r`n        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
       </g>
       {/* seat and dash: nothing below the hands */}
-      <rect x={420} y={rimY + 24} width={1080} height={900} fill="#070C13" />
+      <rect x={420} y={rimY + 26} width={1080} height={900} fill="#070C13" />
       {/* the wheel, in front of him */}
       <g transform={`translate(960 ${wheelCy})`}>
         <ellipse rx={300} ry={136} fill="none" stroke="#070C14" strokeWidth={46} />
         <ellipse rx={300} ry={136} fill="none" stroke="#1B2838" strokeWidth={32} />
         <ellipse rx={300} ry={136} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
       </g>
-      <GripHand x={hl.x} y={hl.y} side={-1} t={t} s={0.62} />
-      <GripHand x={hr.x} y={hr.y} side={1} t={t} torn s={0.62} />
+      <ellipse cx={hl.x} cy={hl.y - 4} rx={31} ry={26} fill="#C08A63" />`r`n      <ellipse cx={hr.x} cy={hr.y - 4} rx={31} ry={26} fill="#C08A63" />`r`n      <path d={`M ${hr.x - 10} ${hr.y - 10} l 22 5`} stroke="#B3261E" strokeWidth={5} strokeLinecap="round" />
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
   );
