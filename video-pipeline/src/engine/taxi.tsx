@@ -296,13 +296,13 @@ export const WheelHand: React.FC<{
     {/* four fingers curling over the rim */}
     {[0, 1, 2, 3].map((i) => (
       <g key={i} transform={`translate(${-31 + i * 21} 0) rotate(${(1.5 - i) * 5})`}>
-        <rect x={-9.5} y={-4} width={19} height={54} rx={9.5} fill="#C08A63" />
-        <rect x={-9.5} y={34} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
+        <rect x={-9.5} y={-4} width={19} height={66} rx={9.5} fill="#C08A63" />
+        <rect x={-9.5} y={46} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
       </g>
     ))}
     {/* thumb: a capsule off the inner edge, angled at the hub */}
     <g transform="rotate(38 42 -14)">
-      <rect x={32} y={-38} width={22} height={54} rx={11} fill="#B47A55" />
+      <rect x={32} y={-40} width={22} height={62} rx={11} fill="#B47A55" />
       <path d="M 36 -30 q 14 4 14 16" stroke="#A66A46" strokeWidth={2.4} fill="none" opacity={0.5} />
     </g>
     {torn ? <path d="M -26 -18 l 26 6 M -22 -2 l 22 3" stroke="#B3261E" strokeWidth={3.4} strokeLinecap="round" /> : null}
