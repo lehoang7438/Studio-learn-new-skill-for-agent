@@ -344,8 +344,10 @@ export const WheelHand: React.FC<{
   s?: number;
   rot?: number;
   torn?: boolean;
-}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false }) => (
-  <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${s})`}>
+  /** true = the hand is on the far side of the rim: back of the hand behind the wheel, fingers hooking over it */
+  flip?: boolean;
+}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, flip = false }) => (
+  <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${flip ? -s : s})`}>
     {/* wrist: starts well inside the sleeve so there is no seam to see */}
     <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
     {/* palm */}
