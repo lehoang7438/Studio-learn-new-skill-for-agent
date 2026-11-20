@@ -351,6 +351,17 @@ export const WheelHand: React.FC<{
   flip?: boolean;
 }> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, flip = false }) => (
   <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${flip ? -s : s})`}>
+    {flip ? (
+      <g>
+        {/* the forearm, drawn in the hand's own frame so it can never kink: after the flip, local
+            -y is down the screen, i.e. back toward the driver */}
+        <path d="M -24 -58 L 24 -58 L 46 -760 L -46 -760 Z" fill="#C08A63" />
+        <path d="M 8 -120 L 20 -120 L 38 -720 L 22 -720 Z" fill="#A67150" opacity={0.14} />
+        {/* sleeve, only at the bottom edge of the frame */}
+        <path d="M -47 -560 L 47 -560 L 47 -760 L -47 -760 Z" fill="#14181F" />
+        <rect x={-49} y={-574} width={98} height={16} rx={8} fill="#0B0F14" />
+      </g>
+    ) : null}
     {/* wrist: starts well inside the sleeve so there is no seam to see */}
     <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
     {/* palm */}
