@@ -327,9 +327,12 @@ export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1 }> = ({ x, y,
   const ang = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
   return (
     <g transform={`translate(${x0} ${y0}) rotate(${ang})`}>
-      <rect x={-48} y={-len - 10} width={96} height={len + 40} rx={26} fill="#14181F" />
-      <rect x={-48} y={-len - 12} width={96} height={30} rx={14} fill="#0B0F14" />
-      <rect x={-34} y={-len + 22} width={68} height={40} rx={14} fill="#C08A63" />
+      {/* bare forearm: he is in a short-sleeved shirt, so from the wrist back it is skin */}
+      <rect x={-46} y={-len - 10} width={92} height={len + 40} rx={26} fill="#C08A63" />
+      <rect x={-30} y={-len + 20} width={60} height={len - 40} rx={22} fill="#A67150" opacity={0.18} />
+      {/* the sleeve, only at the frame edge */}
+      <rect x={-48} y={-96} width={96} height={92} rx={22} fill="#14181F" />
+      <rect x={-48} y={-104} width={96} height={18} rx={9} fill="#0B0F14" />
     </g>
   );
 };
