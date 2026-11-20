@@ -1,23 +1,7 @@
 import React from 'react';
-import { basePose, Hero, Look, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, GripHand, ManTorso, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
+import { basePose, CHARACTERS, FlatHero, Pose, ShotProps, push } from '../../engine';
+import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
 
-const HUNG_LOOK: Look = {
-  skin: '#C08A63',
-  skinShade: '#A67150',
-  hand: '#C08A63',
-  jacket: '#12161E',
-  jacketShade: '#0A0D13',
-  accent: '#2C3444',
-  limb: '#12161E',
-  line: '#05070A',
-  shoe: '#070A0F',
-  face: '#0A0E15',
-  hair: '#05070A',
-  eyes: 'dot',
-  extra: 'cap',
-  brow: 0.5,
-};
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
 // Every shot is a pure function of t. The mirror rule is geometry, not a prompt: before T21 the woman
@@ -179,6 +163,20 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
 // T06 · dashboard camera looking back at him, the rear bench empty
 export const T06: React.FC<ShotProps> = ({ t, len }) => {
   const turn = Math.min(1, t / 26);
+  const pose: Pose = {
+    ...basePose,
+    x: 960,
+    y: 544,
+    scale: 1.5,
+    facing: 1,
+    yaw: -0.2 + turn * 0.4,
+    look: -0.4,
+    expr: 'worried',
+    armL: { a: 14, b: -10 },
+    armR: { a: 10, b: -14 },
+    legL: { a: 4, b: 2 },
+    legR: { a: -4, b: 2 },
+  };
   return (
     <g transform={push(t, len, 1.0, 1.03)}>
       <rect x={420} y={-420} width={1080} height={1920} fill="#050A11" />
@@ -196,12 +194,12 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
       {/* him, turning to look back */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
-        <ManTorso x={960} y={300} s={1.55} view="front" cut torn />
-        <ellipse cx={892} cy={300} rx={40} ry={54} fill="#050A11" opacity={0.5 * turn} />
+        <FlatHero pose={pose} look={CHARACTERS.hung.look} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: "#FFE7C2" }} />
+        `r`n        <path d="M 946 189 l 36 10" stroke="#B3261E" strokeWidth={6} strokeLinecap="round" />
       </g>
       {/* the seat back in front of the camera */}
-      <path d="M 420 1150 q 540 -74 1080 0 l 0 770 l -1080 0 Z" fill="#070C13" />
-      <path d="M 420 1146 q 540 -74 1080 0" stroke="#1B2C3E" strokeWidth={3} fill="none" opacity={0.45} />
+      <path d="M 420 760 q 540 -64 1080 0 l 0 1160 l -1080 0 Z" fill="#070C13" />
+      <path d="M 420 756 q 540 -64 1080 0" stroke="#1B2C3E" strokeWidth={3} fill="none" opacity={0.45} />
     </g>
   );
 };

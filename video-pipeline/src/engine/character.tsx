@@ -93,6 +93,40 @@ export const CHARACTERS: Record<string, CharSpec> = {
     ],
     ref: 'ref-nhan-vat/ref/ref-02.png',
   },
+  /** Chuyến xe: the driver. Same flat body as the reference cast — round eyes, thick brows, short
+   *  black hair — but the palette is night: black jacket, no warm accent, a cut on the right brow. */
+  hung: {
+    id: 'hung',
+    name: 'HÙNG',
+    note: '35 tuổi · tóc đen cắt sát · áo khoác đen · mắt mệt · sẹo trán phải',
+    look: {
+      skin: '#C08A63',
+      skinShade: '#A67150',
+      hand: '#C08A63',
+      arm: '#C08A63',
+      jacket: '#181C24',
+      jacketShade: '#0D1117',
+      accent: '#2C3444',
+      limb: '#10141A',
+      leg: '#0E1218',
+      line: '#05070A',
+      shoe: '#0B0F14',
+      face: '#0A0E15',
+      hair: '#12151C',
+      extra: 'short',
+      eyes: 'round',
+      brow: 1,
+      sleeve: 0,
+    },
+    palette: [
+      { hex: '#C08A63', use: 'da' },
+      { hex: '#A67150', use: 'da · bóng' },
+      { hex: '#12151C', use: 'tóc' },
+      { hex: '#181C24', use: 'áo khoác' },
+      { hex: '#0E1218', use: 'quần' },
+      { hex: '#0B0F14', use: 'giày' },
+    ],
+  },
 };
 
 /** Four views, a palette and the proportions: the page you hold next to the reference image. */

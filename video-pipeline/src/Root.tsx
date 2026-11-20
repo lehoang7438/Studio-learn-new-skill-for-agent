@@ -2,7 +2,7 @@ import React from 'react';
 import { Composition } from 'remotion';
 import './engine/fonts';
 import { STUDIO } from './studio.config';
-import { EPISODES } from './episodes';
+import { HungSheet, EPISODES } from './episodes';
 
 // Every episode gets two compositions:
 //   <Id>       the film
@@ -31,6 +31,7 @@ export const Root: React.FC = () => {
           />
         </React.Fragment>
       ))}
+      <Composition id="HungSheet" component={HungSheet} durationInFrames={1} width={1080} height={1920} fps={30} />
     </>
   );
 };

@@ -5,5 +5,8 @@ import { chuyenPhaSau } from './chuyen-pha-sau';
 import { refNhanVat } from './ref-nhan-vat';
 import { storyboardMau } from './storyboard-mau';
 import { chuyenXe } from './chuyen-xe';
+import { HungSheet } from './chuyen-xe/sheet';
+
+export { HungSheet };
 
 export const EPISODES = [chuyenPha, storyboardMau, refNhanVat, chuyenPhaSau, chuyenXe];
