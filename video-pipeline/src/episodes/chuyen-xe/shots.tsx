@@ -166,21 +166,21 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
   const pose: Pose = {
     ...basePose,
     x: 960,
-    y: 544,
-    scale: 1.5,
+    y: 800,
+    scale: 3.5,
     facing: 1,
     yaw: -0.2 + turn * 0.4,
     look: -0.4,
     expr: 'neutral',
-    armL: { a: 30, b: -14 },
-    armR: { a: 26, b: -16 },
+    armL: { a: 8, b: -18 },
+    armR: { a: 6, b: -20 },
     legL: { a: 4, b: 2 },
     legR: { a: -4, b: 2 },
   };
   const hl = flatHandL(pose);
   const hr = flatHandR(pose);
   const rimY = (hl.y + hr.y) / 2;
-  const wheelCy = rimY + 232;
+  const wheelCy = rimY + 136;
   return (
     <g transform={push(t, len, 1.0, 1.03)}>
       <rect x={420} y={-420} width={1080} height={1920} fill="#050A11" />
@@ -199,11 +199,19 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       {/* him, turning to look back */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
         <FlatHero pose={pose} look={{ ...CHARACTERS.hung.look, browStraight: true }} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: "#FFE7C2" }} />
-        `r`n        <path d="M 946 189 l 36 10" stroke="#B3261E" strokeWidth={6} strokeLinecap="round" />
+        `r`n        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
       </g>
-      {/* the seat back in front of the camera */}
-      {/* seat and dash: nothing below the waist */}`r`n      <rect x={420} y={600} width={1080} height={900} fill="#070C13" />`r`n      {/* the wheel, in front of him */}`r`n      <g transform={`translate(960 ${wheelCy})`}>`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#070C14" strokeWidth={64} />`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#1B2838" strokeWidth={44} />`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#2A3B52" strokeWidth={4} opacity={0.6} />`r`n      </g>`r`n      <GripHand x={hl.x} y={hl.y} side={-1} t={t} s={0.8} />`r`n      <GripHand x={hr.x} y={hr.y} side={1} t={t} torn s={0.8} />`r`n      <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
-      
+      {/* seat and dash: nothing below the hands */}
+      <rect x={420} y={rimY + 24} width={1080} height={900} fill="#070C13" />
+      {/* the wheel, in front of him */}
+      <g transform={`translate(960 ${wheelCy})`}>
+        <ellipse rx={300} ry={136} fill="none" stroke="#070C14" strokeWidth={46} />
+        <ellipse rx={300} ry={136} fill="none" stroke="#1B2838" strokeWidth={32} />
+        <ellipse rx={300} ry={136} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
+      </g>
+      <GripHand x={hl.x} y={hl.y} side={-1} t={t} s={0.62} />
+      <GripHand x={hr.x} y={hr.y} side={1} t={t} torn s={0.62} />
+      <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
   );
 };
