@@ -36,7 +36,9 @@ const rot = (p: Pt, deg: number, c: Pt = P(0, 0)): Pt => {
 const lerpPt = (a: Pt, b: Pt, t: number): Pt => P(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
 
 /** Joints for the flat body: same maths as `joints`, wider shoulders and slightly longer arms. */
-export const flatJoints = (pose: Pose) => {
+export const flatJoints = (pose: Pose, armLen = 1) => {
+  const UA = UPPER_ARM * armLen;
+  const FA = FORE_ARM * armLen;
   const side = (s: 1 | -1, limb: { a: number; b: number }, root: Pt, l1: number, l2: number, isLeg: boolean) => {
     const dir = isLeg ? pose.facing : s;
     const d1 = P(dir * Math.sin(rad(limb.a)), Math.cos(rad(limb.a)));
@@ -49,8 +51,8 @@ export const flatJoints = (pose: Pose) => {
   const sp = limbSpread(pose.yaw);
   const shL = P(-SHOULDER.x * sp + pose.yaw * 6, SHOULDER.y);
   const shR = P(SHOULDER.x * sp + pose.yaw * 6, SHOULDER.y);
-  const armL = side(-1, pose.armL, shL, UPPER_ARM, FORE_ARM, false);
-  const armR = side(1, pose.armR, shR, UPPER_ARM, FORE_ARM, false);
+  const armL = side(-1, pose.armL, shL, UA, FA, false);
+  const armR = side(1, pose.armR, shR, UA, FA, false);
   const legL = side(-1, pose.legL, P(-HIP.x * sp, 0), THIGH, SHIN, true);
   const legR = side(1, pose.legR, P(HIP.x * sp, 0), THIGH, SHIN, true);
   const r = (o: { root: Pt; mid: Pt; end: Pt }) => ({ root: torsoRot(o.root), mid: torsoRot(o.mid), end: torsoRot(o.end) });
@@ -63,8 +65,8 @@ const flatToWorld = (pose: Pose, p: Pt): Pt => {
 };
 
 /** Where the flat body's hands are, for props and for the other character's grip. */
-export const flatHandR = (pose: Pose) => flatToWorld(pose, flatJoints(pose).armR.end);
-export const flatHandL = (pose: Pose) => flatToWorld(pose, flatJoints(pose).armL.end);
+export const flatHandR = (pose: Pose, armLen = 1) => flatToWorld(pose, flatJoints(pose, armLen).armR.end);
+export const flatHandL = (pose: Pose, armLen = 1) => flatToWorld(pose, flatJoints(pose, armLen).armL.end);
 
 const shade = (hex: string, amount: number) => {
   // a darker/lighter copy of a hex colour, so a look only has to declare its base tones
@@ -94,7 +96,7 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
   const shadeAmt = Math.max(0, Math.min(1, light.shade ?? 0.42));
   const warm = light.warm ?? '#FFE7C2';
   const gid = React.useId().replace(/[:]/g, '');
-  const j = flatJoints(pose);
+  const j = flatJoints(pose, look?.armLen ?? 1);
   const ink = L.line;
   const long = Boolean(L.longFace);
   const rx = L.headR ?? 58;

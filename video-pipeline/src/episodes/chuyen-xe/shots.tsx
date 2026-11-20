@@ -1,6 +1,6 @@
 import React from 'react';
-import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { basePose, CHARACTERS, Pose, ShotProps, push } from '../../engine';
+import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, MirrorV, PovArm, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -19,8 +19,8 @@ export const T03: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.025)}>
       <RoadV t={t} rain={0.7} speed={0.35} lamps={3} />
       <CabinV t={t} speed={0.35} wheel={Math.sin(t / 38) * 2} />
-      <GripHand x={692} y={1338} side={-1} t={t} />
-      <GripHand x={1228} y={1338} side={1} t={t} torn />
+      <PovArm x={692} y={1338} side={-1} />`r`n      <WheelHand x={692} y={1342} s={1.05} rot={-16} />
+      <PovArm x={1228} y={1338} side={1} />`r`n      <WheelHand x={1228} y={1342} mirror s={1.05} rot={-16} torn />
       <Clock text="23:34" x={1290} y={1178} />
       <MirrorV t={t} occupant="none" />
       <BloodDrop t={t} />
@@ -95,8 +95,8 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.045)}>
     <RoadV t={t} rain={0.55} speed={0.3} lamps={2} />
     <CabinV t={t} speed={0.3} wheel={Math.sin(t / 40) * 1.5} />
-    <GripHand x={692} y={1338} side={-1} t={t} />
-    <GripHand x={1228} y={1338} side={1} t={t} torn />
+    <PovArm x={692} y={1338} side={-1} />`r`n      <WheelHand x={692} y={1342} s={1.05} rot={-16} />
+    <PovArm x={1228} y={1338} side={1} />`r`n      <WheelHand x={1228} y={1342} mirror s={1.05} rot={-16} torn />
     <BigMirror t={t} occupant="woman" />
     <Clock text="23:34" x={1290} y={1178} />
   </g>
@@ -177,10 +177,6 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
     legL: { a: 4, b: 2 },
     legR: { a: -4, b: 2 },
   };
-  const hl = flatHandL(pose);
-  const hr = flatHandR(pose);
-  const rimY = (hl.y + hr.y) / 2;
-  const wheelCy = rimY + 136;
   return (
     <g transform={push(t, len, 1.0, 1.03)}>
       <rect x={420} y={-420} width={1080} height={1920} fill="#050A11" />
@@ -196,21 +192,16 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       {/* rear bench, empty */}
       <path d="M 470 520 q 490 -48 980 0 l 0 190 l -980 0 Z" fill="#080E17" />
       <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
-      {/* him, turning to look back */}
+      {/* him, at the wheel, turning to look back */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
-        <FlatHero pose={pose} look={{ ...CHARACTERS.hung.look, browStraight: true }} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: "#FFE7C2" }} />
-        `r`n        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
+        <DriverAtWheel
+          t={t}
+          pose={pose}
+          look={{ ...CHARACTERS.hung.look, browStraight: true }}
+          light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }}
+        />
+        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
       </g>
-      {/* seat and dash: nothing below the hands */}
-      <rect x={420} y={rimY + 26} width={1080} height={900} fill="#070C13" />
-      {/* the wheel, in front of him */}
-      <g transform={`translate(960 ${wheelCy})`}>
-        <ellipse rx={300} ry={136} fill="none" stroke="#070C14" strokeWidth={46} />
-        <ellipse rx={300} ry={136} fill="none" stroke="#1B2838" strokeWidth={32} />
-        <ellipse rx={300} ry={136} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
-      </g>
-      <WheelHand x={hl.x} y={hl.y} s={0.95} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={0.95} torn />
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
   );

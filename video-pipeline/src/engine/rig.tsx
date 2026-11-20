@@ -42,6 +42,8 @@ export type Look = {
   brow?: number;
   /** true = brows are a dead straight line (the tired night driver). */
   browStraight?: boolean;
+  /** arm length multiplier (1 = the rig's default cartoon arm). A human driver needs ~1.3. */
+  armLen?: number;
   /** 1 = the character's own eyes have gone white/cloudy (the pupil rolls up under the lid). */
   whiteEyes?: number;
   extra?: 'hood' | 'hoodBun' | 'curls' | 'bunches' | 'bob' | 'suit' | 'cap' | 'long' | 'pony' | 'short' | 'messy' | 'slick';

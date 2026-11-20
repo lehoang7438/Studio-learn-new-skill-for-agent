@@ -53,14 +53,24 @@ Không có prompt nào cứu được một cái ghế có người ngồi sai c
 
 ---
 
-## 4. Bàn tay
+## 4. Bàn tay & cầm nắm
 
-**Cầm vô lăng (`GripHand`)** — lòng bàn tay ở **ngoài** vành, bốn ngón chụp **qua** vành xuống phía trong,
-**ngón cái nằm bên trong** chĩa về tâm. Ngón cái ở ngoài là sai giải phẫu và nhìn ra ngay.
+**Cầm vô lăng (`WheelHand`)** — dựng quanh **điểm neo của rig** (`flatHandL/R(pose)`), không bao giờ đặt
+bằng số đoán: tay sẽ tự bám đúng đầu cánh tay ở mọi pose.
+
+- **cổ tay bắt đầu từ bên trong ống tay áo** (y −78), cùng màu da, không viền → không có khe hở
+- lòng bàn tay ở **ngoài** vành, **4 ngón** chụp qua vành, đầu ngón thò xuống mặt trong
+- **ngón cái** là một capsule ở mép trong, xoay ~38° chĩa về trục
+- scale **~0.9 so với cổ tay**, không scale theo khung hình
+- xoay theo **tiếp tuyến vành** (`rot`), nếu không tay sẽ như dán ngang
 
 **Vặn núm (`T04`)** — tay 5 ngón: 3 ngón duỗi **cong về phía núm**, ngón trỏ và ngón cái **chỉ chạm ở
 đầu ngón** (một ở mép trên, một ở giữa mặt núm). Núm **không bị ôm hết vòng** — nửa còn lại vẫn lộ.
 Đầu ngón phải dính vào mu bàn tay; đặt sai một ngón ra ngoài là tay rời.
+
+**Giới hạn đã biết (cần cải tiến):** bàn tay hiện là các capsule ghép lại, **không có khớp ngón** và không
+nắm được vật cong. Ở cỡ cận cảnh (tay chiếm >15% khung) cần dựng tay có **3 đốt/ngón** + móng + nếp gấp,
+và một hàm `grip(curve, radius)` để ngón tự bám theo vật — chưa làm.
 
 ---
 

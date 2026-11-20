@@ -1,4 +1,6 @@
 import React from 'react';
+import { FlatHero, FlatLight, flatHandL, flatHandR } from './flat';
+import { Look, Pose } from './rig';
 import { Mirror, WetGlass } from './wide';
 
 // Vertical (1080x1920) set pieces for "Chuyến xe không có khách".
@@ -275,6 +277,62 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
   );
 };
 
+
+/** The wheel itself: three concentric strokes, nothing else. */
+export const Wheel: React.FC<{ cx: number; cy: number; rx?: number; ry?: number }> = ({ cx, cy, rx = 300, ry = 136 }) => (
+  <g transform={`translate(${cx} ${cy})`}>
+    <ellipse rx={rx} ry={ry} fill="none" stroke="#070C14" strokeWidth={46} />
+    <ellipse rx={rx} ry={ry} fill="none" stroke="#1B2838" strokeWidth={32} />
+    <ellipse rx={rx} ry={ry} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
+  </g>
+);
+
+/** A driver at the wheel, assembled from the things that must never drift apart: the pose gives the
+ *  hand anchors, the wheel is placed from those anchors, the lap panel cuts the legs, and the two
+ *  hands are drawn on the rim. Use this instead of positioning a hero + wheel + hands by hand. */
+export const DriverAtWheel: React.FC<{
+  t: number;
+  pose: Pose;
+  look: Look;
+  wheelRx?: number;
+  wheelRy?: number;
+  torn?: boolean;
+  light?: FlatLight;
+  lap?: string;
+}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13' }) => {
+  const hl = flatHandL(pose, look.armLen ?? 1);
+  const hr = flatHandR(pose, look.armLen ?? 1);
+  const rimY = (hl.y + hr.y) / 2;
+  return (
+    <g>
+      <FlatHero pose={pose} look={look} light={light} />
+      {/* the lap: only between the two hands, so the arms stay visible */}
+      <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
+      <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
+      <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
+      <WheelHand x={hl.x} y={hl.y} s={0.95} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={0.95} torn={torn} />
+    </g>
+  );
+};
+
+/** A POV forearm: the driver's own sleeve running from the bottom edge of the frame to the hand on
+ *  the wheel. Without it a hand on the rim reads as a hand with no arm. */
+export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1 }> = ({ x, y, side }) => {
+  const x0 = x + side * 52;
+  const y0 = 1580;
+  const dx = x - x0;
+  const dy = y - 52 - y0;
+  const len = Math.hypot(dx, dy);
+  const ang = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
+  return (
+    <g transform={`translate(${x0} ${y0}) rotate(${ang})`}>
+      <rect x={-48} y={-len - 10} width={96} height={len + 40} rx={26} fill="#14181F" />
+      <rect x={-48} y={-len - 12} width={96} height={30} rx={14} fill="#0B0F14" />
+      <rect x={-34} y={-len + 22} width={68} height={40} rx={14} fill="#C08A63" />
+    </g>
+  );
+};
 
 /** A five-fingered hand on the wheel rim. Built around the anchor the rig gives for the end of the
  *  forearm, so the wrist always overlaps the sleeve: skin cuff -> palm -> four fingers over the rim ->
