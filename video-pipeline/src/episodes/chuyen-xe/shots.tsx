@@ -19,8 +19,8 @@ export const T03: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.025)}>
       <RoadV t={t} rain={0.7} speed={0.35} lamps={3} />
       <CabinV t={t} speed={0.35} wheel={Math.sin(t / 38) * 2} />
-      <WheelHand x={692} y={1298} s={1.05} rot={-16} flip />
-      <WheelHand x={1228} y={1298} mirror s={1.05} rot={-16} flip torn />
+      <WheelHand x={692} y={1284} s={1.6} rot={-16} flip />
+      <WheelHand x={1228} y={1284} mirror s={1.6} rot={-16} flip torn />
       <Clock text="23:34" x={1290} y={1178} />
       <MirrorV t={t} occupant="none" />
       <BloodDrop t={t} />
@@ -95,8 +95,8 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.045)}>
     <RoadV t={t} rain={0.55} speed={0.3} lamps={2} />
     <CabinV t={t} speed={0.3} wheel={Math.sin(t / 40) * 1.5} />
-    `r`n      <WheelHand x={692} y={1298} s={1.05} rot={-16} flip />
-    `r`n      <WheelHand x={1228} y={1298} mirror s={1.05} rot={-16} flip torn />
+    `r`n      <WheelHand x={692} y={1284} s={1.6} rot={-16} flip />
+    `r`n      <WheelHand x={1228} y={1284} mirror s={1.6} rot={-16} flip torn />
     <BigMirror t={t} occupant="woman" />
     <Clock text="23:34" x={1290} y={1178} />
   </g>

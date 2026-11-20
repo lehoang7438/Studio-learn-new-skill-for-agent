@@ -299,7 +299,9 @@ export const DriverAtWheel: React.FC<{
   torn?: boolean;
   light?: FlatLight;
   lap?: string;
-}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13' }) => {
+  /** hand scale: the POV driver's own hands are ~1.05, a person seen at 3 m needs ~1.8 */
+  handS?: number;
+}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.8 }) => {
   const hl = flatHandL(pose, look.armLen ?? 1);
   const hr = flatHandR(pose, look.armLen ?? 1);
   const rimY = (hl.y + hr.y) / 2;
@@ -310,8 +312,8 @@ export const DriverAtWheel: React.FC<{
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
       <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
       <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
-      <WheelHand x={hl.x} y={hl.y} s={0.95} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={0.95} torn={torn} />
+      <WheelHand x={hl.x} y={hl.y} s={handS} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={handS} torn={torn} />
     </g>
   );
 };
