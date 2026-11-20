@@ -1,0 +1,159 @@
+{
+  "slug": "storyboard-mau",
+  "composition": "StoryboardMau",
+  "title": "STORYBOARD MẪU — CHUYẾN PHÀ",
+  "logline": "Bài kiểm tra hình ảnh: bối cảnh, toàn thân, cận mặt và các chất liệu nhìn thấy trong video gốc.",
+  "style": "first-person-hud",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "voice": {
+    "engine": "edge-tts",
+    "roles": {
+      "narrator": { "id": "vi-VN-NamMinhNeural", "rate": "-6%", "pitch": "-4Hz", "volume": "+6%" },
+      "radio": { "id": "vi-VN-NamMinhNeural", "rate": "-14%", "pitch": "-20Hz", "volume": "+10%", "loa": true, "echo": 0.2 }
+    }
+  },
+  "audio": { "music": true, "sfx": true, "musicVol": 0.16, "sfxVol": 1 },
+  "subtitles": {
+    "maxChars": 22,
+    "maxDur": 3.2,
+    "minDur": 0.8,
+    "size": 100,
+    "maxWidth": 900,
+    "y": 900,
+    "accentColor": "#FFD24A",
+    "warnColor": "#E8402F",
+    "numberColor": "#FFD24A",
+    "accentWords": ["BẢY", "KHÔNG", "LẠNH", "MỘT"],
+    "warnWords": ["ĐỪNG", "CHẾT"]
+  },
+  "shots": [
+    {
+      "id": "S1",
+      "scene": "dock",
+      "size": "establishing / wide",
+      "dur": 4.5,
+      "key": 65,
+      "caption": "BẾN PHÀ. 21:40.",
+      "accent": "21:40",
+      "note": "Bối cảnh: bến phà đêm, mưa, đèn vàng, vài bóng người chờ."
+    },
+    {
+      "id": "S2",
+      "scene": "deck",
+      "size": "full body / three-quarter",
+      "dur": 5,
+      "key": 75,
+      "caption": "MỘT NGƯỜI LÁI. BẢY KHÁCH.",
+      "accent": "BẢY",
+      "note": "Toàn thân: người lái đứng trên boong, thấy rõ chân, tay, mũ."
+    },
+    {
+      "id": "S3",
+      "scene": "insert",
+      "size": "face / extreme close-up",
+      "dur": 4.5,
+      "key": 70,
+      "caption": "ÔNG TA KHÔNG NHÌN TÔI.",
+      "accent": "KHÔNG",
+      "note": "Cận mặt: mắt, mũ, rim light xanh; nền mưa xóa mờ."
+    },
+    {
+      "id": "S4",
+      "scene": "cabin",
+      "size": "first person / hands",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "TAY TÔI TRÊN VÔ LĂNG.",
+      "accent": "VÔ LĂNG",
+      "note": "Chất liệu gốc: POV trong cabin, tay trên vô lăng, HUD."
+    },
+    {
+      "id": "S5",
+      "scene": "radio",
+      "size": "insert / close",
+      "dur": 4,
+      "key": 55,
+      "caption": "ĐÀI RÈ RÈ.",
+      "accent": "RÈ",
+      "note": "Chất liệu gốc: đài FM, kim tần số, nhiễu."
+    },
+    {
+      "id": "S6",
+      "scene": "deck",
+      "size": "first person / wide",
+      "dur": 4.5,
+      "key": 70,
+      "caption": "HỌ ĐỨNG THÀNH MỘT HÀNG.",
+      "accent": "MỘT",
+      "note": "Chất liệu gốc: bảy bóng người đứng sau kính, mắt sáng."
+    },
+    {
+      "id": "S7",
+      "scene": "switch",
+      "size": "insert / close",
+      "dur": 4,
+      "key": 55,
+      "caption": "CÔNG TẮC LẠNH.",
+      "accent": "LẠNH",
+      "note": "Chất liệu gốc: tay trên công tắc đèn."
+    },
+    {
+      "id": "S8",
+      "scene": "dark",
+      "size": "black / eyes",
+      "dur": 4,
+      "key": 55,
+      "caption": "BẬT, HAY KHÔNG?",
+      "accent": "KHÔNG",
+      "note": "Chất liệu gốc: bóng tối và bảy đôi mắt."
+    },
+    {
+      "id": "S9",
+      "scene": "choice",
+      "size": "end card",
+      "dur": 5,
+      "key": 90,
+      "caption": "",
+      "note": "Chất liệu gốc: thẻ chọn A/B."
+    }
+  ],
+  "captions": [
+    { "id": "C1", "shot": "S1", "start": 0.6, "end": 4.2, "text": "BẾN PHÀ. 21:40.", "accent": "21:40", "y": 760 },
+    { "id": "C2", "shot": "S2", "start": 4.8, "end": 7.0, "text": "MỘT NGƯỜI LÁI.", "y": 400 },
+    { "id": "C3", "shot": "S2", "start": 7.0, "end": 9.3, "text": "BẢY KHÁCH.", "accent": "BẢY", "y": 400 },
+    { "id": "C4", "shot": "S3", "start": 9.8, "end": 12.2, "text": "ÔNG TA KHÔNG NHÌN TÔI.", "accent": "KHÔNG", "y": 980 },
+    { "id": "C5", "shot": "S4", "start": 14.4, "end": 16.8, "text": "TAY TÔI TRÊN VÔ LĂNG.", "accent": "VÔ LĂNG", "y": 900 },
+    { "id": "C6", "shot": "S5", "start": 18.9, "end": 21.4, "text": "ĐÀI RÈ RÈ.", "accent": "RÈ", "y": 1160 },
+    { "id": "C7", "shot": "S6", "start": 23.0, "end": 25.4, "text": "HỌ ĐỨNG THÀNH MỘT HÀNG.", "accent": "MỘT", "y": 780 },
+    { "id": "C8", "shot": "S7", "start": 27.6, "end": 29.9, "text": "CÔNG TẮC LẠNH.", "accent": "LẠNH", "y": 1200 },
+    { "id": "C9", "shot": "S8", "start": 31.4, "end": 33.4, "text": "BẬT...", "y": 920 },
+    { "id": "C10", "shot": "S8", "start": 33.4, "end": 35.4, "text": "HAY KHÔNG?", "accent": "KHÔNG", "size": 112, "y": 920 }
+  ],
+  "lines": [
+    { "id": "L1", "shot": "S1", "who": "narrator", "at": 0.8, "text": "Bến phà lúc chín giờ bốn mươi." },
+    { "id": "L2", "shot": "S2", "who": "narrator", "at": 5.0, "text": "Một người lái. Bảy khách." },
+    { "id": "L3", "shot": "S3", "who": "narrator", "at": 10.0, "text": "Ông ta không nhìn tôi." },
+    { "id": "L4", "shot": "S4", "who": "narrator", "at": 14.6, "text": "Tay tôi nằm trên vô lăng." },
+    { "id": "L5", "shot": "S5", "who": "radio", "at": 19.2, "text": "Đừng mở đèn." },
+    { "id": "L6", "shot": "S6", "who": "narrator", "at": 23.4, "text": "Họ đứng thành một hàng." },
+    { "id": "L7", "shot": "S7", "who": "narrator", "at": 27.8, "text": "Công tắc lạnh." },
+    { "id": "L8", "shot": "S8", "who": "narrator", "at": 31.6, "text": "Bật, hay không?" }
+  ],
+  "endCard": {
+    "shot": "S9",
+    "a": "BẬT ĐÈN",
+    "b": "ĐỂ TỐI",
+    "subA": "Thấy bảy người.",
+    "subB": "Nghe tiếng bước.",
+    "prompt": "BÌNH LUẬN  A  HOẶC  B"
+  },
+  "fx": [
+    { "at": "s:4.4", "kind": "flash", "color": "#CFE2FF", "o": 0.08 },
+    { "at": "s:9.4", "kind": "flash", "color": "#CFE2FF", "o": 0.12 },
+    { "at": "s:18.4", "kind": "flash", "color": "#FFE9B0", "o": 0.14 },
+    { "at": "s:31.0", "kind": "shake", "len": 8, "amp": 7 },
+    { "at": "s:35.0", "kind": "flash", "color": "#000000", "o": 0.85 }
+  ]
+}

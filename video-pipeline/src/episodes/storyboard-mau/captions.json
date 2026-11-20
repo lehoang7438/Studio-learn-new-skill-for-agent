@@ -1,0 +1,122 @@
+[
+  {
+    "id": "C1",
+    "start": 0.6,
+    "end": 4.2,
+    "text": "BẾN PHÀ. 21:40.",
+    "accent": "21:40",
+    "color": "#FFD24A",
+    "y": 760,
+    "size": 100,
+    "underline": true,
+    "shot": "S1"
+  },
+  {
+    "id": "C2",
+    "start": 4.8,
+    "end": 7.0,
+    "text": "MỘT NGƯỜI LÁI.",
+    "accent": "MỘT",
+    "color": "#FFD24A",
+    "y": 400,
+    "size": 100,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C3",
+    "start": 7.0,
+    "end": 9.3,
+    "text": "BẢY KHÁCH.",
+    "accent": "BẢY",
+    "color": "#FFD24A",
+    "y": 400,
+    "size": 100,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C4",
+    "start": 9.8,
+    "end": 12.2,
+    "text": "ÔNG TA KHÔNG NHÌN TÔI.",
+    "accent": "KHÔNG",
+    "color": "#FFD24A",
+    "y": 980,
+    "size": 100,
+    "underline": true,
+    "shot": "S3"
+  },
+  {
+    "id": "C5",
+    "start": 14.4,
+    "end": 16.8,
+    "text": "TAY TÔI TRÊN VÔ LĂNG.",
+    "accent": "VÔ LĂNG",
+    "color": null,
+    "y": 900,
+    "size": 100,
+    "underline": true,
+    "shot": "S4"
+  },
+  {
+    "id": "C6",
+    "start": 18.9,
+    "end": 21.4,
+    "text": "ĐÀI RÈ RÈ.",
+    "accent": "RÈ",
+    "color": null,
+    "y": 1160,
+    "size": 100,
+    "underline": true,
+    "shot": "S5"
+  },
+  {
+    "id": "C7",
+    "start": 23.0,
+    "end": 25.4,
+    "text": "HỌ ĐỨNG THÀNH MỘT HÀNG.",
+    "accent": "MỘT",
+    "color": "#FFD24A",
+    "y": 780,
+    "size": 100,
+    "underline": true,
+    "shot": "S6"
+  },
+  {
+    "id": "C8",
+    "start": 27.6,
+    "end": 29.9,
+    "text": "CÔNG TẮC LẠNH.",
+    "accent": "LẠNH",
+    "color": "#FFD24A",
+    "y": 1200,
+    "size": 100,
+    "underline": true,
+    "shot": "S7"
+  },
+  {
+    "id": "C9",
+    "start": 31.4,
+    "end": 33.4,
+    "text": "BẬT...",
+    "accent": null,
+    "color": null,
+    "y": 920,
+    "size": 100,
+    "underline": false,
+    "shot": "S8"
+  },
+  {
+    "id": "C10",
+    "start": 33.4,
+    "end": 35.0,
+    "text": "HAY KHÔNG?",
+    "accent": "KHÔNG",
+    "color": "#FFD24A",
+    "y": 920,
+    "size": 112,
+    "underline": true,
+    "shot": "S8"
+  }
+]

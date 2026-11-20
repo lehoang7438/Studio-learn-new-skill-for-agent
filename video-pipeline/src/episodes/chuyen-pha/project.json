@@ -1,0 +1,173 @@
+{
+  "slug": "chuyen-pha",
+  "composition": "ChuyenPha",
+  "title": "CHUYẾN PHÀ 21:40",
+  "logline": "Người lái chuyến phà cuối cùng bán năm vé, nhưng có sáu người lên tàu. Một giọng nói trên đài bảo anh đừng mở đèn.",
+  "style": "first-person-hud",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "voice": {
+    "engine": "edge-tts",
+    "roles": {
+      "narrator": { "id": "vi-VN-NamMinhNeural", "rate": "-4%", "pitch": "-4Hz", "volume": "+8%" },
+      "radio": { "id": "vi-VN-NamMinhNeural", "rate": "-12%", "pitch": "-18Hz", "volume": "+12%", "loa": true, "echo": 0.18 }
+    }
+  },
+  "audio": { "music": true, "sfx": true, "musicVol": 0.16, "sfxVol": 1 },
+  "subtitles": {
+    "maxChars": 22,
+    "maxDur": 3.4,
+    "minDur": 0.85,
+    "size": 100,
+    "maxWidth": 900,
+    "y": 900,
+    "accentColor": "#FFD24A",
+    "warnColor": "#E8402F",
+    "numberColor": "#FFD24A",
+    "accentWords": ["CUỐI", "SÁU", "NĂM", "BẢY", "GIỌNG", "TRÊN", "KHÔNG"],
+    "warnWords": ["ĐỪNG", "CHẾT"]
+  },
+  "captions": [
+    { "id": "C1", "shot": "S1", "start": 0.55, "end": 2.35, "text": "21:40.", "y": 900, "size": 108 },
+    { "id": "C2", "shot": "S1", "start": 2.35, "end": 4.25, "text": "CHUYẾN PHÀ CUỐI CÙNG.", "accent": "CUỐI", "y": 900 },
+    { "id": "C3", "shot": "S2", "start": 4.85, "end": 6.75, "text": "SÁU NGƯỜI ĐỨNG ĐỢI.", "accent": "SÁU", "y": 900 },
+    { "id": "C4", "shot": "S2", "start": 6.75, "end": 9.3, "text": "NHƯNG TÔI CHỈ BÁN NĂM VÉ.", "accent": "NĂM", "y": 900 },
+    { "id": "C5", "shot": "S3", "start": 9.8, "end": 11.8, "text": "TRONG GƯƠNG,", "y": 950 },
+    { "id": "C6", "shot": "S3", "start": 11.8, "end": 13.9, "text": "CÓ BẢY CÁI BÓNG.", "accent": "BẢY", "y": 950 },
+    { "id": "C7", "shot": "S4", "start": 14.35, "end": 16.2, "text": "ĐÀI RÈ RÈ.", "accent": "RÈ", "y": 1160 },
+    { "id": "C8", "shot": "S4", "start": 16.2, "end": 18.35, "text": "MỘT GIỌNG NÓI CHEN VÀO.", "accent": "GIỌNG", "y": 1160 },
+    { "id": "C9", "shot": "S5", "start": 19.1, "end": 21.7, "text": "ĐỪNG MỞ ĐÈN.", "accent": "ĐỪNG", "color": "#E8402F", "y": 980 },
+    { "id": "C10", "shot": "S6", "start": 23.15, "end": 25.3, "text": "KHI TÔI QUAY LẠI...", "y": 900 },
+    { "id": "C11", "shot": "S6", "start": 25.3, "end": 27.35, "text": "HỌ ĐÃ Ở TRÊN TÀU.", "accent": "TRÊN", "y": 900 },
+    { "id": "C12", "shot": "S7", "start": 27.75, "end": 29.6, "text": "TAY TÔI NẰM TRÊN...", "y": 1030 },
+    { "id": "C13", "shot": "S7", "start": 29.6, "end": 31.35, "text": "CÔNG TẮC.", "accent": "CÔNG TẮC", "size": 112, "y": 1030 },
+    { "id": "C14", "shot": "S8", "start": 31.85, "end": 33.9, "text": "BẬT...", "y": 920 },
+    { "id": "C15", "shot": "S8", "start": 33.9, "end": 35.85, "text": "HAY KHÔNG?", "accent": "KHÔNG", "size": 112, "y": 920 }
+  ],
+  "shots": [
+    {
+      "id": "S1",
+      "scene": "cabin",
+      "size": "first person / medium",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "21:40. CHUYẾN PHÀ CUỐI CÙNG.",
+      "accent": "CUỐI",
+      "note": "Bảng đồng hồ sáng lên. Tay trên vô lăng. Mưa trên kính. HUD bật."
+    },
+    {
+      "id": "S2",
+      "scene": "dock",
+      "size": "first person / wide",
+      "dur": 5,
+      "key": 70,
+      "caption": "SÁU NGƯỜI ĐANG ĐỢI.",
+      "accent": "SÁU",
+      "note": "Nhìn qua kính: sáu bóng người dưới ô, đèn bến, mưa."
+    },
+    {
+      "id": "S3",
+      "scene": "mirror",
+      "size": "rear-view insert",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "NHƯNG TÔI CHỈ BÁN NĂM VÉ.",
+      "accent": "NĂM",
+      "note": "Gương chiếu hậu: bảy cái bóng. Một cái không cầm ô."
+    },
+    {
+      "id": "S4",
+      "scene": "radio",
+      "size": "insert / close",
+      "dur": 4.5,
+      "key": 55,
+      "caption": "ĐÀI RÈ RÈ.",
+      "accent": "RÈ",
+      "note": "Tay vặn núm. Kim tần số trượt. Nhiễu."
+    },
+    {
+      "id": "S5",
+      "scene": "radio-msg",
+      "size": "insert / macro",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "RỒI MỘT GIỌNG NÓI CHEN VÀO.",
+      "accent": "GIỌNG",
+      "note": "Màn hình đài hiện dòng chữ. Đèn flicker."
+    },
+    {
+      "id": "S6",
+      "scene": "deck",
+      "size": "first person / wide",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "HỌ ĐÃ Ở TRÊN TÀU.",
+      "accent": "TRÊN",
+      "note": "Bảy bóng đứng trên boong, quá gần kính. Mắt sáng."
+    },
+    {
+      "id": "S7",
+      "scene": "switch",
+      "size": "insert / close",
+      "dur": 4,
+      "key": 50,
+      "caption": "TAY TÔI NẰM TRÊN CÔNG TẮC.",
+      "accent": "CÔNG TẮC",
+      "note": "Công tắc đèn. Ngón tay run. HUD OFF."
+    },
+    {
+      "id": "S8",
+      "scene": "dark",
+      "size": "black / eyes",
+      "dur": 4.5,
+      "key": 55,
+      "caption": "BẬT, HAY KHÔNG?",
+      "accent": "KHÔNG",
+      "note": "Đèn tắt. Bảy đôi mắt mở ra trong bóng tối."
+    },
+    {
+      "id": "S9",
+      "scene": "choice",
+      "size": "end card",
+      "dur": 6,
+      "key": 100,
+      "caption": "",
+      "note": "Hai lựa chọn A/B + prompt bình luận."
+    }
+  ],
+  "lines": [
+    { "id": "L1", "shot": "S1", "who": "narrator", "at": 0.7, "text": "Chuyến phà cuối cùng trong đêm." },
+    { "id": "L2", "shot": "S2", "who": "narrator", "at": 5, "text": "Sáu người đợi dưới mưa. Tôi chỉ có năm vé." },
+    { "id": "L3", "shot": "S3", "who": "narrator", "at": 9.9, "text": "Trong gương, có bảy cái bóng." },
+    { "id": "L4", "shot": "S4", "who": "narrator", "at": 14.4, "text": "Đài rè rè. Một giọng nói chen vào." },
+    { "id": "L5", "shot": "S5", "who": "radio", "at": 19.2, "text": "Đừng mở đèn." },
+    { "id": "L6", "shot": "S6", "who": "narrator", "at": 23.2, "text": "Khi tôi quay lại, họ đã ở trên tàu." },
+    { "id": "L7", "shot": "S7", "who": "narrator", "at": 27.8, "text": "Tay tôi nằm trên công tắc." },
+    { "id": "L8", "shot": "S8", "who": "narrator", "at": 31.9, "text": "Bật... hay không?" }
+  ],
+  "sfxApi": {
+    "enabled": false,
+    "cues": [
+      { "id": "fs-441223", "name": "Big Boat Horn", "at": "s:0.6", "offset": 4.0, "trim": 7.0, "gain": 0.55, "fade": 0.25 },
+      { "id": "fs-333415", "name": "Murmur Ambience Audience", "at": "s:5.2", "offset": 0.8, "trim": 4.2, "gain": 0.3, "fade": 0.5 },
+      { "id": "fs-17804", "name": "Radio Static Breakup", "at": "s:14.3", "trim": 4.0, "gain": 0.3, "fade": 0.3 },
+      { "id": "fs-399097", "name": "Light Switch Click", "at": "s:29.4", "trim": 0.5, "gain": 0.75, "fade": 0.02 }
+    ]
+  },
+  "endCard": {
+    "shot": "S9",
+    "a": "BẬT ĐÈN",
+    "b": "ĐỂ TỐI",
+    "subA": "6 giây sáng. 7 người nhìn.",
+    "subB": "9 km mù. Không ai kiểm tra.",
+    "prompt": "BÌNH LUẬN  A  HOẶC  B"
+  },
+  "fx": [
+    { "at": "s:4.2", "kind": "flash", "color": "#CFE2FF", "o": 0.1 },
+    { "at": "s:19.0", "kind": "flash", "color": "#FFE9B0", "o": 0.16 },
+    { "at": "s:23.1", "kind": "shake", "len": 8, "amp": 8 },
+    { "at": "s:31.6", "kind": "flash", "color": "#FFFFFF", "o": 0.28 },
+    { "at": "s:36.0", "kind": "flash", "color": "#000000", "o": 0.9 }
+  ]
+}

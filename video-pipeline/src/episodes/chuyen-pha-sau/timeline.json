@@ -1,0 +1,163 @@
+{
+  "slug": "chuyen-pha-sau",
+  "composition": "ChuyenPhaSau",
+  "title": "CHUYẾN PHÀ — GHẾ THỨ BẢY",
+  "fps": 30,
+  "total": 570,
+  "segments": [
+    {
+      "shot": "S1",
+      "a": 0,
+      "b": 150,
+      "t0": 0,
+      "t1": 150,
+      "line": "Chuyến cuối đã rời bến. Vẫn còn một người."
+    },
+    {
+      "shot": "S2",
+      "a": 150,
+      "b": 300,
+      "t0": 0,
+      "t1": 150,
+      "line": "Sáu chỗ có người. Ghế bảy trống."
+    },
+    {
+      "shot": "S3",
+      "a": 300,
+      "b": 420,
+      "t0": 0,
+      "t1": 120,
+      "line": "Nó đã lên tàu."
+    },
+    {
+      "shot": "S4",
+      "a": 420,
+      "b": 570,
+      "t0": 0,
+      "t1": 150,
+      "line": ""
+    }
+  ],
+  "shots": [
+    {
+      "id": "S1",
+      "size": "wide / full body",
+      "key": 80,
+      "len": 150,
+      "first": 0,
+      "line": "Chuyến cuối đã rời bến. Vẫn còn một người.",
+      "caption": "CÒN MỘT NGƯỜI.",
+      "note": "Boong phà đêm, mưa, đèn vàng; Nam đứng quay lưng vào cửa cabin.",
+      "scene": "deck"
+    },
+    {
+      "id": "S2",
+      "size": "first person / HUD",
+      "key": 80,
+      "len": 150,
+      "first": 150,
+      "line": "Sáu chỗ có người. Ghế bảy trống.",
+      "caption": "GHẾ SỐ BẢY.",
+      "note": "POV trong cabin: HUD báo 6/7 chỗ; Nam đứng ngoài kính.",
+      "scene": "cabin"
+    },
+    {
+      "id": "S3",
+      "size": "face / extreme close-up",
+      "key": 55,
+      "len": 120,
+      "first": 300,
+      "line": "Nó đã lên tàu.",
+      "caption": "NÓ ĐÃ LÊN TÀU.",
+      "note": "Cận mặt sau lớp kính mưa: cùng khuôn mặt của bảng nhân vật.",
+      "scene": "insert"
+    },
+    {
+      "id": "S4",
+      "size": "end card",
+      "key": 90,
+      "len": 150,
+      "first": 420,
+      "line": "",
+      "caption": "",
+      "note": "Thẻ chọn A/B nối thẳng vào luật của Chuyến Phà.",
+      "scene": "choice"
+    }
+  ],
+  "fx": [
+    {
+      "kind": "flash",
+      "color": "#CFE2FF",
+      "o": 0.1,
+      "f": 147
+    },
+    {
+      "kind": "flash",
+      "color": "#CFE2FF",
+      "o": 0.16,
+      "f": 297
+    },
+    {
+      "kind": "shake",
+      "len": 8,
+      "amp": 7,
+      "f": 378
+    },
+    {
+      "kind": "flash",
+      "color": "#000000",
+      "o": 0.8,
+      "f": 447
+    }
+  ],
+  "audio": {
+    "voice": "chuyen-pha-sau/voice.wav",
+    "voiceVol": 1.0,
+    "sfx": "chuyen-pha-sau/sfx.wav",
+    "sfxVol": 0.9,
+    "music": "chuyen-pha-sau/music.wav",
+    "musicVol": 0.15
+  },
+  "captions": [
+    {
+      "a": 21,
+      "b": 129,
+      "text": "CÒN MỘT NGƯỜI.",
+      "accent": "MỘT",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 106,
+      "underline": true
+    },
+    {
+      "a": 168,
+      "b": 222,
+      "text": "GHẾ SỐ BẢY.",
+      "accent": "BẢY",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 106,
+      "underline": true
+    },
+    {
+      "a": 222,
+      "b": 285,
+      "text": "KHÔNG AI NGỒI.",
+      "accent": "KHÔNG",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 106,
+      "underline": true
+    },
+    {
+      "a": 312,
+      "b": 378,
+      "text": "NÓ ĐÃ LÊN TÀU.",
+      "accent": "LÊN",
+      "color": "#E8402F",
+      "y": 1120,
+      "size": 106,
+      "underline": true
+    }
+  ]
+}

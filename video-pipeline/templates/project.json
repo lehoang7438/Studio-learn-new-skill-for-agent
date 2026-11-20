@@ -1,0 +1,108 @@
+{
+  "slug": "__SLUG__",
+  "composition": "__COMP__",
+  "title": "__TITLE__",
+  "logline": "Một câu chuyện ngắn dọc, kể bằng một góc nhìn thứ nhất và một lựa chọn ở cuối.",
+  "style": "first-person-hud",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "voice": {
+    "engine": "edge-tts",
+    "roles": {
+      "narrator": { "id": "vi-VN-NamMinhNeural", "rate": "-4%", "pitch": "-4Hz", "volume": "+8%" },
+      "radio": { "id": "vi-VN-NamMinhNeural", "rate": "-12%", "pitch": "-18Hz", "volume": "+12%", "loa": true, "echo": 0.18 }
+    }
+  },
+  "audio": { "music": true, "sfx": true, "musicVol": 0.16, "sfxVol": 1 },
+  "subtitles": {
+    "maxChars": 22,
+    "maxDur": 3.4,
+    "minDur": 0.85,
+    "size": 100,
+    "maxWidth": 900,
+    "y": 900,
+    "accentColor": "#FFD24A",
+    "warnColor": "#E8402F",
+    "numberColor": "#FFD24A",
+    "accentWords": ["KHÔNG", "ĐỪNG", "NĂM", "BẬT", "TỐI"],
+    "warnWords": ["CHẾT", "MÁU", "SAU", "CUỐI"]
+  },
+  "shots": [
+    {
+      "id": "S1",
+      "scene": "cabin",
+      "size": "first person / medium",
+      "dur": 4.5,
+      "key": 60,
+      "caption": "CHUYẾN NÀY KHÔNG CÓ VÉ VỀ.",
+      "accent": "KHÔNG",
+      "note": "Mở bằng góc nhìn thứ nhất: buồng lái, mưa, HUD sáng."
+    },
+    {
+      "id": "S2",
+      "scene": "dock",
+      "size": "first person / wide",
+      "dur": 4.5,
+      "key": 65,
+      "caption": "SÁU NGƯỜI. NĂM VÉ.",
+      "accent": "NĂM",
+      "note": "Nhìn qua kính: đám đông dưới đèn bến."
+    },
+    {
+      "id": "S3",
+      "scene": "radio",
+      "size": "insert / close",
+      "dur": 4,
+      "key": 55,
+      "caption": "ĐÀI BÁO: ĐỪNG MỞ ĐÈN.",
+      "accent": "ĐỪNG",
+      "note": "Cận cảnh đài, nhiễu, kim tần số trượt."
+    },
+    {
+      "id": "S4",
+      "scene": "dark",
+      "size": "black / eyes",
+      "dur": 4,
+      "key": 55,
+      "caption": "BẬT, HAY KHÔNG?",
+      "accent": "KHÔNG",
+      "note": "Đèn tắt. Những đôi mắt mở ra."
+    },
+    {
+      "id": "S5",
+      "scene": "choice",
+      "size": "end card",
+      "dur": 5,
+      "key": 90,
+      "caption": "",
+      "note": "Hai lựa chọn A/B và câu hỏi cho phần bình luận."
+    }
+  ],
+  "captions": [
+    { "id": "C1", "shot": "S1", "start": 0.55, "end": 4.2, "text": "CHUYẾN NÀY KHÔNG CÓ VÉ VỀ.", "accent": "KHÔNG" },
+    { "id": "C2", "shot": "S2", "start": 4.75, "end": 8.85, "text": "SÁU NGƯỜI. NĂM VÉ.", "accent": "NĂM" },
+    { "id": "C3", "shot": "S3", "start": 9.25, "end": 12.75, "text": "ĐÀI BÁO: ĐỪNG MỞ ĐÈN.", "accent": "ĐỪNG" },
+    { "id": "C4", "shot": "S4", "start": 13.25, "end": 16.85, "text": "BẬT, HAY KHÔNG?", "accent": "KHÔNG" }
+  ],
+  "lines": [
+    { "id": "L1", "shot": "S1", "who": "narrator", "at": 0.7, "text": "Chuyến này không có vé về." },
+    { "id": "L2", "shot": "S2", "who": "narrator", "at": 4.9, "text": "Sáu người đứng đợi. Tôi chỉ có năm vé." },
+    { "id": "L3", "shot": "S3", "who": "radio", "at": 9.3, "text": "Đừng mở đèn." },
+    { "id": "L4", "shot": "S4", "who": "narrator", "at": 13.3, "text": "Bật, hay không?" }
+  ],
+  "endCard": {
+    "shot": "S5",
+    "a": "BẬT ĐÈN",
+    "b": "ĐỂ TỐI",
+    "subA": "Nhìn thấy tất cả.",
+    "subB": "Không ai nhìn thấy bạn.",
+    "prompt": "BÌNH LUẬN  A  HOẶC  B"
+  },
+  "fx": [
+    { "at": "s:4.3", "kind": "flash", "color": "#CFE2FF", "o": 0.1 },
+    { "at": "s:9.1", "kind": "flash", "color": "#FFE9B0", "o": 0.14 },
+    { "at": "s:13.0", "kind": "shake", "len": 8, "amp": 7 },
+    { "at": "s:16.8", "kind": "flash", "color": "#000000", "o": 0.85 }
+  ]
+}

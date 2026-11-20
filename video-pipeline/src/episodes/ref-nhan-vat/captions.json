@@ -1,0 +1,62 @@
+[
+  {
+    "id": "C1",
+    "start": 5.5,
+    "end": 7.4,
+    "text": "NÓ ĐI CÙNG TÔI.",
+    "accent": "CÙNG",
+    "color": "#FFD24A",
+    "y": 980,
+    "size": 104,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C2",
+    "start": 7.4,
+    "end": 9.5,
+    "text": "THỞ GIỐNG HỆT.",
+    "accent": "HỆT",
+    "color": "#FFD24A",
+    "y": 980,
+    "size": 104,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C3",
+    "start": 10.4,
+    "end": 12.5,
+    "text": "VẪN LÀ KHUÔN MẶT ĐÓ.",
+    "accent": "ĐÓ",
+    "color": "#FFD24A",
+    "y": 1150,
+    "size": 104,
+    "underline": true,
+    "shot": "S3"
+  },
+  {
+    "id": "C4",
+    "start": 15.6,
+    "end": 17.4,
+    "text": "GHẾ SỐ 5.",
+    "accent": "5",
+    "color": "#FFD24A",
+    "y": 980,
+    "size": 104,
+    "underline": true,
+    "shot": "S4"
+  },
+  {
+    "id": "C5",
+    "start": 17.4,
+    "end": 19.5,
+    "text": "CÁI NÀY CHẾT.",
+    "accent": "CHẾT",
+    "color": "#E8402F",
+    "y": 980,
+    "size": 104,
+    "underline": true,
+    "shot": "S4"
+  }
+]

@@ -1,0 +1,23 @@
+# build + runtime
+node_modules/
+out/
+__pycache__/
+*.pyc
+
+# generated media (voice, music, sfx, mp4, zip)
+video-pipeline/public/*/*.wav
+video-pipeline/public/*/lines/
+video-pipeline/public/*/sfx-src/
+video-pipeline/public/*/ref/
+video-pipeline/src/episodes/*/ref/
+*.mp4
+*.zip
+*.wav
+
+# reference screenshots of third-party videos stay local
+Screenshot*.png
+HANDSHAKE.md
+
+# the skill is linked into OpenCode via a junction; the real folder is video-pipeline/
+.opencode/
+ngay-thu-47/

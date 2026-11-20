@@ -1,0 +1,50 @@
+[
+  {
+    "id": "C1",
+    "start": 0.7,
+    "end": 4.3,
+    "text": "CÒN MỘT NGƯỜI.",
+    "accent": "MỘT",
+    "color": "#FFD24A",
+    "y": 900,
+    "size": 106,
+    "underline": true,
+    "shot": "S1"
+  },
+  {
+    "id": "C2",
+    "start": 5.6,
+    "end": 7.4,
+    "text": "GHẾ SỐ BẢY.",
+    "accent": "BẢY",
+    "color": "#FFD24A",
+    "y": 900,
+    "size": 106,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C3",
+    "start": 7.4,
+    "end": 9.5,
+    "text": "KHÔNG AI NGỒI.",
+    "accent": "KHÔNG",
+    "color": "#FFD24A",
+    "y": 900,
+    "size": 106,
+    "underline": true,
+    "shot": "S2"
+  },
+  {
+    "id": "C4",
+    "start": 10.4,
+    "end": 12.6,
+    "text": "NÓ ĐÃ LÊN TÀU.",
+    "accent": "LÊN",
+    "color": "#E8402F",
+    "y": 1120,
+    "size": 106,
+    "underline": true,
+    "shot": "S3"
+  }
+]

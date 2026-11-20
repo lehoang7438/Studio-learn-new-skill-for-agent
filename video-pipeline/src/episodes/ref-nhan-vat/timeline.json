@@ -1,0 +1,198 @@
+{
+  "slug": "ref-nhan-vat",
+  "composition": "RefNhanVat",
+  "title": "REF NHÂN VẬT — MỘT KHUÔN MẶT",
+  "fps": 30,
+  "total": 720,
+  "segments": [
+    {
+      "shot": "S1",
+      "a": 0,
+      "b": 150,
+      "t0": 0,
+      "t1": 150,
+      "line": "Một khuôn mặt. Mọi cảnh."
+    },
+    {
+      "shot": "S2",
+      "a": 150,
+      "b": 300,
+      "t0": 0,
+      "t1": 150,
+      "line": "Nó đi cùng tôi. Thở giống hệt."
+    },
+    {
+      "shot": "S3",
+      "a": 300,
+      "b": 420,
+      "t0": 0,
+      "t1": 120,
+      "line": "Vẫn là khuôn mặt đó."
+    },
+    {
+      "shot": "S4",
+      "a": 420,
+      "b": 570,
+      "t0": 0,
+      "t1": 150,
+      "line": "Ghế số năm. Cái này chết."
+    },
+    {
+      "shot": "S5",
+      "a": 570,
+      "b": 720,
+      "t0": 0,
+      "t1": 150,
+      "line": ""
+    }
+  ],
+  "shots": [
+    {
+      "id": "S1",
+      "size": "reference sheet / four views",
+      "key": 70,
+      "len": 150,
+      "first": 0,
+      "line": "Một khuôn mặt. Mọi cảnh.",
+      "caption": "",
+      "note": "Bảng nhân vật: mặt trước, 3/4, nghiêng, cận mặt + bảng màu đọc từ ảnh.",
+      "scene": "character"
+    },
+    {
+      "id": "S2",
+      "size": "full body / three-quarter",
+      "key": 80,
+      "len": 150,
+      "first": 150,
+      "line": "Nó đi cùng tôi. Thở giống hệt.",
+      "caption": "NÓ THỞ GIỐNG HỆT.",
+      "note": "Đúng bố cục ảnh tham chiếu: hành lang, bảng tên, bàn tay người khác nắm cổ tay.",
+      "scene": "corridor"
+    },
+    {
+      "id": "S3",
+      "size": "face / extreme close-up",
+      "key": 55,
+      "len": 120,
+      "first": 300,
+      "line": "Vẫn là khuôn mặt đó.",
+      "caption": "VẪN LÀ KHUÔN MẶT ĐÓ.",
+      "note": "Cận mặt: cùng mắt tròn, cùng tóc rối; chỉ đổi ánh sáng.",
+      "scene": "closeup"
+    },
+    {
+      "id": "S4",
+      "size": "close / HUD",
+      "key": 80,
+      "len": 150,
+      "first": 420,
+      "line": "Ghế số năm. Cái này chết.",
+      "caption": "CÁI NÀY CHẾT.",
+      "note": "Cùng nhân vật dưới ánh sáng xanh, HUD trên đầu, thẻ ghế — chất liệu ảnh tham chiếu thứ hai.",
+      "scene": "cabin"
+    },
+    {
+      "id": "S5",
+      "size": "end card",
+      "key": 90,
+      "len": 150,
+      "first": 570,
+      "line": "",
+      "caption": "",
+      "note": "Thẻ chọn A/B.",
+      "scene": "choice"
+    }
+  ],
+  "fx": [
+    {
+      "kind": "flash",
+      "color": "#CFE3D8",
+      "o": 0.1,
+      "f": 147
+    },
+    {
+      "kind": "flash",
+      "color": "#CFE3D8",
+      "o": 0.12,
+      "f": 297
+    },
+    {
+      "kind": "flash",
+      "color": "#BFD9FF",
+      "o": 0.14,
+      "f": 447
+    },
+    {
+      "kind": "shake",
+      "len": 8,
+      "amp": 6,
+      "f": 522
+    },
+    {
+      "kind": "flash",
+      "color": "#000000",
+      "o": 0.7,
+      "f": 597
+    }
+  ],
+  "audio": {
+    "voice": "ref-nhan-vat/voice.wav",
+    "voiceVol": 1.0,
+    "sfx": "ref-nhan-vat/sfx.wav",
+    "sfxVol": 0.8,
+    "music": "ref-nhan-vat/music.wav",
+    "musicVol": 0.14
+  },
+  "captions": [
+    {
+      "a": 165,
+      "b": 222,
+      "text": "NÓ ĐI CÙNG TÔI.",
+      "accent": "CÙNG",
+      "color": "#FFD24A",
+      "y": 980,
+      "size": 104,
+      "underline": true
+    },
+    {
+      "a": 222,
+      "b": 285,
+      "text": "THỞ GIỐNG HỆT.",
+      "accent": "HỆT",
+      "color": "#FFD24A",
+      "y": 980,
+      "size": 104,
+      "underline": true
+    },
+    {
+      "a": 312,
+      "b": 375,
+      "text": "VẪN LÀ KHUÔN MẶT ĐÓ.",
+      "accent": "ĐÓ",
+      "color": "#FFD24A",
+      "y": 1150,
+      "size": 104,
+      "underline": true
+    },
+    {
+      "a": 468,
+      "b": 522,
+      "text": "GHẾ SỐ 5.",
+      "accent": "5",
+      "color": "#FFD24A",
+      "y": 980,
+      "size": 104,
+      "underline": true
+    },
+    {
+      "a": 522,
+      "b": 585,
+      "text": "CÁI NÀY CHẾT.",
+      "accent": "CHẾT",
+      "color": "#E8402F",
+      "y": 980,
+      "size": 104,
+      "underline": true
+    }
+  ]
+}

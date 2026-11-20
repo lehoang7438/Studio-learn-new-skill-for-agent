@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# renders and review output
+out/
+
+# generated voice / music / sfx (regenerate with `python video.py build`)
+public/*/voice.wav
+public/*/music.wav
+public/*/sfx.wav
+public/*/lines.json
+public/*/words.json
+public/*/lines/
+public/*/sfx-src/*.mp3
+
+# python / editor
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+
+# packaging
+*.zip

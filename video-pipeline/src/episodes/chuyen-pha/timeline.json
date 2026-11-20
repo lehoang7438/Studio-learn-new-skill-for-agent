@@ -1,0 +1,374 @@
+{
+  "slug": "chuyen-pha",
+  "composition": "ChuyenPha",
+  "title": "CHUYẾN PHÀ 21:40",
+  "fps": 30,
+  "total": 1260,
+  "segments": [
+    {
+      "shot": "S1",
+      "a": 0,
+      "b": 135,
+      "t0": 0,
+      "t1": 135,
+      "line": "Chuyến phà cuối cùng trong đêm."
+    },
+    {
+      "shot": "S2",
+      "a": 135,
+      "b": 285,
+      "t0": 0,
+      "t1": 150,
+      "line": "Sáu người đợi dưới mưa. Tôi chỉ có năm vé."
+    },
+    {
+      "shot": "S3",
+      "a": 285,
+      "b": 420,
+      "t0": 0,
+      "t1": 135,
+      "line": "Trong gương, có bảy cái bóng."
+    },
+    {
+      "shot": "S4",
+      "a": 420,
+      "b": 555,
+      "t0": 0,
+      "t1": 135,
+      "line": "Đài rè rè. Một giọng nói chen vào."
+    },
+    {
+      "shot": "S5",
+      "a": 555,
+      "b": 690,
+      "t0": 0,
+      "t1": 135,
+      "line": "Đừng mở đèn."
+    },
+    {
+      "shot": "S6",
+      "a": 690,
+      "b": 825,
+      "t0": 0,
+      "t1": 135,
+      "line": "Khi tôi quay lại, họ đã ở trên tàu."
+    },
+    {
+      "shot": "S7",
+      "a": 825,
+      "b": 945,
+      "t0": 0,
+      "t1": 120,
+      "line": "Tay tôi nằm trên công tắc."
+    },
+    {
+      "shot": "S8",
+      "a": 945,
+      "b": 1080,
+      "t0": 0,
+      "t1": 135,
+      "line": "Bật... hay không?"
+    },
+    {
+      "shot": "S9",
+      "a": 1080,
+      "b": 1260,
+      "t0": 0,
+      "t1": 180,
+      "line": ""
+    }
+  ],
+  "shots": [
+    {
+      "id": "S1",
+      "size": "first person / medium",
+      "key": 60,
+      "len": 135,
+      "first": 0,
+      "line": "Chuyến phà cuối cùng trong đêm.",
+      "caption": "21:40. CHUYẾN PHÀ CUỐI CÙNG.",
+      "note": "Bảng đồng hồ sáng lên. Tay trên vô lăng. Mưa trên kính. HUD bật.",
+      "scene": "cabin"
+    },
+    {
+      "id": "S2",
+      "size": "first person / wide",
+      "key": 70,
+      "len": 150,
+      "first": 135,
+      "line": "Sáu người đợi dưới mưa. Tôi chỉ có năm vé.",
+      "caption": "SÁU NGƯỜI ĐANG ĐỢI.",
+      "note": "Nhìn qua kính: sáu bóng người dưới ô, đèn bến, mưa.",
+      "scene": "dock"
+    },
+    {
+      "id": "S3",
+      "size": "rear-view insert",
+      "key": 60,
+      "len": 135,
+      "first": 285,
+      "line": "Trong gương, có bảy cái bóng.",
+      "caption": "NHƯNG TÔI CHỈ BÁN NĂM VÉ.",
+      "note": "Gương chiếu hậu: bảy cái bóng. Một cái không cầm ô.",
+      "scene": "mirror"
+    },
+    {
+      "id": "S4",
+      "size": "insert / close",
+      "key": 55,
+      "len": 135,
+      "first": 420,
+      "line": "Đài rè rè. Một giọng nói chen vào.",
+      "caption": "ĐÀI RÈ RÈ.",
+      "note": "Tay vặn núm. Kim tần số trượt. Nhiễu.",
+      "scene": "radio"
+    },
+    {
+      "id": "S5",
+      "size": "insert / macro",
+      "key": 60,
+      "len": 135,
+      "first": 555,
+      "line": "Đừng mở đèn.",
+      "caption": "RỒI MỘT GIỌNG NÓI CHEN VÀO.",
+      "note": "Màn hình đài hiện dòng chữ. Đèn flicker.",
+      "scene": "radio-msg"
+    },
+    {
+      "id": "S6",
+      "size": "first person / wide",
+      "key": 60,
+      "len": 135,
+      "first": 690,
+      "line": "Khi tôi quay lại, họ đã ở trên tàu.",
+      "caption": "HỌ ĐÃ Ở TRÊN TÀU.",
+      "note": "Bảy bóng đứng trên boong, quá gần kính. Mắt sáng.",
+      "scene": "deck"
+    },
+    {
+      "id": "S7",
+      "size": "insert / close",
+      "key": 50,
+      "len": 120,
+      "first": 825,
+      "line": "Tay tôi nằm trên công tắc.",
+      "caption": "TAY TÔI NẰM TRÊN CÔNG TẮC.",
+      "note": "Công tắc đèn. Ngón tay run. HUD OFF.",
+      "scene": "switch"
+    },
+    {
+      "id": "S8",
+      "size": "black / eyes",
+      "key": 55,
+      "len": 135,
+      "first": 945,
+      "line": "Bật... hay không?",
+      "caption": "BẬT, HAY KHÔNG?",
+      "note": "Đèn tắt. Bảy đôi mắt mở ra trong bóng tối.",
+      "scene": "dark"
+    },
+    {
+      "id": "S9",
+      "size": "end card",
+      "key": 100,
+      "len": 180,
+      "first": 1080,
+      "line": "",
+      "caption": "",
+      "note": "Hai lựa chọn A/B + prompt bình luận.",
+      "scene": "choice"
+    }
+  ],
+  "fx": [
+    {
+      "kind": "flash",
+      "color": "#CFE2FF",
+      "o": 0.1,
+      "f": 126
+    },
+    {
+      "kind": "flash",
+      "color": "#FFE9B0",
+      "o": 0.16,
+      "f": 570
+    },
+    {
+      "kind": "shake",
+      "len": 8,
+      "amp": 8,
+      "f": 693
+    },
+    {
+      "kind": "flash",
+      "color": "#FFFFFF",
+      "o": 0.28,
+      "f": 948
+    },
+    {
+      "kind": "flash",
+      "color": "#000000",
+      "o": 0.9,
+      "f": 1080
+    }
+  ],
+  "audio": {
+    "voice": "chuyen-pha/voice.wav",
+    "voiceVol": 1.0,
+    "sfx": "chuyen-pha/sfx.wav",
+    "sfxVol": 1.0,
+    "music": "chuyen-pha/music.wav",
+    "musicVol": 0.16
+  },
+  "captions": [
+    {
+      "a": 16,
+      "b": 70,
+      "text": "21:40.",
+      "accent": "21:40.",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 108,
+      "underline": true
+    },
+    {
+      "a": 70,
+      "b": 128,
+      "text": "CHUYẾN PHÀ CUỐI CÙNG.",
+      "accent": "CUỐI",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 146,
+      "b": 202,
+      "text": "SÁU NGƯỜI ĐỨNG ĐỢI.",
+      "accent": "SÁU",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 202,
+      "b": 279,
+      "text": "NHƯNG TÔI CHỈ BÁN NĂM VÉ.",
+      "accent": "NĂM",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 294,
+      "b": 354,
+      "text": "TRONG GƯƠNG,",
+      "accent": null,
+      "color": null,
+      "y": 950,
+      "size": 100,
+      "underline": false
+    },
+    {
+      "a": 354,
+      "b": 417,
+      "text": "CÓ BẢY CÁI BÓNG.",
+      "accent": "BẢY",
+      "color": "#FFD24A",
+      "y": 950,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 430,
+      "b": 486,
+      "text": "ĐÀI RÈ RÈ.",
+      "accent": "RÈ",
+      "color": null,
+      "y": 1160,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 486,
+      "b": 550,
+      "text": "MỘT GIỌNG NÓI CHEN VÀO.",
+      "accent": "GIỌNG",
+      "color": "#FFD24A",
+      "y": 1160,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 573,
+      "b": 651,
+      "text": "ĐỪNG MỞ ĐÈN.",
+      "accent": "ĐỪNG",
+      "color": "#E8402F",
+      "y": 980,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 694,
+      "b": 759,
+      "text": "KHI TÔI QUAY LẠI...",
+      "accent": null,
+      "color": null,
+      "y": 900,
+      "size": 100,
+      "underline": false
+    },
+    {
+      "a": 759,
+      "b": 820,
+      "text": "HỌ ĐÃ Ở TRÊN TÀU.",
+      "accent": "TRÊN",
+      "color": "#FFD24A",
+      "y": 900,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 832,
+      "b": 888,
+      "text": "TAY TÔI NẰM TRÊN...",
+      "accent": "TRÊN...",
+      "color": "#FFD24A",
+      "y": 1030,
+      "size": 100,
+      "underline": true
+    },
+    {
+      "a": 888,
+      "b": 940,
+      "text": "CÔNG TẮC.",
+      "accent": "CÔNG TẮC",
+      "color": null,
+      "y": 1030,
+      "size": 112,
+      "underline": true
+    },
+    {
+      "a": 956,
+      "b": 1017,
+      "text": "BẬT...",
+      "accent": null,
+      "color": null,
+      "y": 920,
+      "size": 100,
+      "underline": false
+    },
+    {
+      "a": 1017,
+      "b": 1076,
+      "text": "HAY KHÔNG?",
+      "accent": "KHÔNG",
+      "color": "#FFD24A",
+      "y": 920,
+      "size": 112,
+      "underline": true
+    }
+  ]
+}
