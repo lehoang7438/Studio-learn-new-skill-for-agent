@@ -275,6 +275,34 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
   );
 };
 
+
+/** A five-fingered hand gripping the wheel rim: palm outside, four fingers curling over the rim,
+ *  thumb on the inside. Drawn at the rim point, so the hand can never float off the wheel. */
+export const WheelHand: React.FC<{ x: number; y: number; mirror?: boolean; s?: number; torn?: boolean }> = ({
+  x,
+  y,
+  mirror = false,
+  s = 1,
+  torn = false,
+}) => (
+  <g transform={`translate(${x} ${y}) scale(${mirror ? -s : s} ${s})`}>
+    {/* palm, sitting above the rim */}
+    <path d="M -40 -42 q 38 -16 72 2 q 12 22 2 42 q -36 16 -74 2 q -10 -26 0 -46 Z" fill="#C08A63" />
+    <path d="M -40 -42 q 38 -16 72 2 q 4 6 2 12 q -38 -14 -74 0 Z" fill="#B47A55" opacity={0.35} />
+    {/* four fingers curling over the rim */}
+    {[0, 1, 2, 3].map((i) => (
+      <g key={i} transform={`translate(${-30 + i * 20} 0) rotate(${(1.5 - i) * 5})`}>
+        <rect x={-8} y={-6} width={16} height={46} rx={8} fill="#C08A63" />
+        <rect x={-8} y={-6} width={16} height={12} rx={6} fill="#B47A55" opacity={0.45} />
+      </g>
+    ))}
+    {/* thumb: inside the wheel, pointing at the hub */}
+    <path d="M 36 4 q 24 6 24 24 q 0 16 -16 17 q -16 0 -18 -18 q -2 -15 10 -23 Z" fill="#B47A55" />
+    <path d="M 40 26 q 10 2 12 10" stroke="#A66A46" strokeWidth={2.4} fill="none" opacity={0.6} />
+    {torn ? <path d="M -26 -14 l 26 6 M -22 2 l 22 3" stroke="#B3261E" strokeWidth={3.4} strokeLinecap="round" /> : null}
+  </g>
+);
+
 /** A hand actually gripping the wheel: palm outside the rim, fingers curling over it,
  *  thumb on the inside. `side` -1 = left hand (screen left of centre). */
 export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number; torn?: boolean; s?: number }> = ({ x, y, side, t, torn = false, s = 1 }) => (

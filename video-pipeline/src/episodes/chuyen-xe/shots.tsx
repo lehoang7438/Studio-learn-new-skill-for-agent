@@ -1,6 +1,6 @@
 import React from 'react';
 import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
+import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -209,7 +209,8 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
         <ellipse rx={300} ry={136} fill="none" stroke="#1B2838" strokeWidth={32} />
         <ellipse rx={300} ry={136} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
       </g>
-      <ellipse cx={hl.x} cy={hl.y - 4} rx={31} ry={26} fill="#C08A63" />`r`n      <ellipse cx={hr.x} cy={hr.y - 4} rx={31} ry={26} fill="#C08A63" />`r`n      <path d={`M ${hr.x - 10} ${hr.y - 10} l 22 5`} stroke="#B3261E" strokeWidth={5} strokeLinecap="round" />
+      <WheelHand x={hl.x} y={hl.y} s={0.72} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={0.72} torn />
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
   );
