@@ -277,8 +277,8 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
 
 /** A hand actually gripping the wheel: palm outside the rim, fingers curling over it,
  *  thumb on the inside. `side` -1 = left hand (screen left of centre). */
-export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number; torn?: boolean }> = ({ x, y, side, t, torn = false }) => (
-  <g transform={`translate(${x} ${y}) rotate(${side * -14 + Math.sin(t / 50) * 1.5})`}>
+export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number; torn?: boolean; s?: number }> = ({ x, y, side, t, torn = false, s = 1 }) => (
+  <g transform={`translate(${x} ${y}) scale(${s}) rotate(${side * -14 + Math.sin(t / 50) * 1.5})`}>
     {/* wrist */}
     <path d="M -34 26 q 34 14 68 0 l 6 40 q -40 16 -80 0 Z" fill="#B47A55" />
     {/* palm, sitting outside the rim */}

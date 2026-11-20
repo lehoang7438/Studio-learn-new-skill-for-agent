@@ -1,5 +1,5 @@
 import React from 'react';
-import { basePose, CHARACTERS, FlatHero, Pose, ShotProps, push } from '../../engine';
+import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
 import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
 
 
@@ -172,11 +172,15 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
     yaw: -0.2 + turn * 0.4,
     look: -0.4,
     expr: 'neutral',
-    armL: { a: 14, b: -10 },
-    armR: { a: 10, b: -14 },
+    armL: { a: 30, b: -14 },
+    armR: { a: 26, b: -16 },
     legL: { a: 4, b: 2 },
     legR: { a: -4, b: 2 },
   };
+  const hl = flatHandL(pose);
+  const hr = flatHandR(pose);
+  const rimY = (hl.y + hr.y) / 2;
+  const wheelCy = rimY + 232;
   return (
     <g transform={push(t, len, 1.0, 1.03)}>
       <rect x={420} y={-420} width={1080} height={1920} fill="#050A11" />
@@ -198,7 +202,7 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
         `r`n        <path d="M 946 189 l 36 10" stroke="#B3261E" strokeWidth={6} strokeLinecap="round" />
       </g>
       {/* the seat back in front of the camera */}
-      {/* the wheel, in front of him */}`r`n      <g transform="translate(960 800)">`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#070C14" strokeWidth={62} />`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#1B2838" strokeWidth={42} />`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#2A3B52" strokeWidth={4} opacity={0.6} />`r`n      </g>`r`n      <GripHand x={690} y={650} side={-1} t={t} />`r`n      <GripHand x={1230} y={650} side={1} t={t} torn />
+      {/* seat and dash: nothing below the waist */}`r`n      <rect x={420} y={600} width={1080} height={900} fill="#070C13" />`r`n      {/* the wheel, in front of him */}`r`n      <g transform={`translate(960 ${wheelCy})`}>`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#070C14" strokeWidth={64} />`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#1B2838" strokeWidth={44} />`r`n        <ellipse rx={480} ry={220} fill="none" stroke="#2A3B52" strokeWidth={4} opacity={0.6} />`r`n      </g>`r`n      <GripHand x={hl.x} y={hl.y} side={-1} t={t} s={0.8} />`r`n      <GripHand x={hr.x} y={hr.y} side={1} t={t} torn s={0.8} />`r`n      <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
       
     </g>
   );
