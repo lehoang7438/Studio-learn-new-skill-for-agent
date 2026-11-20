@@ -209,8 +209,8 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
         <ellipse rx={300} ry={136} fill="none" stroke="#1B2838" strokeWidth={32} />
         <ellipse rx={300} ry={136} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
       </g>
-      <WheelHand x={hl.x} y={hl.y} s={0.72} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={0.72} torn />
+      <WheelHand x={hl.x} y={hl.y} s={0.9} rot={-18} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={0.9} rot={-18} torn />
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
   );
