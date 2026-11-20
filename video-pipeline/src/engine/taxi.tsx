@@ -275,6 +275,49 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
   );
 };
 
+/** Hùng, drawn in the same flat language as the woman: cap of hair as one solid shape,
+ *  dot eyes, a flat mouth, the cut on the forehead. `view` picks front / back / profile. */
+export const ManTorso: React.FC<{
+  x: number;
+  y: number;
+  s?: number;
+  view?: 'front' | 'back' | 'profile';
+  cut?: boolean;
+  torn?: boolean;
+}> = ({ x, y, s = 1, view = 'front', cut = false, torn = false }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}>
+    {/* neck */}
+    <path d="M -17 40 q 17 8 34 0 l 2 50 q -19 8 -38 0 Z" fill="#A67150" />
+    {/* head */}
+    <ellipse cx={0} cy={0} rx={46} ry={50} fill="#C08A63" />
+    <path d="M -46 6 q 10 40 46 46 q 36 -6 46 -46 l 0 18 q -14 34 -46 38 q -32 -4 -46 -38 Z" fill="#A67150" opacity={0.5} />
+    {/* torso */}
+    <path d="M -162 116 Q -120 90 0 88 Q 120 90 162 116 L 152 300 L -152 300 Z" fill="#14181F" />
+    <path d="M -150 268 q 150 -44 300 0 l 0 56 l -300 0 Z" fill="#0E1218" />`r`n    <path d="M -26 96 l 26 28 l 26 -28 l 10 6 l -36 38 l -36 -38 Z" fill="#1B2029" />
+    {/* sleeves */}
+    <path d="M -162 126 q -30 56 -26 104 l 38 6 q -2 -56 20 -94 Z" fill="#10141B" />
+    <path d="M 162 126 q 30 56 26 104 l -38 6 q 2 -56 -20 -94 Z" fill="#10141B" />`r`n    <ellipse cx={-146} cy={246} rx={22} ry={27} fill="#C08A63" />`r`n    <ellipse cx={146} cy={246} rx={22} ry={27} fill="#C08A63" />
+    {view === 'front' ? (
+      <>
+        <circle cx={-17} cy={16} r={4.6} fill="#0A0E15" />
+        <circle cx={17} cy={16} r={4.6} fill="#0A0E15" />
+        <path d="M -14 38 l 28 0" stroke="#3A2A24" strokeWidth={4} strokeLinecap="round" />
+      </>
+    ) : null}
+    {view === 'profile' ? (
+      <>
+        <circle cx={26} cy={16} r={4.4} fill="#0A0E15" />
+        <path d="M 22 38 l 16 0" stroke="#3A2A24" strokeWidth={4} strokeLinecap="round" />
+      </>
+    ) : null}
+    {/* cap of hair: one solid shape, brim over the brow */}
+    <path d="M -50 -10 q 2 -46 50 -50 q 48 4 50 50 l -6 6 q -44 -22 -88 0 Z" fill="#080B11" />
+    <path d="M -52 -6 q 52 -18 104 0 l -2 12 q -50 -14 -100 0 Z" fill="#05070A" />
+    {cut ? <path d="M -34 8 l 24 6" stroke="#B3261E" strokeWidth={5} strokeLinecap="round" /> : null}
+    {torn ? <g stroke="#B3261E" strokeWidth={4} strokeLinecap="round"><path d="M 134 236 l 26 6" /><path d="M 132 250 l 22 4" /></g> : null}
+  </g>
+);
+
 /** A hand actually gripping the wheel: palm outside the rim, fingers curling over it,
  *  thumb on the inside. `side` -1 = left hand (screen left of centre). */
 export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number; torn?: boolean }> = ({ x, y, side, t, torn = false }) => (

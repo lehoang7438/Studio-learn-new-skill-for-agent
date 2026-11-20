@@ -1,6 +1,23 @@
 import React from 'react';
-import { ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, GripHand, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
+import { basePose, Hero, Look, Pose, ShotProps, push } from '../../engine';
+import { BigMirror, BloodDrop, CabinV, Clock, GripHand, ManTorso, MirrorV, RoadV, TV, WomanInGlass } from '../../engine/taxi';
+
+const HUNG_LOOK: Look = {
+  skin: '#C08A63',
+  skinShade: '#A67150',
+  hand: '#C08A63',
+  jacket: '#12161E',
+  jacketShade: '#0A0D13',
+  accent: '#2C3444',
+  limb: '#12161E',
+  line: '#05070A',
+  shoe: '#070A0F',
+  face: '#0A0E15',
+  hair: '#05070A',
+  eyes: 'dot',
+  extra: 'cap',
+  brow: 0.5,
+};
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
 // Every shot is a pure function of t. The mirror rule is geometry, not a prompt: before T21 the woman
@@ -159,6 +176,36 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
     </g>
   );
 };
+// T06 · dashboard camera looking back at him, the rear bench empty
+export const T06: React.FC<ShotProps> = ({ t, len }) => {
+  const turn = Math.min(1, t / 26);
+  return (
+    <g transform={push(t, len, 1.0, 1.03)}>
+      <rect x={420} y={-420} width={1080} height={1920} fill="#050A11" />
+      {/* rear window */}
+      <rect x={500} y={-320} width={920} height={620} rx={28} fill="#071320" stroke="#16283A" strokeWidth={4} />
+      <rect x={500} y={-30} width={920} height={2} fill="#2E4A66" opacity={0.35} />
+      <circle cx={1250} cy={-52} r={5} fill={TV.amber} opacity={0.3} />
+      {Array.from({ length: 34 }).map((_, i) => {
+        const x = 520 + ((i * 149) % 880);
+        const y = -310 + ((i * 223 + t * (10 + (i % 4) * 6)) % 600);
+        return <rect key={i} x={x} y={y} width={2} height={11 + (i % 3) * 8} rx={1} fill="#CFE6FF" opacity={0.12} />;
+      })}
+      {/* rear bench, empty */}
+      <path d="M 470 520 q 490 -48 980 0 l 0 190 l -980 0 Z" fill="#080E17" />
+      <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
+      {/* him, turning to look back */}
+      <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
+        <ManTorso x={960} y={300} s={1.55} view="front" cut torn />
+        <ellipse cx={892} cy={300} rx={40} ry={54} fill="#050A11" opacity={0.5 * turn} />
+      </g>
+      {/* the seat back in front of the camera */}
+      <path d="M 420 1150 q 540 -74 1080 0 l 0 770 l -1080 0 Z" fill="#070C13" />
+      <path d="M 420 1146 q 540 -74 1080 0" stroke="#1B2C3E" strokeWidth={3} fill="none" opacity={0.45} />
+    </g>
+  );
+};
+
 // T02 · 3P · from behind: the taxi's tail on a road that runs away from the camera
 export const T02: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.03)}>
@@ -230,7 +277,7 @@ export const SHOTS: Record<string, React.FC<ShotProps>> = {
   T03,
   T04,
   T05: T05,
-  T06: pending('T06', '3P cabin'),
+  T06,
   T07: pending('T07', 'POV-W'),
   T08: pending('T08', '3P hông xe'),
   T09: T09,
