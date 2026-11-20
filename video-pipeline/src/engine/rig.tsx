@@ -40,6 +40,8 @@ export type Look = {
   glassesStyle?: 'shade' | 'clear';
   /** 0..1: plain brows for the expressions that would otherwise have none (neutral, happy). */
   brow?: number;
+  /** true = brows are a dead straight line (the tired night driver). */
+  browStraight?: boolean;
   /** 1 = the character's own eyes have gone white/cloudy (the pupil rolls up under the lid). */
   whiteEyes?: number;
   extra?: 'hood' | 'hoodBun' | 'curls' | 'bunches' | 'bob' | 'suit' | 'cap' | 'long' | 'pony' | 'short' | 'messy' | 'slick';

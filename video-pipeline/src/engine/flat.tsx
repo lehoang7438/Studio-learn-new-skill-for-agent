@@ -373,7 +373,7 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
     }
     return (
       <path
-        d={`M ${outer} ${yo} Q ${cx} ${(yi + yo) / 2 - 3} ${inner} ${yi}`}
+        d={L.browStraight ? `M ${outer} ${yo} L ${inner} ${yi}` : `M ${outer} ${yo} Q ${cx} ${(yi + yo) / 2 - 3} ${inner} ${yi}`}
         stroke={shade(L.hair, -24)}
         strokeWidth={long ? 5 : 7.5}
         fill="none"

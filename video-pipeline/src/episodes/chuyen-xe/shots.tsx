@@ -171,7 +171,7 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
     facing: 1,
     yaw: -0.2 + turn * 0.4,
     look: -0.4,
-    expr: 'worried',
+    expr: 'neutral',
     armL: { a: 14, b: -10 },
     armR: { a: 10, b: -14 },
     legL: { a: 4, b: 2 },
@@ -194,12 +194,12 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
       {/* him, turning to look back */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
-        <FlatHero pose={pose} look={CHARACTERS.hung.look} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: "#FFE7C2" }} />
+        <FlatHero pose={pose} look={{ ...CHARACTERS.hung.look, browStraight: true }} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: "#FFE7C2" }} />
         `r`n        <path d="M 946 189 l 36 10" stroke="#B3261E" strokeWidth={6} strokeLinecap="round" />
       </g>
       {/* the seat back in front of the camera */}
-      <path d="M 420 760 q 540 -64 1080 0 l 0 1160 l -1080 0 Z" fill="#070C13" />
-      <path d="M 420 756 q 540 -64 1080 0" stroke="#1B2C3E" strokeWidth={3} fill="none" opacity={0.45} />
+      {/* the wheel, in front of him */}`r`n      <g transform="translate(960 800)">`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#070C14" strokeWidth={62} />`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#1B2838" strokeWidth={42} />`r`n        <ellipse rx={470} ry={200} fill="none" stroke="#2A3B52" strokeWidth={4} opacity={0.6} />`r`n      </g>`r`n      <GripHand x={690} y={650} side={-1} t={t} />`r`n      <GripHand x={1230} y={650} side={1} t={t} torn />
+      
     </g>
   );
 };
