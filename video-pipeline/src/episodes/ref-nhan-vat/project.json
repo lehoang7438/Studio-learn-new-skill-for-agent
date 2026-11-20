@@ -13,7 +13,7 @@
       "narrator": { "id": "Hải Đăng", "pitch": "-2Hz", "volume": "+4%" }
     }
   },
-  "audio": { "music": true, "sfx": true, "musicVol": 0.14, "sfxVol": 0.8 },
+  "audio": { "music": true, "sfx": true, "musicVol": 0.11, "sfxVol": 0.75, "voiceLufs": -14 },
   "subtitles": {
     "maxChars": 22,
     "maxDur": 3.2,

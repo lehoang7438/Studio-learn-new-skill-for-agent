@@ -214,6 +214,41 @@ def _vieneu_synth(tts, text: str, voice_name: str, out_wav: Path) -> None:
         raise SystemExit(f"vieneu returned no audio for: {text[:60]}")
 
 
+def _loudness(path: Path, lufs: float = -15.0, tp: float = -1.5) -> None:
+    """Two-pass EBU R128 normalisation: the voice bed lands at social-video loudness
+    (default -15 LUFS integrated, -1.5 dBTP) instead of however loud the TTS happened to be.
+    Pass 1 measures, pass 2 applies a linear gain + limiter, so quiet lines stay quiet."""
+    import json
+    import subprocess
+
+    chain = f"loudnorm=I={lufs}:TP={tp}:LRA=11"
+    probe = subprocess.run(
+        [ffmpeg(), "-hide_banner", "-i", str(path), "-af", f"{chain}:print_format=json", "-f", "null", "-"],
+        capture_output=True,
+        text=True,
+    )
+    m = None
+    if "{" in probe.stderr:
+        try:
+            m = json.loads(probe.stderr[probe.stderr.rindex("{") :])
+        except json.JSONDecodeError:
+            m = None
+    if m:
+        chain += (
+            f":measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+            f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true"
+        )
+    tmp = path.with_suffix(".norm.wav")
+    r = subprocess.run(
+        [ffmpeg(), "-v", "error", "-y", "-i", str(path), "-af", chain, "-ar", str(SR), "-ac", "1", str(tmp)],
+        capture_output=True,
+    )
+    if r.returncode == 0 and tmp.exists() and tmp.stat().st_size > 1000:
+        tmp.replace(path)
+    else:
+        tmp.unlink(missing_ok=True)
+
+
 def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict:
     project = load_project(slug)
     lines = project.get("lines", [])
@@ -297,7 +332,12 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
         # merge into the existing track by re-running the full mix from cached lines
         return build_voice(slug, force=False, only=None)
 
-    write_wav(pub_dir(slug) / "voice.wav", voice, peak=0.89)
+    target = pub_dir(slug) / "voice.wav"
+    write_wav(target, voice, peak=0.89)
+    try:
+        _loudness(target, float(project.get("audio", {}).get("voiceLufs", -15.0)))
+    except Exception as e:  # loudness is a polish, never a hard dependency
+        print(f"  loudness: skipped ({e})")
     save_json(pub_dir(slug) / "lines.json", timing)
     all_words = [w for row in timing for w in row["words"]]
     if all_words:

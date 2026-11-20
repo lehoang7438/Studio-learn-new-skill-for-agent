@@ -113,17 +113,26 @@ const Grab: React.FC<{ pose: Pose; t: number }> = ({ pose, t }) => {
         fill="none"
         strokeLinecap="round"
       />
-      {/* the hand: a palm over the wrist, four fingers wrapped, one thumb on top */}
-      <g transform={`translate(${w.x + 6} ${w.y})`}>
-        <ellipse cx={0} cy={0} rx={30} ry={34} fill="#C98E68" />
-        {[-20, -8, 4, 16].map((dy, i) => (
+      {/* the hand: palm on the far side of the wrist, four fingers curling back over it,
+          thumb underneath — darker than Nam's skin so the two bodies never merge */}
+      <g transform={`translate(${w.x + 6} ${w.y + 2}) rotate(8)`}>
+        <ellipse cx={20} cy={4} rx={31} ry={35} fill="#B47A52" opacity={0.5} />
+        <ellipse cx={20} cy={0} rx={30} ry={34} fill="#C98E68" />
+        {[-19, -7, 5, 17].map((dy, i) => (
           <g key={i}>
-            <rect x={-38} y={dy - 6} width={28} height={12} rx={6} fill="#D9A275" />
-            <path d={`M -38 ${dy + 6} L -13 ${dy + 6}`} stroke="#9C6A46" strokeWidth={2} opacity={0.45} strokeLinecap="round" />
+            <rect x={-30} y={dy - 7 + i * 0.6} width={56} height={14} rx={7} fill="#D19A70" />
+            <path
+              d={`M -28 ${dy + 7.2 + i * 0.6} L 24 ${dy + 7.2 + i * 0.6}`}
+              stroke="#9C6A46"
+              strokeWidth={2}
+              opacity={0.38}
+              strokeLinecap="round"
+            />
           </g>
         ))}
-        <ellipse cx={17} cy={-26} rx={9} ry={17} transform="rotate(26 17 -26)" fill="#D9A275" />
-        <path d="M -8 -20 Q 6 -26 16 -18" stroke="#9C6A46" strokeWidth={2} fill="none" opacity={0.35} />
+        {/* thumb: from the palm, laid across the top of the wrist */}
+        <ellipse cx={-20} cy={-24} rx={11} ry={16} transform="rotate(-26 -20 -24)" fill="#D9A275" />
+        <path d="M -12 -8 Q 2 -15 16 -6" stroke="#9C6A46" strokeWidth={2} fill="none" opacity={0.3} strokeLinecap="round" />
       </g>
     </g>
   );

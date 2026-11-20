@@ -139,9 +139,9 @@
     "voice": "ref-nhan-vat/voice.wav",
     "voiceVol": 1.0,
     "sfx": "ref-nhan-vat/sfx.wav",
-    "sfxVol": 0.8,
+    "sfxVol": 0.75,
     "music": "ref-nhan-vat/music.wav",
-    "musicVol": 0.14
+    "musicVol": 0.11
   },
   "captions": [
     {

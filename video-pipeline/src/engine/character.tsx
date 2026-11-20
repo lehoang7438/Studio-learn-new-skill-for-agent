@@ -3,7 +3,7 @@ import { staticFile } from 'remotion';
 import { clamp } from './anim';
 import { FONT } from './fonts';
 import { basePose, Look, Pose } from './rig';
-import { FLAT_LEG_LEN, FlatHero } from './flat';
+import { FLAT_LEG_LEN, FlatHero, FLAT_METRICS } from './flat';
 
 // Character reference, the drawn way. A reference image is a contract: palette, proportions and the
 // two or three shapes that make a face recognisable. `CharSpec` is that contract written down once;
@@ -202,7 +202,8 @@ export const CharacterSheet: React.FC<{
           TỈ LỆ
         </text>
         <text y={32} fontFamily={FONT.body} fontSize={24} fill="#C9D2DC">
-          Đầu ≈ 1/3 chiều cao · vai 128 · hông 48 · đầu 116
+          Đầu ≈ 1/3 chiều cao · vai {FLAT_METRICS.shoulder * 2} · hông {FLAT_METRICS.hip * 2} · đầu{' '}
+          {(S.headR ?? FLAT_METRICS.headR) * 2}
         </text>
       </g>
 

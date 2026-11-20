@@ -14,7 +14,7 @@
       "radio": { "id": "Thiện Minh", "pitch": "-16Hz", "volume": "+8%", "loa": true, "echo": 0.07 }
     }
   },
-  "audio": { "music": true, "sfx": true, "musicVol": 0.15, "sfxVol": 0.9 },
+  "audio": { "music": true, "sfx": true, "musicVol": 0.11, "sfxVol": 0.8, "voiceLufs": -14 },
   "subtitles": {
     "maxChars": 22,
     "maxDur": 3.2,

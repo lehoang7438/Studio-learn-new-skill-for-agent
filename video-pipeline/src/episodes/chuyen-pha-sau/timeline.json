@@ -114,9 +114,9 @@
     "voice": "chuyen-pha-sau/voice.wav",
     "voiceVol": 1.0,
     "sfx": "chuyen-pha-sau/sfx.wav",
-    "sfxVol": 0.9,
+    "sfxVol": 0.8,
     "music": "chuyen-pha-sau/music.wav",
-    "musicVol": 0.15
+    "musicVol": 0.11
   },
   "captions": [
     {

@@ -133,6 +133,8 @@ Chi tiết tiêu chí: `reference/qa.md`. `--strict` biến warning thành fail.
   48 kHz, 25 giọng, clone từ clip 3–8s (`ref_audio`), chèn `[cười]` `[thở dài]` trong text.
   CPU RTF ≈ 0.5 (lần đầu tải model ~1 GB); cache riêng `lines/L1.vieneu.wav`, không lẫn với edge-tts.
   Nguồn: https://github.com/pnnbao97/VieNeu-TTS (Apache 2.0).
+- **Chuẩn hoá độ to**: voice.wav luôn qua EBU R128 hai pass — mặc định **-15 LUFS, -1.5 dBTP**
+  (`audio.voiceLufs` để đổi). Nhạc/SFX chỉ là nền (`musicVol` 0.11, `sfxVol` 0.75–0.8), nên lời luôn nổi.
 - SFX thật (tuỳ chọn): `python video.py sfx-search "boat horn"` rồi thêm `sfxApi.cues`, chạy
   `python video.py audio <slug> --remote`. Mẫu CC0, có ghi `ATTRIBUTION.md` — kiểm tra license trước khi đăng.
 

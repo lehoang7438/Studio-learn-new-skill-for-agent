@@ -168,7 +168,8 @@ Phụ đề rời: `out/<slug>/subtitles.srt|.vtt|.ass` (ASS giữ đúng font, 
 | `vieneu` | `pip install vieneu` (~1 GB model lần đầu) | preset: `Hải Đăng`, `Mai Anh`, `Adam bựa`, `Thùy Dung`… | 48 kHz, clone `ref_audio` 3–8s, `[cười]` `[thở dài]`, CPU RTF ≈ 0.5 |
 
 Cache tách theo engine: `lines/L1.wav` (edge) và `lines/L1.vieneu.wav` (VieNeu) — đổi engine không
-dùng lại nhầm file. Nguồn VieNeu: https://github.com/pnnbao97/VieNeu-TTS (Apache 2.0).
+dùng lại nhầm file. Voice được chuẩn hoá EBU R128 hai pass về **-15 LUFS / -1.5 dBTP**
+(`audio.voiceLufs` để đổi target). Nguồn VieNeu: https://github.com/pnnbao97/VieNeu-TTS (Apache 2.0).
 
 `python video.py audio <slug> --remote --force` tải mẫu, cache vào `public/<slug>/sfx-src/`,
 ghi `ATTRIBUTION.md` + `index.json`, rồi mix theo `sfxApi.cues`.

@@ -14,15 +14,17 @@ import { HEAD, limbSpread, Look, LOOKS, Pose, turnWidth } from './rig';
 const P = (x: number, y: number) => ({ x, y });
 type Pt = { x: number; y: number };
 
-const UPPER_ARM = 68;
-const FORE_ARM = 66;
+const UPPER_ARM = 62;
+const FORE_ARM = 58;
 const THIGH = 88;
 const SHIN = 84;
-const SHOULDER = { x: 64, y: -94 };
+const SHOULDER = { x: 68, y: -94 };
 const HIP = { x: 24, y: 0 };
 
 /** Leg length of the flat body (the rig's LEG_LEN is shorter), so floors and shadows line up. */
 export const FLAT_LEG_LEN = THIGH + SHIN;
+/** Half-widths and the default head radius, so a sheet can print the numbers it actually drew. */
+export const FLAT_METRICS = { shoulder: SHOULDER.x, hip: HIP.x, headR: 58 };
 
 const rad = (d: number) => (d * Math.PI) / 180;
 const rot = (p: Pt, deg: number, c: Pt = P(0, 0)): Pt => {

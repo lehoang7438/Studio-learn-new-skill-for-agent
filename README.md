@@ -58,6 +58,8 @@ nên hai video cắt cạnh nhau vẫn liền mạch.
 | `vieneu` | `pip install vieneu` + ~1 GB model lần đầu | 25 preset: `Hải Đăng`, `Mai Anh`, `Adam bựa`, `Thùy Dung`… | 48 kHz, clone 3–8s, `[cười]` `[thở dài]`, CPU RTF ≈ 0.5 |
 
 `pitch`, `volume`, `loa`, `echo`, `reverb` do DSP nội bộ xử lý nên hai engine cho cùng một "chất" line.
+Voice luôn được chuẩn hoá EBU R128 hai pass về **-15 LUFS / -1.5 dBTP** (đổi bằng `audio.voiceLufs`);
+nhạc 0.11, SFX 0.75–0.8 — lời luôn nổi trên nền.
 Nguồn VieNeu: <https://github.com/pnnbao97/VieNeu-TTS> (Apache 2.0).
 
 ## Chạy thử
