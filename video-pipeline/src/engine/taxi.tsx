@@ -320,32 +320,47 @@ export const DriverAtWheel: React.FC<{
   lap?: string;
   /** hand scale: the POV driver's own hands are ~1.05, a person seen at 3 m needs ~1.8 */
   handS?: number;
-}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.6 }) => {
+  /** how far the wheel sits below the hands */
+  wheelDrop?: number;
+}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.6, wheelDrop = 110 }) => {
   const hl = flatHandL(pose, look.armLen ?? 1);
   const hr = flatHandR(pose, look.armLen ?? 1);
   const rimY = (hl.y + hr.y) / 2;
+  const skin = look.skin;
   return (
     <g>
       <FlatHero pose={pose} look={look} light={light} />
       {/* the lap: only between the two hands, so the arms stay visible */}
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
-      {/* hands on the far side of the rim: the wheel drawn after them hides the palms */}
+      {/* bare forearms: short sleeves, so the arms are skin from the elbow down */}
+      <path d={`M ${hl.x - 22} ${pose.y - 220} L ${hl.x} ${hl.y - 26}`} stroke={skin} strokeWidth={70} strokeLinecap="round" />
+      <path d={`M ${hr.x + 22} ${pose.y - 220} L ${hr.x} ${hr.y - 26}`} stroke={skin} strokeWidth={70} strokeLinecap="round" />
+      {/* hands resting on the rim */}
       <WheelHand x={hl.x} y={hl.y} s={handS} />
       <WheelHand x={hr.x} y={hr.y} mirror s={handS} torn={torn} />
-      <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
-      <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
-      {/* fingertips hooking over the rim toward the camera, like the POV shots */}
+      {/* the wheel sits below the hands: in front of the wrists */}
+      <Wheel cx={960} cy={rimY + wheelRy + wheelDrop} rx={wheelRx} ry={wheelRy} />
+      {/* fingertips wrapping over the rim toward the camera */}
       {[hl, hr].map((h, hi) => {
         const inward = hi === 0 ? 1 : -1;
         return (
           <g key={hi}>
             {[0, 1, 2, 3].map((i) => (
-              <rect key={i} x={h.x + inward * (12 + i * 17) - 9} y={rimY + 2} width={18} height={28} rx={9} fill="#C08A63" />
+              <rect
+                key={i}
+                x={h.x + inward * (10 + i * 16) - 9}
+                y={rimY + wheelDrop - 4}
+                width={18}
+                height={28}
+                rx={9}
+                fill={skin}
+              />
             ))}
-            <ellipse cx={h.x + inward * 52} cy={rimY + 14} rx={11} ry={16} fill="#B47A55" />
+            <ellipse cx={h.x + inward * 54} cy={rimY + wheelDrop + 12} rx={11} ry={16} fill="#B47A55" />
           </g>
         );
       })}
+      <rect x={420} y={rimY + wheelRy + wheelDrop + wheelRy + 40} width={1080} height={900} fill={lap} />
     </g>
   );
 };

@@ -103,7 +103,7 @@ export const CHARACTERS: Record<string, CharSpec> = {
       skin: '#C08A63',
       skinShade: '#A67150',
       hand: '#C08A63',
-      arm: '#181C24',
+      arm: '#C08A63',
       jacket: '#181C24',
       jacketShade: '#0D1117',
       accent: '#2C3444',

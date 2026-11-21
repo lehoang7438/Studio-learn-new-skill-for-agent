@@ -186,11 +186,11 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
   const pose: Pose = {
     ...basePose,
     x: 960,
-    y: 690,
-    scale: 2.6,
+    y: 760,
+    scale: 2.55,
     facing: 1,
-    yaw: 0.15 + turn * 0.55,
-    look: 0.45 + turn * 0.35,
+    yaw: -0.2 + turn * 0.4,
+    look: -0.4,
     expr: 'neutral',
     armL: { a: 8, b: -18 },
     armR: { a: 6, b: -20 },
@@ -212,14 +212,15 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       {/* rear bench, empty */}
       <path d="M 470 520 q 490 -48 980 0 l 0 190 l -980 0 Z" fill="#080E17" />
       <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
-      {/* him, seated, turning to look back at the empty bench */}
+      {/* him, at the wheel, turning to look back */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
-        <FlatHero pose={pose} look={{ ...CHARACTERS.hung.look, browStraight: true }} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }} />
-        <path d="M 952 84 l 38 11" stroke="#B3261E" strokeWidth={7} strokeLinecap="round" />
-        {/* the rear-view mirror hanging over the seat: she is in it */}
-        <g transform="translate(960 -226) rotate(180)">
-          <Mirror t={t} occupant="woman" x={-96} y={-6} w={192} h={104} />
-        </g>
+        <DriverAtWheel
+          t={t}
+          pose={pose}
+          look={{ ...CHARACTERS.hung.look, browStraight: true }}
+          light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }}
+        />
+        <path d="M 938 246 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
       </g>
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
