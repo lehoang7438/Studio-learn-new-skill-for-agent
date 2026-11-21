@@ -318,38 +318,19 @@ export const DriverAtWheel: React.FC<{
   torn?: boolean;
   light?: FlatLight;
   lap?: string;
-  /** hand scale: the POV driver's own hands are ~1.05, a person seen at 3 m needs ~1.8 */
-  handS?: number;
-  /** how far the wheel sits below the hands */
-  wheelDrop?: number;
-}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.6 }) => {
+}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13' }) => {
   const hl = flatHandL(pose, look.armLen ?? 1);
   const hr = flatHandR(pose, look.armLen ?? 1);
   const rimY = (hl.y + hr.y) / 2;
-  const skin = look.skin;
   return (
     <g>
       <FlatHero pose={pose} look={look} light={light} />
       {/* the lap: only between the two hands, so the arms stay visible */}
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
-      {/* this is the reverse of the POV: the wheel is between the camera and him, so the palms
-          sit BEHIND the rim and the wheel is drawn over them. Only the fingertips come over the top. */}
-      <WheelHand x={hl.x} y={hl.y} s={handS} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={handS} torn={torn} />
+      <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
       <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
-      {/* fingertips curling over the rim toward the camera */}
-      {[hl, hr].map((h, hi) => {
-        const inward = hi === 0 ? 1 : -1;
-        return (
-          <g key={hi}>
-            {[0, 1, 2, 3].map((i) => (
-              <rect key={i} x={h.x - 26 + i * 16} y={rimY - 6} width={16} height={26} rx={8} fill={skin} />
-            ))}
-            <ellipse cx={h.x + inward * 50} cy={rimY + 10} rx={10} ry={14} fill="#B47A55" />
-          </g>
-        );
-      })}
-      <rect x={420} y={rimY + wheelRy * 2 + 30} width={1080} height={900} fill={lap} />
+      <WheelHand x={hl.x} y={hl.y} s={0.95} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={0.95} torn={torn} />
     </g>
   );
 };

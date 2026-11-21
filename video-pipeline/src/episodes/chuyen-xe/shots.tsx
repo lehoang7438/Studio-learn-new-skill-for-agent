@@ -1,6 +1,6 @@
 import React from 'react';
-import { basePose, CHARACTERS, FlatHero, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
+import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TV, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -109,6 +109,7 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
     {/* the near rim passes in front of the palms */}
     <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
     <BigMirror t={t} occupant="woman" />
+    <MirrorV t={t} occupant="woman" />
     <Clock text="23:34" x={1290} y={1178} />
   </g>
 );
@@ -186,8 +187,8 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
   const pose: Pose = {
     ...basePose,
     x: 960,
-    y: 760,
-    scale: 2.55,
+    y: 800,
+    scale: 3.5,
     facing: 1,
     yaw: -0.2 + turn * 0.4,
     look: -0.4,
@@ -220,7 +221,7 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
           look={{ ...CHARACTERS.hung.look, browStraight: true }}
           light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }}
         />
-        <path d="M 938 246 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
+        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
       </g>
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
