@@ -1,14 +1,14 @@
 import React from 'react';
 import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
-import { BackOfDriver, BigMirror, BloodDrop, CabinV, Clock, DashcamHud, DashcamRearEmpty, DriverAtWheel, Mirror, MirrorV, PhoneHeld, RadioPanel, RoadV, TaxiSide, TV, VideoNoise, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { BackOfDriver, BigMirror, BikeLying, BloodDrop, CabinV, Clock, DashcamHud, DashcamRearEmpty, DriverAtWheel, Mirror, MirrorV, PhoneHeld, RadioPanel, RoadV, TaxiSide, TV, VideoNoise, Wheel, PovWheelHands, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
 // Every shot is a pure function of t. The mirror rule is geometry, not a prompt: before T21 the woman
-// exists only inside <MirrorV>, never in a seat.
+// exists only inside mirror/reflection surfaces, never in a seat.
 //
-// Status: Act 1 is built (T01-T03 done, T04-T09 next). The rest draw a placeholder card so `Board`
-// shows exactly what is still missing.
+// Built: T01-T17, T33. Pending: T18-T32. Keep visuals consistent with the engine (realistic proportions,
+// physically plausible light/rain/glass, and continuity across shots).
 
 const FONT = 'Anton, Be Vietnam Pro, sans-serif';
 const CARD = { x: 420, y: -420, w: 1080, h: 1920 };
@@ -19,8 +19,7 @@ export const T03: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.025)}>
       <RoadV t={t} rain={0.7} speed={0.35} lamps={3} />
       <CabinV t={t} speed={0.35} wheel={Math.sin(t / 38) * 2} />
-      <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
-      <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
+      <PovWheelHands look={CHARACTERS.hung.look} t={t} />
       {/* the near rim passes in front of the palms */}
       <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
       <Clock text="23:34" x={1290} y={1178} />
@@ -104,8 +103,7 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.045)}>
     <RoadV t={t} rain={0.55} speed={0.3} lamps={2} />
     <CabinV t={t} speed={0.3} wheel={Math.sin(t / 40) * 1.5} />
-    <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
-    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
+    <PovWheelHands look={CHARACTERS.hung.look} t={t} />
     {/* the near rim passes in front of the palms */}
     <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
     <BigMirror t={t} occupant="woman" />
@@ -113,41 +111,50 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   </g>
 );
 
-// T09 · INS · her face against the glass, only fingertips on the inside
+// T09 · INS · wet rear side window from outside: her face as a pale reflection layered on rain (no direct body)
 export const T09: React.FC<ShotProps> = ({ t, len }) => {
   const tap = Math.abs(Math.sin(t / 16));
   return (
     <g transform={push(t, len, 1.0, 1.05)}>
       <defs>
         <linearGradient id="t09g" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#12293F" />
-          <stop offset="55%" stopColor="#091521" />
+          <stop offset="0%" stopColor="#0E2236" />
+          <stop offset="55%" stopColor="#081521" />
           <stop offset="100%" stopColor="#04080D" />
         </linearGradient>
         <linearGradient id="t09fade" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#04080D" stopOpacity={0} />
-          <stop offset="100%" stopColor="#04080D" stopOpacity={0.95} />
+          <stop offset="100%" stopColor="#04080D" stopOpacity={0.97} />
         </linearGradient>
         <radialGradient id="t09lamp">
-          <stop offset="0%" stopColor={TV.amber} stopOpacity={0.22} />
+          <stop offset="0%" stopColor={TV.amber} stopOpacity={0.18} />
           <stop offset="100%" stopColor={TV.amber} stopOpacity={0} />
         </radialGradient>
       </defs>
       <rect x={420} y={-420} width={1080} height={1920} fill="url(#t09g)" />
       {/* one lamp outside, out of focus */}
-      <circle cx={650} cy={330} r={110} fill="url(#t09lamp)" />
-      <circle cx={650} cy={330} r={7} fill={TV.amber} opacity={0.3} />
+      <circle cx={650} cy={330} r={120} fill="url(#t09lamp)" />
+      <circle cx={650} cy={330} r={7} fill={TV.amber} opacity={0.26} />
 
-      {/* her, close to the glass */}
-      <g transform="translate(920 370) scale(2.35)" opacity={0.62}>
+      {/* her face pressed against the inside of wet glass, visible only as a pale reflection layered on streaks */}
+      <g transform="translate(920 360) scale(2.3)" opacity={0.34}>
         <WomanInGlass t={t} face />
       </g>
+      <g transform="translate(926 366) scale(2.3)" opacity={0.1} style={{ mixBlendMode: 'screen' }}>
+        <WomanInGlass t={t} face />
+      </g>
+      {/* cyan edge light on the reflection */}
+      <ellipse cx={930} cy={430} rx={180} ry={220} fill="#9FD3F5" opacity={0.05} />
 
-      {/* the bottom of the window goes to black before the hand, no hard seam */}
+      {/* fog from her breath on the inside surface */}
+      <ellipse cx={930} cy={520} rx={165 + tap * 16} ry={115 + tap * 12} fill="#BFD6E6" opacity={0.07} />
+
+      {/* the bottom of the window goes to black before the hand, no hard seam; rear seat behind her out of focus/empty */}
       <rect x={420} y={760} width={1080} height={740} fill="url(#t09fade)" />
+      <path d="M 470 1460 q 490 -50 980 0 l 0 40 l -980 0 Z" fill="#060B12" opacity={0.45} />
 
       {/* fingertips pressing from the inside, palm out of frame */}
-      <g transform={'translate(1010 ' + (1290 + tap * 7) + ')'} opacity={0.92}>
+      <g transform={`translate(${1010 + tap * 5} ${1290 + tap * 14})`} opacity={0.92}>
         {[0, 1, 2, 3].map((i) => {
           const h = 176 - Math.abs(i - 1.4) * 22;
           const x = -88 + i * 48;
@@ -156,6 +163,7 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
             <g key={i} transform={`translate(${x} 0) rotate(${tilt})`}>
               <path d={`M -17 120 L -17 ${-h + 20} Q -17 ${-h} 0 ${-h} Q 17 ${-h} 17 ${-h + 20} L 17 120 Z`} fill="#D5DDE5" opacity={0.9} />
               <path d={`M -15 -8 L -15 ${-h + 26} Q -15 ${-h + 6} 0 ${-h + 6} Q 15 ${-h + 6} 15 ${-h + 26} L 15 -8 Z`} fill="#EEF4F9" opacity={0.28} />
+              <ellipse cx={0} cy={-h + 10} rx={14} ry={8} fill="#BFD6E6" opacity={0.12 + tap * 0.1} />
             </g>
           );
         })}
@@ -167,13 +175,14 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
         </g>
       </g>
 
-      {/* rain running down the glass, in front of everything */}
-      {Array.from({ length: 44 }).map((_, i) => {
+      {/* wet pane and rain running down the glass, in front of everything */}
+      <rect x={420} y={-420} width={1080} height={1920} fill="#0A1A28" opacity={0.12} />
+      {Array.from({ length: 52 }).map((_, i) => {
         const x = 440 + ((i * 137) % 1040);
-        const y = -380 + ((i * 271 + t * (12 + (i % 5) * 7)) % 1800);
-        return <rect key={i} x={x} y={y} width={2.2} height={10 + (i % 4) * 12} rx={1.1} fill="#CFE6FF" opacity={0.13} />;
+        const y = -380 + ((i * 271 + t * (14 + (i % 5) * 7)) % 1880);
+        return <rect key={i} x={x} y={y} width={2.2} height={12 + (i % 5) * 14} rx={1.1} fill="#CFE6FF" opacity={0.1 + (i % 4) * 0.04} />;
       })}
-      {/* the rear window: rubber frame + sill, so she is pressed against a real window */}
+      {/* the rear window: rubber frame + sill */}
       <path d="M 430 -414 Q 960 -400 1490 -414 L 1490 1490 Q 960 1476 430 1490 Z" fill="none" stroke="#0A121C" strokeWidth={34} />
       <path d="M 430 -420 L 1490 -420 L 1490 -330 Q 960 -300 430 -330 Z" fill="#080F17" opacity={0.9} />
       <path d="M 430 1240 Q 960 1210 1490 1240 L 1490 1490 L 430 1490 Z" fill="#080F17" opacity={0.9} />
@@ -235,8 +244,7 @@ export const T07: React.FC<ShotProps> = ({ t, len }) => (
     {/* the mirror, and his eyes in it: for once he is the one being looked back at */}
     <BigMirror t={t} occupant="hung" x={760} y={-220} w={560} h={250} />
     {/* his two hands on the rim, seen over his shoulder */}
-    <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
-    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
+    <PovWheelHands look={CHARACTERS.hung.look} t={t} />
     {/* and him between us and the road: no face, only the back of the head and the shoulders */}
     <BackOfDriver x={980} y={1300} s={1.02} />
   </g>
@@ -292,33 +300,41 @@ export const T10: React.FC<ShotProps> = ({ t, len }) => {
         <VideoNoise w={382} h={787} t={t} o={0.6} />
       </PhoneHeld>
 
-      {/* left hand gripping the phone: fingers along left edge, torn red knuckles lit by screen */}
-      <g transform="translate(705 520) rotate(-6)">
-        {/* sleeve edge */}
-        <path d="M -40 260 L 40 260 L 30 420 L -30 420 Z" fill="#0B0F14" />
-        {/* fingers curling over the phone edge */}
+      {/* left hand holding the phone: 4 fingers along the left edge, thumb on the right side tapping */}
+      <g transform="translate(720 280) rotate(-6)" opacity={fade}>
+        {/* forearm and sleeve coming in from bottom-left */}
+        <path d="M -60 940 L 70 760 L 120 800 L 10 960 Z" fill="#181C24" />
+        <rect x={44} y={748} width={88} height={16} rx={8} fill="#0D1117" />
+        <path d="M 10 900 L 74 770 L 112 800 L 62 920 Z" fill="#C08A63" opacity={0.95} />
+
+        {/* palm behind/under the phone, left side */}
+        <path d="M 8 640 q 28 -40 70 -18 q 18 70 -8 150 q -44 24 -84 -8 q -10 -54 22 -124 Z" fill="#C08A63" />
+        <path d="M 18 650 q 20 -24 46 -8 q 10 54 -8 120 q -28 14 -52 -8 Z" fill="#A67150" opacity={0.18} />
+
+        {/* 4 fingers wrapped over the left edge of the phone (index at top) */}
         {[0, 1, 2, 3].map((i) => {
-          const y = 20 + i * 92;
+          const y = 320 + i * 92;
+          const len = 84 - Math.abs(i - 1.4) * 10;
+          const tip = 14 + i * 2;
           return (
-            <g key={i} transform={`translate(18 ${y})`}>
-              <rect x={-18} y={-26} width={72} height={52} rx={22} fill="#8A6448" />
-              <rect x={-8} y={-18} width={30} height={36} rx={12} fill="#9B7656" opacity={0.55} />
-              {/* torn red skin on the knuckles */}
-              <path d={`M ${-6 + (i % 2) * 8} ${-10} l 16 6 l -6 10 l -14 -4 Z`} fill="#B3261E" opacity={0.85} />
-              <path d={`M ${4 + (i % 2) * 4} ${2} l 10 -2`} stroke="#7A1410" strokeWidth={2} strokeLinecap="round" opacity={0.7} />
+            <g key={i} transform={`translate(6 ${y})`}>
+              <rect x={-34} y={-20} width={len} height={40} rx={20} fill="#C08A63" />
+              <rect x={-30} y={-14} width={Math.max(20, len - 34)} height={28} rx={14} fill="#D4A07A" opacity={0.16} />
+              <ellipse cx={-30} cy={0} rx={tip} ry={18} fill="#C08A63" />
+              {/* knuckles/torn red skin catching cold screen light */}
+              <path d={`M ${len - 56} -8 l 16 6 l -5 10 l -14 -5 Z`} fill="#B3261E" opacity={0.9} />
+              <path d={`M ${len - 38} 0 l 12 -2`} stroke="#7A1410" strokeWidth={2.2} strokeLinecap="round" opacity={0.75} />
+              <path d={`M ${len - 54} -10 l 14 5`} stroke="#E8F8FF" strokeWidth={1.6} strokeLinecap="round" opacity={0.2} />
             </g>
           );
         })}
-        {/* thumb on the near side */}
-        <g transform="translate(56 420) rotate(22)">
-          <rect x={-16} y={-70} width={36} height={90} rx={18} fill="#8A6448" />
-          <path d="M -4 -40 l 18 8 l -8 12" fill="#B3261E" opacity={0.75} />
-        </g>
-      </g>
 
-      {/* right thumb tapping from below-right edge */}
-      <g transform={`translate(1110 ${tap ? 760 : 820}) rotate(18)`} opacity={0.55}>
-        <rect x={-18} y={-90} width={40} height={140} rx={20} fill="#7A583E" />
+        {/* thumb on the right side of the phone, reaching to tap */}
+        <g transform={`translate(${tap ? 392 : 418} ${tap ? 630 : 690}) rotate(${tap ? -18 : -8})`}>
+          <rect x={-20} y={-72} width={40} height={124} rx={20} fill="#C08A63" />
+          <rect x={-14} y={-58} width={14} height={72} rx={7} fill="#A67150" opacity={0.18} />
+          <ellipse cx={0} cy={-66} rx={18} ry={16} fill="#D4A07A" opacity={0.22} />
+        </g>
       </g>
     </g>
   );
@@ -633,31 +649,17 @@ export const T16: React.FC<ShotProps> = ({ t, len }) => (
       const y = 560 + i * 110;
       return <rect key={i} x={945} y={y} width={30} height={40} fill="#122334" opacity={0.25} />;
     })}
-    <ellipse cx={960} cy={980} rx={420} ry={60} fill={TV.amber} opacity={0.05} />
 
     {/* taxi stopped in middle distance, headlights on the bike */}
-    <g transform="translate(920 820) scale(0.7)">
-      <TaxiSide t={t} speed={0} rain={0.7} driver mirror="woman" x={960} y={430} s={1} />
-    </g>
-    {/* headlight cones reaching the bike on shoulder */}
-    <path d="M 760 980 L 520 1280 L 760 1320 Z" fill="#F2B33D" opacity={0.08} />
-    <path d="M 820 980 L 620 1280 L 820 1310 Z" fill="#FFE7B8" opacity={0.06} />
+    <TaxiSide t={t} speed={0} rain={0.7} driver mirror="woman" x={860} y={760} s={0.68} />
+    {/* headlight cones reaching the bent red bike on shoulder ahead-right */}
+    <path d="M 1120 1000 L 1280 1240 L 1180 1310 Z" fill="#F2B33D" opacity={0.09} />
+    <path d="M 1160 1010 L 1340 1240 L 1240 1300 Z" fill="#FFE7B8" opacity={0.06} />
+    <ellipse cx={1240} cy={1290} rx={120} ry={26} fill={TV.amber} opacity={0.05} />
 
     {/* red bicycle lying on wet shoulder, front wheel bent - only red object */}
-    <g transform="translate(640 1290) rotate(78)">
-      {/* rear wheel */}
-      <circle cx={-48} cy={0} r={34} fill="none" stroke="#B3261E" strokeWidth={7} />
-      <circle cx={-48} cy={0} r={5} fill="#3A1A18" />
-      {/* front wheel, bent */}
-      <ellipse cx={52} cy={6} rx={28} ry={36} fill="none" stroke="#B3261E" strokeWidth={7} transform="rotate(18 52 6)" />
-      <circle cx={52} cy={6} r={5} fill="#3A1A18" />
-      {/* frame */}
-      <path d="M -48 0 L 0 -30 L 52 6 L 6 12 Z" fill="none" stroke="#A32018" strokeWidth={7} strokeLinejoin="round" />
-      <line x1={0} y1={-30} x2={-8} y2={-52} stroke="#A32018" strokeWidth={6} />
-      <rect x={-24} y={-58} width={40} height={7} rx={3} fill="#A32018" />
-      <line x1={-48} y1={0} x2={-30} y2={36} stroke="#A32018" strokeWidth={5} />
-      {/* seat */}
-      <rect x={-40} y={34} width={26} height={8} rx={4} fill="#3A1A18" />
+    <g transform="translate(1260 1290) rotate(72)">
+      <BikeLying s={1} bent />
     </g>
 
     {/* rain */}
@@ -677,15 +679,9 @@ export const T17: React.FC<ShotProps> = ({ t, len }) => (
     <ellipse cx={960} cy={980} rx={260} ry={50} fill="#B3261E" opacity={0.12} />
     <ellipse cx={960} cy={1010} rx={180} ry={26} fill="#B3261E" opacity={0.08} />
 
-    <CabinV t={t} speed={0.02} wheel={-2} />
-    {/* wipers stopped mid-sweep overlay suggestion: a fixed blade over animated area feel is limited, but still frame reads */}
-    <g transform="translate(700 1086) rotate(18)" opacity={0.35}>
-      <rect x={0} y={-8} width={470} height={9} rx={4.5} fill="#04080E" />
-    </g>
+    <CabinV t={t} speed={0.02} wheel={-2} wipers={0} />
     <MirrorV t={t} occupant="woman" />
-    {/* woman very still reinforced by a steady big mirror hint? no, keep single mirror rule simple */}
-    <WheelHand x={760} y={1308} s={1.6} rot={10} flip />
-    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-10} flip torn />
+    <PovWheelHands look={CHARACTERS.hung.look} rimTilt={10} />
   </g>
 );
 

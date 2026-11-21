@@ -1,5 +1,19 @@
 import React from 'react';
-import { HEAD, limbSpread, Look, LOOKS, Pose, turnWidth } from './rig';
+import { Look, LOOKS, Pose } from './rig';
+import {
+  BODY_METRICS,
+  FLAT_LEG_LEN,
+  FLAT_METRICS,
+  HEAD,
+  Pt,
+  handAt,
+  jointsFor,
+  lerpPt,
+  turnWidth,
+} from './metrics';
+
+// Re-export the sheet numbers: character.tsx and old shots import them from here.
+export { FLAT_LEG_LEN, FLAT_METRICS };
 
 // The flat-vector body, for the character-reference episode.
 //
@@ -11,62 +25,17 @@ import { HEAD, limbSpread, Look, LOOKS, Pose, turnWidth } from './rig';
 //
 // Coordinates are the rig's: hips at 0,0, y down, head centre at HEAD.y. Only the silhouette changes.
 
-const P = (x: number, y: number) => ({ x, y });
-type Pt = { x: number; y: number };
+// ---- body geometry -----------------------------------------------------------------------------
+// ONE source of truth lives in metrics.ts. The maths below used to be copy-pasted from rig.tsx with
+// different constants (thigh 72 vs 88, shoulder 42 vs 68...), so the same character changed shape
+// when a scene swapped rigs. These wrappers keep every `flat*` call site working, nothing is redrawn.
 
-const UPPER_ARM = 62;
-const FORE_ARM = 58;
-const THIGH = 88;
-const SHIN = 84;
-const SHOULDER = { x: 68, y: -94 };
-const HIP = { x: 24, y: 0 };
-
-/** Leg length of the flat body (the rig's LEG_LEN is shorter), so floors and shadows line up. */
-export const FLAT_LEG_LEN = THIGH + SHIN;
-/** Half-widths and the default head radius, so a sheet can print the numbers it actually drew. */
-export const FLAT_METRICS = { shoulder: SHOULDER.x, hip: HIP.x, headR: 58 };
-
-const rad = (d: number) => (d * Math.PI) / 180;
-const rot = (p: Pt, deg: number, c: Pt = P(0, 0)): Pt => {
-  const r = rad(deg);
-  const dx = p.x - c.x;
-  const dy = p.y - c.y;
-  return P(c.x + dx * Math.cos(r) - dy * Math.sin(r), c.y + dx * Math.sin(r) + dy * Math.cos(r));
-};
-const lerpPt = (a: Pt, b: Pt, t: number): Pt => P(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
-
-/** Joints for the flat body: same maths as `joints`, wider shoulders and slightly longer arms. */
-export const flatJoints = (pose: Pose, armLen = 1) => {
-  const UA = UPPER_ARM * armLen;
-  const FA = FORE_ARM * armLen;
-  const side = (s: 1 | -1, limb: { a: number; b: number }, root: Pt, l1: number, l2: number, isLeg: boolean) => {
-    const dir = isLeg ? pose.facing : s;
-    const d1 = P(dir * Math.sin(rad(limb.a)), Math.cos(rad(limb.a)));
-    const mid = P(root.x + d1.x * l1, root.y + d1.y * l1);
-    const a2 = limb.a + limb.b;
-    const d2 = P(dir * Math.sin(rad(a2)), Math.cos(rad(a2)));
-    return { root, mid, end: P(mid.x + d2.x * l2, mid.y + d2.y * l2) };
-  };
-  const torsoRot = (p: Pt) => rot(p, pose.tilt);
-  const sp = limbSpread(pose.yaw);
-  const shL = P(-SHOULDER.x * sp + pose.yaw * 6, SHOULDER.y);
-  const shR = P(SHOULDER.x * sp + pose.yaw * 6, SHOULDER.y);
-  const armL = side(-1, pose.armL, shL, UA, FA, false);
-  const armR = side(1, pose.armR, shR, UA, FA, false);
-  const legL = side(-1, pose.legL, P(-HIP.x * sp, 0), THIGH, SHIN, true);
-  const legR = side(1, pose.legR, P(HIP.x * sp, 0), THIGH, SHIN, true);
-  const r = (o: { root: Pt; mid: Pt; end: Pt }) => ({ root: torsoRot(o.root), mid: torsoRot(o.mid), end: torsoRot(o.end) });
-  return { armL: r(armL), armR: r(armR), legL, legR, head: torsoRot(HEAD) };
-};
-
-const flatToWorld = (pose: Pose, p: Pt): Pt => {
-  const spun = rot(p, pose.spin, P(0, -90));
-  return P(pose.x + spun.x * pose.scale, pose.y + spun.y * pose.scale);
-};
+/** Joints for the flat body: exactly `jointsFor`, with the flat skeleton's longer limbs. */
+export const flatJoints = (pose: Pose, armLen = 1) => jointsFor(pose, BODY_METRICS.flat, armLen);
 
 /** Where the flat body's hands are, for props and for the other character's grip. */
-export const flatHandR = (pose: Pose, armLen = 1) => flatToWorld(pose, flatJoints(pose, armLen).armR.end);
-export const flatHandL = (pose: Pose, armLen = 1) => flatToWorld(pose, flatJoints(pose, armLen).armL.end);
+export const flatHandR = (pose: Pose, armLen = 1) => handAt(pose, BODY_METRICS.flat, armLen, 'R');
+export const flatHandL = (pose: Pose, armLen = 1) => handAt(pose, BODY_METRICS.flat, armLen, 'L');
 
 const shade = (hex: string, amount: number) => {
   // a darker/lighter copy of a hex colour, so a look only has to declare its base tones
@@ -108,7 +77,7 @@ export const FlatHero: React.FC<{
   const j = flatJoints(pose, look?.armLen ?? 1);
   const ink = L.line;
   const long = Boolean(L.longFace);
-  const rx = L.headR ?? 58;
+  const rx = L.headR ?? FLAT_METRICS.headR;
   const ry = long ? 70 : 60;
   const headPath = `M ${-rx} ${HEAD.y - 4} C ${-rx} ${HEAD.y - ry * 0.9} ${-rx * 0.62} ${HEAD.y - ry} 0 ${HEAD.y - ry} C ${rx * 0.62} ${HEAD.y - ry} ${rx} ${HEAD.y - ry * 0.9} ${rx} ${HEAD.y - 4} C ${rx} ${HEAD.y + ry * 0.5} ${rx * 0.62} ${HEAD.y + ry} 0 ${HEAD.y + ry} C ${-rx * 0.62} ${HEAD.y + ry} ${-rx} ${HEAD.y + ry * 0.5} ${-rx} ${HEAD.y - 4} Z`;
   const torsoPath = 'M -74 -102 Q -38 -108 0 -108 Q 38 -108 74 -102 L 64 -22 Q 62 12 56 20 Q 0 29 -56 20 Q -62 12 -64 -22 Z';

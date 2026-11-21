@@ -1,5 +1,16 @@
 import React from 'react';
 import { lerp, easeInOut } from './anim';
+import {
+  BODY_METRICS,
+  HEAD,
+  LEG_LEN,
+  Pt,
+  jointsFor,
+  limbSpread,
+  rot,
+  toWorld as toWorldGeom,
+  turnWidth,
+} from './metrics';
 
 // The cast, drawn entirely in code: one rig, and a costume (a Look) per character. Every character is built
 // once here, so they look identical in every shot: that's the "drawn, not guessed" point. Original
@@ -188,52 +199,13 @@ export const poseAt = (f: number, keys: Key[], from: Pose = basePose): Pose => {
   return full[full.length - 1].p;
 };
 
-// body measurements (local space: hips at 0,0, y down)
-const UPPER_ARM = 62;
-const FORE_ARM = 58;
-const THIGH = 72;
-const SHIN = 68;
-const SHOULDER = { x: 42, y: -108 };
-const HIP = { x: 17, y: 0 };
-export const HEAD = { x: 0, y: -176, r: 62 };
-export const LEG_LEN = THIGH + SHIN;
+// ---- body geometry -----------------------------------------------------------------------------
+// ONE source of truth now lives in metrics.ts. Both rigs import it; re-export here so existing
+// `import { HEAD, LEG_LEN, turnWidth } from './rig'` call sites keep working unchanged.
+export { HEAD, LEG_LEN, turnWidth, limbSpread } from './metrics';
 
-const rad = (d: number) => (d * Math.PI) / 180;
-type P = { x: number; y: number };
-const rot = (p: P, deg: number, c: P = { x: 0, y: 0 }): P => {
-  const r = rad(deg);
-  const dx = p.x - c.x;
-  const dy = p.y - c.y;
-  return { x: c.x + dx * Math.cos(r) - dy * Math.sin(r), y: c.y + dx * Math.sin(r) + dy * Math.cos(r) };
-};
-
-/** Joint positions in local space (before the hip translate/scale), so scenes can attach props to hands. */
-export const joints = (pose: Pose) => {
-  const side = (s: 1 | -1, limb: Limb, root: P, l1: number, l2: number, isLeg: boolean) => {
-    // arms swing outward (away from the body) on their own side; legs swing forward in the facing direction
-    const dir = isLeg ? pose.facing : s;
-    const d1 = { x: dir * Math.sin(rad(limb.a)), y: Math.cos(rad(limb.a)) };
-    const mid = { x: root.x + d1.x * l1, y: root.y + d1.y * l1 };
-    const a2 = limb.a + limb.b;
-    const d2 = { x: dir * Math.sin(rad(a2)), y: Math.cos(rad(a2)) };
-    return { root, mid, end: { x: mid.x + d2.x * l2, y: mid.y + d2.y * l2 } };
-  };
-  const torsoRot = (p: P) => rot(p, pose.tilt);
-  const sp = limbSpread(pose.yaw);
-  const shL = { x: -SHOULDER.x * sp + pose.yaw * 6, y: SHOULDER.y };
-  const shR = { x: SHOULDER.x * sp + pose.yaw * 6, y: SHOULDER.y };
-  const armL = side(-1, pose.armL, shL, UPPER_ARM, FORE_ARM, false);
-  const armR = side(1, pose.armR, shR, UPPER_ARM, FORE_ARM, false);
-  const legL = side(-1, pose.legL, { x: -HIP.x * sp, y: 0 }, THIGH, SHIN, true);
-  const legR = side(1, pose.legR, { x: HIP.x * sp, y: 0 }, THIGH, SHIN, true);
-  const r = (o: { root: P; mid: P; end: P }) => ({ root: torsoRot(o.root), mid: torsoRot(o.mid), end: torsoRot(o.end) });
-  return { armL: r(armL), armR: r(armR), legL, legR, head: torsoRot(HEAD) };
-};
-
-/** How wide the body reads as it turns: full width face-on, about 60% in profile. */
-export const turnWidth = (yaw: number) => 1 - 0.4 * Math.min(1, Math.abs(yaw));
-/** Shoulders and hips close up as he turns, so in profile the limbs overlap the body. */
-export const limbSpread = (yaw: number) => 1 - 0.85 * Math.min(1, Math.abs(yaw));
+type P = Pt;
+export const joints = (pose: Pose) => jointsFor(pose, BODY_METRICS.rig);
 
 /** Face swaps happen through a blink: two frames shut either side of each change, as in the genre. */
 export const faceAt = (f: number, keys: [number, Expr][]): { expr: Expr; blink: number } => {
@@ -247,11 +219,9 @@ export const faceAt = (f: number, keys: [number, Expr][]): { expr: Expr; blink: 
   return { expr, blink };
 };
 
-/** A local point to world space, for attaching props (the mug in Pip's hand). */
-export const toWorld = (pose: Pose, p: P): P => {
-  const spun = rot(p, pose.spin, { x: 0, y: -90 });
-  return { x: pose.x + spun.x * pose.scale, y: pose.y + spun.y * pose.scale };
-};
+/** A local point to world space, for attaching props (the mug in Pip's hand).
+ *  Delegates to metrics.ts so both rigs use the exact same transform. */
+export const toWorld = (pose: Pose, p: P): P => toWorldGeom(pose, p);
 
 /** Where a pose's hand is in world space, so props (a torch, a latch grip) can be attached to it. */
 export const handR = (pose: Pose) => toWorld(pose, joints(pose).armR.end);
@@ -259,7 +229,8 @@ export const handL = (pose: Pose) => toWorld(pose, joints(pose).armL.end);
 
 /** Straight-arm reach: the right arm angle (local) that points the hand at a world target. */
 export const reachAngle = (pose: Pose, target: P) => {
-  const sh = toWorld(pose, rot({ x: SHOULDER.x * limbSpread(pose.yaw) + pose.yaw * 6, y: SHOULDER.y }, pose.tilt));
+  const { shoulder } = BODY_METRICS.rig;
+  const sh = toWorld(pose, rot({ x: shoulder.x * limbSpread(pose.yaw) + pose.yaw * 6, y: shoulder.y }, pose.tilt));
   const world = (Math.atan2(target.x - sh.x, target.y - sh.y) * 180) / Math.PI; // 0 = straight down
   return world - pose.tilt;
 };

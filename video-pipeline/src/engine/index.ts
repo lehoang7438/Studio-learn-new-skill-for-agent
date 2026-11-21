@@ -1,6 +1,12 @@
 // Everything an episode builds with, in one import: import { Study, Hero, poseAt, Marquee, ... } from '../../engine';
 export * from './anim';
 export * from './rig';
+// Character contract. Explicit names (not `export *`) so they don't collide with the compatibility
+// re-exports in rig.tsx / flat.tsx. Episodes should attach props through `handAnchors`, never x/y guesses.
+export { BODY_METRICS, jointsFor, handAnchors, handAt, legLength } from './metrics';
+export type { BodyMetrics, HandAnchor, Joints, LimbJoints, PoseGeom, Renderer, Pt } from './metrics';
+export { LOOK_SUPPORT, EXTRA_SUPPORT, unsupportedLookFields, describeLookGaps, HAND_FALLBACK, handSpecFor } from './look';
+export type { HandSpec } from './look';
 export * from './props';
 export * from './kit';
 export * from './light';
@@ -10,6 +16,7 @@ export * from './ui';
 export * from './fonts';
 export * from './episode';
 export * from './character';
+export * from './continuity';
 export * from './flat';
 export * from './firstPerson';
 export * from './sets/study';

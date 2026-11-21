@@ -21,7 +21,7 @@ def _cue(cue: str, starts: dict[str, int], line_starts: dict[str, int], total: i
     if cue.startswith("end-"):
         return total - int(cue[4:])
     if cue.startswith("end+"):
-        return total + int(cue[4:])
+        return max(0, total - 1)
     base, _, off = cue.partition("+")
     off_f = int(off) if off else 0
     if base in starts:
@@ -33,7 +33,11 @@ def _cue(cue: str, starts: dict[str, int], line_starts: dict[str, int], total: i
 
 def build_timeline(slug: str, quiet: bool = False) -> dict:
     project = load_project(slug)
-    fps = int(project.get("fps", FPS))
+    # the Remotion engine is hard-wired to 30 fps; a different project.fps is ignored
+    project_fps = project.get("fps", FPS)
+    if project_fps != FPS:
+        print(f"WARN {slug}: project.fps={project_fps} ignored — the Remotion engine always runs at {FPS} fps")
+    fps = FPS
     shots = project.get("shots", [])
     if not shots:
         raise SystemExit(f"{slug}: project.json has no shots")
@@ -112,6 +116,7 @@ def build_timeline(slug: str, quiet: bool = False) -> dict:
         "title": project.get("title", slug),
         "fps": fps,
         "total": total,
+        "totalSeconds": round(total / fps, 3),
         "segments": segments,
         "shots": out_shots,
         "fx": fx,
@@ -124,7 +129,7 @@ def build_timeline(slug: str, quiet: bool = False) -> dict:
         caps = [
             {
                 "start": float(l.get("at", 0)),
-                "end": min(total / fps, float(l.get("at", 0)) + 2.4),
+                "end": max(float(l.get("at", 0)) + 0.35, min(total / fps, float(l.get("at", 0)) + 2.4)),
                 "text": str(l.get("text", "")),
                 "accent": None,
                 "color": None,
@@ -134,20 +139,25 @@ def build_timeline(slug: str, quiet: bool = False) -> dict:
             for l in lines
             if str(l.get("text", "")).strip()
         ]
-    timeline["captions"] = [
-        {
-            "a": max(0, int(round(float(c.get("start", 0)) * fps))),
-            "b": min(total, int(round(float(c.get("end", 0)) * fps))),
-            "text": str(c.get("text", "")),
-            "accent": c.get("accent"),
-            "color": c.get("color"),
-            "y": c.get("y", project.get("subtitles", {}).get("y", 900)),
-            "size": c.get("size", project.get("subtitles", {}).get("size", 100)),
-            "underline": bool(c.get("underline", False)),
-        }
-        for c in caps
-        if str(c.get("text", "")).strip()
-    ]
+    timeline_caps = []
+    for c in caps:
+        if not str(c.get("text", "")).strip():
+            continue
+        a = max(0, int(round(float(c.get("start", 0)) * fps)))
+        b = min(total, max(a + 1, int(round(float(c.get("end", 0)) * fps))))
+        timeline_caps.append(
+            {
+                "a": a,
+                "b": b,
+                "text": str(c.get("text", "")),
+                "accent": c.get("accent"),
+                "color": c.get("color"),
+                "y": c.get("y", project.get("subtitles", {}).get("y", 900)),
+                "size": c.get("size", project.get("subtitles", {}).get("size", 100)),
+                "underline": bool(c.get("underline", False)),
+            }
+        )
+    timeline["captions"] = timeline_caps
     save_json(ep_dir(slug) / "timeline.json", timeline)
     # keep a copy in out/ so the review gate and a shared folder are self-contained
     save_json(out_dir(slug, create=True) / "timeline.json", timeline)

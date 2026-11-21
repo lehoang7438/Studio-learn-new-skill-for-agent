@@ -17,17 +17,22 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from .common import OUT, ffmpeg, ffprobe, load_json, load_project, out_dir, pub_dir, rel, run, save_json
+from .common import OUT, PUBLIC, ROOT, ffmpeg, ffprobe, load_json, load_project, out_dir, pub_dir, rel, run, save_json
 from .validate import issue, validate_project
 
 
 # ---------------------------------------------------------------- helpers
 
 def _font(size: int, bold: bool = False):
-    names = ["arialbd.ttf", "arial.ttf", "segoeuib.ttf", "segoeui.ttf", "DejaVuSans.ttf"]
-    base = Path("C:/Windows/Fonts")
-    for n in names:
-        p = base / n
+    candidates: list[Path] = []
+    # bundled fonts first, so a shared report looks the same on every machine
+    for pattern in ("*SemiBold*.ttf", "*Bold*.ttf"):
+        candidates.extend(sorted((PUBLIC / "fonts").glob(pattern)))
+    windows = ["arialbd.ttf", "segoeuib.ttf", "arial.ttf", "segoeui.ttf", "DejaVuSans.ttf"] if bold else [
+        "arial.ttf", "segoeui.ttf", "arialbd.ttf", "segoeuib.ttf", "DejaVuSans.ttf"
+    ]
+    candidates += [Path("C:/Windows/Fonts") / n for n in windows]
+    for p in candidates:
         if p.exists():
             try:
                 return ImageFont.truetype(str(p), size)
@@ -54,7 +59,16 @@ def _hamming(a: int, b: int) -> int:
     return int((a ^ b).bit_count())
 
 
-def analyze_image(path: Path, scene: str, caption: str, cue_y: float | None = None, cue_size: float | None = None) -> dict:
+def analyze_image(
+    path: Path,
+    scene: str,
+    caption: str,
+    cue_y: float | None = None,
+    cue_size: float | None = None,
+    cue_text: str | None = None,
+    accent: str | None = None,
+    max_width: float | None = None,
+) -> dict:
     img = Image.open(path).convert("RGB")
     a = np.asarray(img)
     h, w = a.shape[:2]
@@ -83,6 +97,13 @@ def analyze_image(path: Path, scene: str, caption: str, cue_y: float | None = No
         # the caption is white with an accent word in yellow or red; all three must count
         glyph_mask = ((r > 225) & (g > 225) & (b > 225)) | ((r > 190) & (g > 130) & (b < 130)) | ((r > 160) & (g < 110) & (b < 100))
         glyph = float(glyph_mask.mean())
+        if accent and cue_text and str(accent).casefold() in str(cue_text).casefold():
+            white = float(((r > 225) & (g > 225) & (b > 225)).mean())
+            accented = float((((r > 190) & (g > 130) & (b < 130)) | ((r > 160) & (g < 110) & (b < 100))).mean())
+            if white <= 0.0008 or accented <= 0.0008:
+                checks.append(issue("WARN", "caption.accent_missing", f"accent '{accent}' or white glyphs are barely visible (white {white:.4f}, accent {accented:.4f})", "check the cue's accent colour and contrast"))
+            elif accented > white * 6:
+                checks.append(issue("WARN", "caption.accent_overapplied", f"accent glyphs dominate ({accented:.4f} vs white {white:.4f})", "limit the accent to one word"))
         if glyph < 0.0035:
             checks.append(issue("FAIL", "caption.missing", f"caption text is not visible around y={int(cy)}", "render the still and check Caption props (text, start, y, size)"))
         else:
@@ -91,6 +112,10 @@ def analyze_image(path: Path, scene: str, caption: str, cue_y: float | None = No
                 x0, x1 = int(xs.min()), int(xs.max())
                 if x0 < 34 or x1 > w - 34:
                     checks.append(issue("WARN", "caption.edge", "caption touches the frame edge", "shorten it or reduce the caption size"))
+                if max_width is not None:
+                    bbox_w = x1 - x0
+                    if bbox_w > float(max_width) + 68:
+                        checks.append(issue("WARN", "caption.width", f"caption glyphs span {bbox_w}px (max {float(max_width):.0f} + 68)", "shorten the cue or reduce its size"))
     # HUD visibility (the dock establishing shot may deliberately have no HUD)
     if scene in ("cabin", "deck", "mirror", "switch"):
         top = lum[80:250, :]
@@ -319,6 +344,7 @@ def review(slug: str, strict: bool = False) -> tuple[bool, Path]:
 
     fps = int(timeline.get("fps", project.get("fps", 30)))
     total = float(timeline.get("total", 0)) / fps if fps else 0
+    max_width = project.get("subtitles", {}).get("maxWidth")
     board = out_dir(slug) / "board"
     motion = out_dir(slug) / "review" / "frames"
     rows = []
@@ -341,6 +367,9 @@ def review(slug: str, strict: bool = False) -> tuple[bool, Path]:
                 str(shot.get("caption", "")),
                 cue.get("y") if cue else None,
                 cue.get("size") if cue else None,
+                cue_text=(cue or {}).get("text"),
+                accent=(cue or {}).get("accent"),
+                max_width=max_width,
             )
             checks += info.get("checks", [])
             if prev_hash is not None and _hamming(prev_hash, info["hash"]) <= 2:
@@ -358,6 +387,9 @@ def review(slug: str, strict: bool = False) -> tuple[bool, Path]:
                 str(shot.get("caption", "")) if cue_m else "",
                 cue_m.get("y") if cue_m else None,
                 cue_m.get("size") if cue_m else None,
+                cue_text=(cue_m or {}).get("text"),
+                accent=(cue_m or {}).get("accent"),
+                max_width=max_width,
             )
             if info and mi.get("sig") is not None and shot.get("scene") != "choice":
                 diff = float(np.abs(info["sig"] - mi["sig"]).mean())
@@ -383,6 +415,19 @@ def review(slug: str, strict: bool = False) -> tuple[bool, Path]:
     music_path = pub_dir(slug) / "music.wav"
     sfx_path = pub_dir(slug) / "sfx.wav"
     audio = {"voice": audio_stats(voice_path), "music": audio_stats(music_path), "sfx": audio_stats(sfx_path)}
+    tl_audio = timeline.get("audio", {}) or {}
+    for key, path in (("music", music_path), ("sfx", sfx_path)):
+        if path.exists() and key not in tl_audio:
+            issues.append(issue("FAIL", "timeline.audio_missing", f"{key}.wav exists but timeline.audio has no '{key}'", "re-run: python video.py timeline <slug> after audio"))
+    if len(timeline.get("shots", [])) != len(project.get("shots", [])):
+        issues.append(
+            issue(
+                "FAIL",
+                "timeline.shots",
+                f"timeline has {len(timeline.get('shots', []))} shots, project has {len(project.get('shots', []))}",
+                "re-run: python video.py timeline <slug>",
+            )
+        )
     v = audio["voice"]
     if not v.get("exists"):
         issues.append(issue("FAIL", "audio.voice_missing", "voice.wav is missing", f"run: python video.py voice {slug}"))
@@ -425,6 +470,15 @@ def review(slug: str, strict: bool = False) -> tuple[bool, Path]:
     # ---- video
     mp4 = out_dir(slug) / f"{slug}.mp4"
     video = video_stats(mp4)
+    if mp4.exists():
+        audio["mix"] = audio_stats(mp4)
+        mix = audio["mix"]
+        if mix.get("exists"):
+            lufs = mix.get("lufs", float("-inf"))
+            if not (-16 <= lufs <= -12):
+                issues.append(issue("WARN", "mix.lufs", f"export loudness is {lufs:.1f} LUFS (target -16..-12)", "adjust the final mix loudness"))
+            if mix.get("peak", -99) > -1.0:
+                issues.append(issue("WARN", "mix.tp", f"export peak is {mix['peak']:.1f} dBFS (target <= -1.0)", "lower the mix or add a limiter"))
     if video.get("exists"):
         if (video.get("width"), video.get("height")) != (1080, 1920):
             issues.append(issue("FAIL", "video.size", f"video is {video.get('width')}x{video.get('height')}", "render at 1080x1920"))

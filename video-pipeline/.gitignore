@@ -23,3 +23,9 @@ Thumbs.db
 
 # packaging
 *.zip
+
+# ship the OpenCode skill registration with the project
+!.opencode/
+!.opencode/skills/
+!.opencode/skills/studio-skill/
+!.opencode/skills/studio-skill/SKILL.md

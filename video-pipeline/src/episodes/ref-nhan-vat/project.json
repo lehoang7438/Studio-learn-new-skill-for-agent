@@ -82,7 +82,7 @@
     { "id": "C2", "shot": "S2", "start": 7.4, "end": 9.5, "text": "THỞ GIỐNG HỆT.", "accent": "HỆT", "y": 980 },
     { "id": "C3", "shot": "S3", "start": 10.4, "end": 12.5, "text": "VẪN LÀ KHUÔN MẶT ĐÓ.", "accent": "ĐÓ", "y": 1150 },
     { "id": "C4", "shot": "S4", "start": 15.6, "end": 17.4, "text": "GHẾ SỐ 5.", "accent": "5", "y": 980 },
-    { "id": "C5", "shot": "S4", "start": 17.4, "end": 19.5, "text": "CÁI NÀY CHẾT.", "accent": "CHẾT", "color": "#E8402F", "y": 980 }
+    { "id": "C5", "shot": "S4", "start": 17.4, "end": 19.0, "text": "CÁI NÀY CHẾT.", "accent": "CHẾT", "color": "#E8402F", "y": 980 }
   ],
   "lines": [
     { "id": "L1", "shot": "S1", "who": "narrator", "at": 0.8, "text": "Một khuôn mặt. Mọi cảnh." },

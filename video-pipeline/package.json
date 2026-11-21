@@ -6,6 +6,7 @@
   "scripts": {
     "studio": "remotion studio src/index.ts --port 3430",
     "typecheck": "tsc --noEmit",
+    "check:contract": "node scripts/check-character-contract.mjs",
     "stills": "node scripts/stills.mjs",
     "render": "node scripts/render.mjs",
     "frame": "node scripts/frame.mjs"

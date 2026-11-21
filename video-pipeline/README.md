@@ -183,7 +183,7 @@ ghi `ATTRIBUTION.md` + `index.json`, rồi mix theo `sfxApi.cues`.
 Kiểm tra:
 
 1. **Caption**: tràn `maxWidth`, đè vùng HUD, đè dock/end-card, chữ quá nhỏ.
-2. **Motion**: so frame 0 với frame giữa ở 64x64 — cảnh gần như đứng yên bị cảnh báo (bỏ qua cảnh choice).
+2. **Motion**: so **frame key** với frame `key + max(12, len/3)` ở 64x64 — cảnh gần như đứng yên bị cảnh báo (bỏ qua cảnh choice). So frame 0 dễ cho ra kết quả sai vì shot được `push()` vào từ ngoài màn hình.
 3. **Ánh sáng**: cảnh tối phải còn chủ thể nhìn thấy.
 4. **Accent**: pixel vàng/đỏ có thực sự xuất hiện trong ảnh.
 5. **Voice**: độ dài line vượt cảnh quá 1.6s.

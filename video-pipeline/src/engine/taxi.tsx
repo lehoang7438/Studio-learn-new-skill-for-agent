@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatHero, FlatLight, flatHandL, flatHandR, flatJoints } from './flat';
-import { Look, Pose } from './rig';
+import { HandSpec, handSpecFor } from './look';
+import { basePose, Look, Pose } from './rig';
 import { Mirror, MirrorEyes, WetGlass } from './wide';
 
 export { Mirror };
@@ -115,12 +116,12 @@ export const RoadV: React.FC<{ t: number; rain?: number; speed?: number; lamps?:
 export const CabinV: React.FC<{ t: number; wheel?: number; wipers?: number; speed?: number; dashGlow?: number }> = ({
   t,
   wheel = 0,
-  wipers = 0,
+  wipers = 1,
   speed = 0.35,
   dashGlow = 1,
 }) => {
   const shake = Math.sin(t * 0.9) * 1.1 * speed;
-  const wipe = Math.sin(t / 22) * 0.5 + 0.5;
+  const wipe = wipers === 0 ? 0.52 : typeof wipers === 'number' ? (wipers > 0 && wipers <= 1 ? wipers : (Math.sin(t / 22) * 0.5 + 0.5)) : (Math.sin(t / 22) * 0.5 + 0.5);
   return (
     <g transform={`translate(0 ${shake})`}>
       {/* glass, and the rain on it */}
@@ -340,15 +341,16 @@ export const DriverAtWheel: React.FC<{
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
       <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
       <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
-      <WheelHand x={hl.x} y={hl.y} s={handS} wristW={wristW} cuff={upL} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={handS} wristW={wristW} cuff={{ x: -upR.x, y: upR.y }} torn={torn} />
+      <WheelHand x={hl.x} y={hl.y} s={handS} wristW={wristW} cuff={upL} look={look} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={handS} wristW={wristW} cuff={{ x: -upR.x, y: upR.y }} torn={torn} look={look} />
     </g>
   );
 };
 
 /** A POV forearm: the driver's own sleeve running from the bottom edge of the frame to the hand on
  *  the wheel. Without it a hand on the rim reads as a hand with no arm. */
-export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1 }> = ({ x, y, side }) => {
+export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1; look?: Look; hand?: HandSpec }> = ({ x, y, side, look, hand }) => {
+  const H = hand ?? handSpecFor(look);
   const x0 = x + side * 52;
   const y0 = 1580;
   const dx = x - x0;
@@ -358,11 +360,11 @@ export const PovArm: React.FC<{ x: number; y: number; side: 1 | -1 }> = ({ x, y,
   return (
     <g transform={`translate(${x0} ${y0}) rotate(${ang})`}>
       {/* bare forearm: narrower at the wrist, so nothing pokes out past the hand */}
-      <path d={`M -23 ${-len} L 23 ${-len} L 45 0 L -45 0 Z`} fill="#C08A63" />
-      <path d={`M 6 ${-len + 12} L 20 ${-len + 12} L 36 -6 L 18 -6 Z`} fill="#A67150" opacity={0.16} />
+      <path d={`M -23 ${-len} L 23 ${-len} L 45 0 L -45 0 Z`} fill={H.forearm} />
+      <path d={`M 6 ${-len + 12} L 20 ${-len + 12} L 36 -6 L 18 -6 Z`} fill={H.forearmShade} opacity={0.16} />
       {/* the sleeve, only at the frame edge */}
-      <path d="M -45 -96 L 45 -96 L 45 0 L -45 0 Z" fill="#14181F" />
-      <rect x={-47} y={-104} width={94} height={16} rx={8} fill="#0B0F14" />
+      <path d="M -45 -96 L 45 -96 L 45 0 L -45 0 Z" fill={H.sleeve} />
+      <rect x={-47} y={-104} width={94} height={16} rx={8} fill={H.sleeveShade} />
     </g>
   );
 };
@@ -385,23 +387,29 @@ export const WheelHand: React.FC<{
   cuff?: { x: number; y: number };
   /** true = the hand is on the far side of the rim: back of the hand behind the wheel, fingers hooking over it */
   flip?: boolean;
-}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, wristW = 48, cuff, flip = false }) => (
+  /** The character this hand belongs to. Colour comes from the Body Lock, never a literal. */
+  look?: Look;
+  /** Precomputed palette, for callers that assemble several props from one spec. */
+  hand?: HandSpec;
+}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, wristW = 48, cuff, flip = false, look, hand }) => {
+  const H = hand ?? handSpecFor(look);
+  return (
   <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${flip ? -s : s})`}>
     {flip ? (
       <g>
         {/* the forearm, drawn in the hand's own frame so it can never kink: after the flip, local
             -y is down the screen, i.e. back toward the driver */}
-        <path d="M -24 -58 L 24 -58 L 46 -760 L -46 -760 Z" fill="#C08A63" />
-        <path d="M 8 -120 L 20 -120 L 38 -720 L 22 -720 Z" fill="#A67150" opacity={0.14} />
+        <path d="M -24 -58 L 24 -58 L 46 -760 L -46 -760 Z" fill={H.forearm} />
+        <path d="M 8 -120 L 20 -120 L 38 -720 L 22 -720 Z" fill={H.forearmShade} opacity={0.14} />
         {/* sleeve, only at the bottom edge of the frame */}
-        <path d="M -47 -560 L 47 -560 L 47 -760 L -47 -760 Z" fill="#14181F" />
-        <rect x={-49} y={-574} width={98} height={16} rx={8} fill="#0B0F14" />
+        <path d="M -47 -560 L 47 -560 L 47 -760 L -47 -760 Z" fill={H.sleeve} />
+        <rect x={-49} y={-574} width={98} height={16} rx={8} fill={H.sleeveShade} />
       </g>
     ) : null}
     {/* wrist: starts well inside the sleeve so there is no seam to see. With a `wristW` it reaches the
         forearm's full width and tapers down into the palm, so no step shows at the cuff */}
     {wristW === 48 ? (
-      <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
+      <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill={H.skin} />
     ) : (
       (() => {
         // the cuff continues the forearm: its top edge sits square across the arm's own axis, at the
@@ -409,62 +417,101 @@ export const WheelHand: React.FC<{
         const W = wristW / 2;
         const ux = cuff?.x ?? 0;
         const uy = cuff?.y ?? -1;
-        const H = 74;
-        const cx = ux * H;
-        const cy = uy * H;
+        const CUFF_H = 74;
+        const cx = ux * CUFF_H;
+        const cy = uy * CUFF_H;
         const px = -uy;
         const py = ux;
         return (
           <path
             d={`M ${cx - px * W} ${cy - py * W} L ${cx + px * W} ${cy + py * W} L ${W} -24 L ${-W} -24 Z`}
-            fill="#C08A63"
+            fill={H.skin}
           />
         );
       })()
     )}
     {/* palm */}
-    <path d="M -40 -30 q 40 -18 78 2 q 12 26 0 46 q -38 16 -78 2 q -12 -24 0 -50 Z" fill="#C08A63" />
-    <path d="M -40 -30 q 40 -18 78 2 q 2 6 0 12 q -38 -16 -78 -2 Z" fill="#B47A55" opacity={0.28} />
+    <path d="M -40 -30 q 40 -18 78 2 q 12 26 0 46 q -38 16 -78 2 q -12 -24 0 -50 Z" fill={H.skin} />
+    <path d="M -40 -30 q 40 -18 78 2 q 2 6 0 12 q -38 -16 -78 -2 Z" fill={H.shade} opacity={0.28} />
     {/* four fingers curling over the rim */}
     {[0, 1, 2, 3].map((i) => (
       <g key={i} transform={`translate(${-31 + i * 21} 0) rotate(${(1.5 - i) * 5})`}>
-        <rect x={-9.5} y={-4} width={19} height={flip ? 38 : 66} rx={9.5} fill="#C08A63" />
-        <rect x={-9.5} y={flip ? 16 : 46} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
+        <rect x={-9.5} y={-4} width={19} height={flip ? 38 : 66} rx={9.5} fill={H.skin} />
+        <rect x={-9.5} y={flip ? 16 : 46} width={19} height={16} rx={8} fill={H.shade} opacity={0.5} />
       </g>
     ))}
     {/* thumb: a capsule off the inner edge, angled at the hub */}
     <g transform="rotate(38 42 -14)">
-      <rect x={32} y={-40} width={22} height={62} rx={11} fill="#B47A55" />
-      <path d="M 36 -30 q 14 4 14 16" stroke="#A66A46" strokeWidth={2.4} fill="none" opacity={0.5} />
+      <rect x={32} y={-40} width={22} height={62} rx={11} fill={H.shade} />
+      <path d="M 36 -30 q 14 4 14 16" stroke={H.shade} strokeWidth={2.4} fill="none" opacity={0.5} />
     </g>
     {torn ? <path d="M -26 -18 l 26 6 M -22 -2 l 22 3" stroke="#B3261E" strokeWidth={3.4} strokeLinecap="round" /> : null}
   </g>
-);
+  );
+};
+
+/** ONE canonical pose for the POV wheel shots. The hands are derived from its anchors, so a change
+ *  in the driver's arm length or the wheel geometry moves both hands together — no per-shot x/y. */
+export const POV_WHEEL_POSE: Pose = {
+  ...basePose,
+  x: 960,
+  y: 1080,
+  scale: 3.5,
+  armL: { a: 2, b: -12 },
+  armR: { a: 6, b: -20 },
+};
+
+/** The two POV hands on the rim, placed from `POV_WHEEL_POSE` and painted from `look`.
+ *  Use this instead of writing `<WheelHand x={760} y={1308} .../>` in every shot. */
+export const PovWheelHands: React.FC<{ look?: Look; torn?: boolean; rimTilt?: number; t?: number }> = ({ look, torn = true, rimTilt = 14, t = 0 }) => {
+  const armLen = look?.armLen ?? 1.35;
+  const hl = flatHandL(POV_WHEEL_POSE, armLen);
+  const hr = flatHandR(POV_WHEEL_POSE, armLen);
+  const tilt = rimTilt + Math.sin(t / 60) * 1.2;
+  return (
+    <g>
+      <WheelHand x={hl.x} y={hl.y} s={1.6} rot={tilt} flip look={look} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={1.6} rot={-tilt} flip torn={torn} look={look} />
+    </g>
+  );
+};
 
 /** A hand actually gripping the wheel: palm outside the rim, fingers curling over it,
  *  thumb on the inside. `side` -1 = left hand (screen left of centre). */
-export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number; torn?: boolean; s?: number }> = ({ x, y, side, t, torn = false, s = 1 }) => (
+export const GripHand: React.FC<{
+  x: number;
+  y: number;
+  side: 1 | -1;
+  t: number;
+  torn?: boolean;
+  s?: number;
+  look?: Look;
+  hand?: HandSpec;
+}> = ({ x, y, side, t, torn = false, s = 1, look, hand }) => {
+  const H = hand ?? handSpecFor(look);
+  return (
   <g transform={`translate(${x} ${y}) scale(${s}) rotate(${side * -14 + Math.sin(t / 50) * 1.5})`}>
     {/* wrist */}
-    <path d="M -34 26 q 34 14 68 0 l 6 40 q -40 16 -80 0 Z" fill="#B47A55" />
+    <path d="M -34 26 q 34 14 68 0 l 6 40 q -40 16 -80 0 Z" fill={H.shade} />
     {/* palm, sitting outside the rim */}
-    <path d="M -60 -46 q 60 -24 112 4 q 16 38 0 62 q -52 22 -106 0 q -16 -34 -6 -66 Z" fill="#C98E68" />
+    <path d="M -60 -46 q 60 -24 112 4 q 16 38 0 62 q -52 22 -106 0 q -16 -34 -6 -66 Z" fill={H.skin} />
     {/* fingers curling over the rim, tips coming down on the inside */}
     {[0, 1, 2, 3].map((i) => (
       <g key={i} transform={`rotate(${(i - 1.5) * 3} ${-44 + i * 27} -6)`}>
-        <rect x={-52 + i * 27} y={-4} width={25} height={58} rx={12.5} fill="#C98E68" />
-        <rect x={-52 + i * 27} y={38} width={25} height={16} rx={8} fill="#B47A55" opacity={0.55} />
+        <rect x={-52 + i * 27} y={-4} width={25} height={58} rx={12.5} fill={H.skin} />
+        <rect x={-52 + i * 27} y={38} width={25} height={16} rx={8} fill={H.shade} opacity={0.55} />
       </g>
     ))}
     {/* thumb: on the inside of the wheel, pointing toward its centre */}
-    <ellipse cx={side * 44} cy={-18} rx={15} ry={33} fill="#B47A55" transform={`rotate(${side * -26} ${side * 44} -18)`} />
+    <ellipse cx={side * 44} cy={-18} rx={15} ry={33} fill={H.shade} transform={`rotate(${side * -26} ${side * 44} -18)`} />
     {torn ? (
       <g opacity={0.9}>
         <path d="M -18 -18 l 26 8 M -14 0 l 22 3" stroke="#B3261E" strokeWidth={3.2} strokeLinecap="round" />
       </g>
     ) : null}
   </g>
-);
+  );
+};
 
 /** A big mirror close-up: the frame, the glass, whoever is inside it. Used when the mirror is the subject. */
 export const BigMirror: React.FC<{ t: number; occupant?: 'none' | 'woman' | 'hung'; x?: number; y?: number; w?: number; h?: number }> = ({
@@ -552,15 +599,17 @@ export const RadioPanel: React.FC<{ t: number; on?: number }> = ({ t, on = 0.2 }
 
 /** H�ng from behind: the whole back of the skull is cap-hair, so no face draws here at all - only the
  *  nape, the collar and the shoulders. For a camera in the rear seat (POV-W). */
-export const BackOfDriver: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => (
+export const BackOfDriver: React.FC<{ x: number; y: number; s?: number; look?: Look }> = ({ x, y, s = 1, look }) => {
+  const H = handSpecFor(look);
+  return (
   <g transform={`translate(${x} ${y}) scale(${s})`}>
     {/* shoulders and jacket: the nearest mass, cut off by the bottom of the frame */}
     <path d="M -330 300 Q -336 150 -196 116 L 196 116 Q 336 150 330 300 L 330 470 L -330 470 Z" fill="#0B0F14" />
     <path d="M -330 300 Q -336 150 -196 116 L 196 116 Q 336 150 330 300" fill="none" stroke="#1B2838" strokeWidth={4} opacity={0.65} />
     {/* collar over the nape */}
     <path d="M -100 92 L 100 92 L 76 148 L -76 148 Z" fill="#14181F" />
-    {/* nape: a short neck, darker than the face, disappearing under the hair */}
-    <path d="M -80 108 L 80 108 L 66 -52 L -66 -52 Z" fill="#A67150" />
+    {/* nape: a short neck, darker than the face, disappearing under the hair — same skin as the hands */}
+    <path d="M -80 108 L 80 108 L 66 -52 L -66 -52 Z" fill={H.shade} />
     <path d="M -80 108 L 80 108 L 74 40 L -74 40 Z" fill="#8A5A3C" opacity={0.5} />
     {/* the back of the head: one solid mass of cap-hair, flat on top */}
     <path d="M -208 -30 Q -220 -252 0 -266 Q 220 -252 208 -30 Q 168 92 0 102 Q -168 92 -208 -30 Z" fill="#04070B" />
@@ -568,7 +617,8 @@ export const BackOfDriver: React.FC<{ x: number; y: number; s?: number }> = ({ x
     {/* amber rim from the dash, on the side the dash is lit */}
     <path d="M 156 -176 Q 208 -110 198 48" fill="none" stroke="#F2B33D" strokeWidth={5} opacity={0.2} strokeLinecap="round" />
   </g>
-);
+  );
+};
 
 // ------------------------------------------------------------------ her head, small
 
@@ -658,37 +708,39 @@ export const TaxiSide: React.FC<{
           {driver ? (
             <g>
               {/* his near arm reaches forward to the wheel, lit by the dash from below */}
-              <path d="M 1064 906 Q 1180 886 1268 940 L 1252 966 Q 1170 924 1078 938 Z" fill="#14181F" />
-              <path d="M 1078 938 Q 1170 924 1252 966 L 1244 980 Q 1164 944 1086 954 Z" fill="#C08A63" opacity={0.55} />
+              <path d="M 1064 906 Q 1180 886 1268 940 L 1252 966 Q 1170 924 1078 938 Z" fill="#181C24" />
+              <path d="M 1078 938 Q 1170 924 1252 966 L 1244 980 Q 1164 944 1086 954 Z" fill="#C08A63" opacity={0.85} />
               {/* the wheel, seen edge-on through the glass */}
               <g transform="translate(1324 946)">
                 <ellipse rx={86} ry={40} fill="none" stroke="#0A1220" strokeWidth={22} />
                 <ellipse rx={86} ry={40} fill="none" stroke="#2A3B52" strokeWidth={14} />
                 <path d="M -76 0 Q 0 16 76 0" fill="none" stroke="#2A3B52" strokeWidth={9} />
               </g>
-              {/* both hands on the rim, the knuckles picked out pale */}
-              <path d="M 1246 910 q 26 -12 46 4 q 6 16 -8 26 q -26 8 -44 -6 q -6 -14 6 -24 Z" fill="#C98E68" />
-              <path d="M 1254 918 q 18 -8 34 2" fill="none" stroke="#F0D6BC" strokeWidth={3.4} opacity={0.8} strokeLinecap="round" />
-              <path d="M 1398 906 q 24 -10 42 6 q 4 16 -10 24 q -24 6 -40 -8 q -4 -12 8 -22 Z" fill="#BE8663" />
-              <path d="M 1404 914 q 16 -6 30 3" fill="none" stroke="#E8CDB4" strokeWidth={3} opacity={0.7} strokeLinecap="round" />
+              {/* both hands on the rim */}
+              <path d="M 1246 910 q 26 -12 46 4 q 6 16 -8 26 q -26 8 -44 -6 q -6 -14 6 -24 Z" fill="#C08A63" />
+              <path d="M 1254 918 q 18 -8 34 2" fill="none" stroke="#E9C7A8" strokeWidth={3.2} opacity={0.55} strokeLinecap="round" />
+              <path d="M 1398 906 q 24 -10 42 6 q 4 16 -10 24 q -24 6 -40 -8 q -4 -12 8 -22 Z" fill="#C08A63" />
+              <path d="M 1404 914 q 16 -6 30 3" fill="none" stroke="#E9C7A8" strokeWidth={3} opacity={0.5} strokeLinecap="round" />
               {/* Hùng: head and shoulders, the dash throwing amber up into his face */}
-              <path d="M 1010 1010 q 30 -96 146 -104 q 116 8 146 104 Z" fill="#0A0E14" />
+              <path d="M 1010 1010 q 30 -96 146 -104 q 116 8 146 104 Z" fill="#181C24" />
+              <path d="M 1010 1010 q 30 -96 146 -104 l 0 18 q -104 10 -132 92 Z" fill="#0D1117" opacity={0.45} />
               <g transform="translate(1156 838)">
-                <ellipse cx={0} cy={0} rx={66} ry={74} fill="#8A6448" />
+                <ellipse cx={0} cy={0} rx={66} ry={74} fill="#C08A63" />
+                <path d="M -66 0 Q -60 60 0 74 Q 60 60 66 0 L 66 6 Q 60 66 0 80 Q -60 66 -66 6 Z" fill="#A67150" opacity={0.22} />
                 {/* the cap hair, flat on top, over the forehead */}
-                <path d="M -66 -16 Q -60 -78 0 -82 Q 60 -78 66 -16 L 46 -30 Q 20 -44 0 -30 Q -26 -46 -48 -28 Z" fill="#04070B" />
-                <path d="M -66 -16 Q -60 -78 0 -82 Q 60 -78 66 -16 L 58 -8 Q 30 -26 0 -12 Q -34 -28 -58 -8 Z" fill="#0A0F16" opacity={0.6} />
+                <path d="M -68 -14 Q -62 -78 0 -84 Q 62 -78 68 -14 L 46 -28 Q 20 -42 0 -28 Q -26 -44 -48 -26 Z" fill="#12151C" />
+                <path d="M -68 -14 Q -62 -78 0 -84 Q 62 -78 68 -14 L 58 -6 Q 30 -24 0 -10 Q -34 -26 -58 -6 Z" fill="#0A0D12" opacity={0.55} />
                 {/* the cut on the forehead, under the hairline */}
                 <path d="M -24 -34 l 30 8" stroke="#B3261E" strokeWidth={4.4} strokeLinecap="round" />
                 {/* dot eyes, straight brows: the fright is in the brows, not the mouth */}
-                <circle cx={-22} cy={6} r={5.6} fill="#05080D" />
-                <circle cx={24} cy={6} r={5.6} fill="#05080D" />
-                <path d="M -34 -8 L -12 -10" stroke="#05080D" strokeWidth={5} strokeLinecap="round" />
-                <path d="M 12 -10 L 36 -8" stroke="#05080D" strokeWidth={5} strokeLinecap="round" />
-                <path d="M -6 22 q 10 4 20 0" stroke="#3A2418" strokeWidth={4} fill="none" strokeLinecap="round" />
+                <circle cx={-22} cy={6} r={5.8} fill="#05070A" />
+                <circle cx={24} cy={6} r={5.8} fill="#05070A" />
+                <path d="M -36 -9 L -10 -9" stroke="#05070A" strokeWidth={5} strokeLinecap="round" />
+                <path d="M 10 -9 L 36 -9" stroke="#05070A" strokeWidth={5} strokeLinecap="round" />
+                <path d="M -10 24 h 20" stroke="#3A2418" strokeWidth={4} strokeLinecap="round" />
                 {/* dash light: the right side of his face is warm, the left falls to black */}
-                <path d="M 66 0 Q 60 60 0 74 Q -60 60 -66 0 Q -60 -60 0 -74 Q 60 -60 66 0 Z" fill="#F2B33D" opacity={0.16} />
-                <path d="M 0 -74 Q 60 -60 66 0 L 20 0 Q 10 -40 0 -74 Z" fill="#F2B33D" opacity={0.14} />
+                <path d="M 66 0 Q 60 60 0 74 Q -60 60 -66 0 Q -60 -60 0 -74 Q 60 -60 66 0 Z" fill="#F2B33D" opacity={0.14} />
+                <path d="M 0 -74 Q 60 -60 66 0 L 20 0 Q 10 -40 0 -74 Z" fill="#F2B33D" opacity={0.12} />
               </g>
             </g>
           ) : null}
@@ -822,5 +874,147 @@ export const DashcamRearEmpty: React.FC<{ w: number; h: number; t: number }> = (
       const y = h * 0.08 + ((i * 131 + t * 8) % (h * 0.34));
       return <rect key={i} x={x} y={y} width={2} height={8 + (i % 3) * 5} rx={1} fill="#CFE6FF" opacity={0.1} />;
     })}
+  </g>
+);
+
+// ------------------------------------------------------------------ direct ghost (outside the mirror)
+
+export type WomanPose = 'stand' | 'lookDown';
+
+/** The woman seen directly in the world (T21+ only). Same visual language as WomanInGlass: black hair
+ *  mass with side fringe, murky dark presence, one red point in the right eye, blood smeared under hair. */
+export const WomanDirect: React.FC<{ t: number; s?: number; pose?: WomanPose; face?: 'front' | 'threeQuarter' }> = ({ t, s = 1, pose = 'stand', face = 'front' }) => {
+  const sway = Math.sin(t / 90) * 0.8;
+  const look = pose === 'lookDown' ? 10 : 0;
+  const fq = face === 'threeQuarter' ? 8 : 0;
+  return (
+    <g transform={`scale(${s}) rotate(${sway})`}>
+      {/* jacket/body: murky pale, hanging straight */}
+      <path d="M -62 92 Q -70 220 -54 360 L 54 360 Q 70 220 62 92 Q 30 60 0 56 Q -30 60 -62 92 Z" fill="#8E98A3" />
+      <path d="M -62 92 Q -30 60 0 56 Q 30 60 62 92 L 54 150 Q 0 128 -54 150 Z" fill="#A3ADB7" opacity={0.5} />
+      {/* arms hanging still */}
+      <path d="M -62 108 Q -86 210 -78 300 L -54 296 Q -58 210 -44 140 Z" fill="#7E8894" />
+      <path d="M 62 108 Q 86 210 78 300 L 54 296 Q 58 210 44 140 Z" fill="#7E8894" />
+      {/* hands */}
+      <ellipse cx={-66} cy={308} rx={12} ry={16} fill="#66717E" />
+      <ellipse cx={66} cy={308} rx={12} ry={16} fill="#66717E" />
+      {/* neck */}
+      <rect x={-10 + fq * 0.2} y={22 + look * 0.3} width={20} height={38} rx={8} fill="#5E6976" />
+      {/* head: hair mass, long and dark */}
+      <g transform={`translate(${fq} ${look})`}>
+        <path d="M -44 -40 Q -54 18 -46 78 L 46 78 Q 54 18 44 -40 Q 24 -58 0 -58 Q -24 -58 -44 -40 Z" fill="#04060A" />
+        {/* fringe swept to the side */}
+        <path d="M -42 -10 Q -22 -44 6 -46 Q 30 -40 40 -18 Q 24 -28 0 -20 Q -24 -18 -42 -10 Z" fill="#06080D" />
+        {/* face wedge under fringe */}
+        <path d="M -20 0 Q -14 34 0 38 Q 14 34 20 0 L 10 -10 L -10 -10 Z" fill="#5C6672" />
+        {/* dark eye rims */}
+        <ellipse cx={-9} cy={4} rx={5.5} ry={4.2} fill="#141A20" />
+        <ellipse cx={9} cy={4} rx={5.5} ry={4.2} fill="#141A20" />
+        {/* one red point: right eye only */}
+        <circle cx={9} cy={4} r={1.8} fill="#C0392B" />
+        <circle cx={9} cy={4} r={3.6} fill="#C0392B" opacity={0.18} />
+        {/* calm mouth */}
+        <path d="M -6 20 q 6 2 12 0" stroke="#2A313A" strokeWidth={2.2} fill="none" strokeLinecap="round" />
+        {/* blood smeared under hair at left temple */}
+        <path d="M -34 -18 q 12 -8 18 4 q 2 10 -8 14 l -10 -4 Z" fill="#8E1B15" opacity={0.9} />
+        <path d="M -24 0 q 4 14 0 24" stroke="#7A1410" strokeWidth={2.2} strokeLinecap="round" opacity={0.7} />
+      </g>
+    </g>
+  );
+};
+
+/** A bent red bicycle lying on the ground (frame-local). `bent` skews the front wheel. */
+export const BikeLying: React.FC<{ s?: number; bent?: boolean }> = ({ s = 1, bent = true }) => (
+  <g transform={`scale(${s})`}>
+    <circle cx={-48} cy={0} r={34} fill="none" stroke="#B3261E" strokeWidth={7} />
+    <circle cx={-48} cy={0} r={5} fill="#3A1A18" />
+    {bent ? (
+      <ellipse cx={52} cy={6} rx={28} ry={36} fill="none" stroke="#B3261E" strokeWidth={7} transform="rotate(18 52 6)" />
+    ) : (
+      <circle cx={52} cy={0} r={34} fill="none" stroke="#B3261E" strokeWidth={7} />
+    )}
+    <circle cx={52} cy={bent ? 6 : 0} r={5} fill="#3A1A18" />
+    <path d={`M -48 0 L 0 -30 L 52 ${bent ? 6 : 0} L 6 12 Z`} fill="none" stroke="#A32018" strokeWidth={7} strokeLinejoin="round" />
+    <line x1={0} y1={-30} x2={-8} y2={-52} stroke="#A32018" strokeWidth={6} />
+    <rect x={-24} y={-58} width={40} height={7} rx={3} fill="#A32018" />
+    <line x1={-48} y1={0} x2={-30} y2={36} stroke="#A32018" strokeWidth={5} />
+    <rect x={-40} y={34} width={26} height={8} rx={4} fill="#3A1A18" />
+    {/* small silver bell on handlebar */}
+    <circle cx={-22} cy={-52} r={6} fill="#A8B4BE" stroke="#6E7C88" strokeWidth={2} />
+  </g>
+);
+
+/** The drain mouth: a dark opening in concrete with a lip. */
+export const DrainMouth: React.FC<{ w?: number; h?: number }> = ({ w = 260, h = 90 }) => (
+  <g>
+    <rect x={-w / 2} y={0} width={w} height={h} rx={6} fill="#020406" />
+    <rect x={-w / 2 - 10} y={-14} width={w + 20} height={20} rx={4} fill="#3A4652" />
+    <rect x={-w / 2 - 6} y={-10} width={w + 12} height={10} rx={3} fill="#4A5866" opacity={0.7} />
+    {Array.from({ length: 5 }).map((_, i) => (
+      <rect key={i} x={-w / 2 + 18 + i * ((w - 36) / 4)} y={10} width={6} height={h - 24} rx={3} fill="#0A1118" opacity={0.8} />
+    ))}
+  </g>
+);
+
+/** Dead woman in the drain (upper body on the concrete lip, legs out of sight). For T20/T21 continuity. */
+export const DeadInDrain: React.FC<{ t: number; show?: 'hand' | 'eye' | 'face' | 'all' }> = ({ t, show = 'all' }) => (
+  <g>
+    {/* dark drain interior */}
+    <rect x={-400} y={40} width={800} height={260} fill="#010203" />
+    {/* mud/water */}
+    <ellipse cx={-40} cy={120} rx={220} ry={60} fill="#0A1210" opacity={0.8} />
+    {Array.from({ length: 10 }).map((_, i) => (
+      <circle key={i} cx={-180 + i * 40} cy={80 + (i % 3) * 18} r={2 + (i % 3)} fill="#2A3A38" opacity={0.2 + (i % 3) * 0.1} />
+    ))}
+
+    {show === 'hand' ? (
+      <g transform="translate(-60 60) rotate(18)">
+        <path d="M -10 40 q 18 -16 44 0 q 10 14 -2 28 q -20 12 -42 -2 q -8 -12 0 -26 Z" fill="#7A8896" />
+        {[0, 1, 2, 3].map((i) => (
+          <rect key={i} x={-2 + i * 12} y={-6} width={10} height={50} rx={5} fill="#8694A2" transform={`rotate(${-12 + i * 6} ${3 + i * 12} 20)`} />
+        ))}
+        <rect x={-26} y={18} width={12} height={38} rx={6} fill="#7E8C9A" transform="rotate(-30 -26 37)" />
+      </g>
+    ) : null}
+
+    {show === 'eye' ? (
+      <g transform="translate(-10 70)">
+        <path d="M -120 -20 Q -40 -40 60 -10 L 40 90 Q -30 110 -120 70 Z" fill="#111820" />
+        <ellipse cx={0} cy={20} rx={26} ry={16} fill="#3A4048" />
+        <ellipse cx={0} cy={20} rx={16} ry={10} fill="#1A1E24" />
+        <circle cx={0} cy={20} r={5} fill="#0A0C10" />
+        <ellipse cx={-6} cy={16} rx={4} ry={2.5} fill="#CFE6FF" opacity={0.5} />
+      </g>
+    ) : null}
+
+    {(show === 'face' || show === 'all') ? (
+      <g transform="translate(-20 40)">
+        {/* shoulders/torso on the lip */}
+        <path d="M -120 70 Q -80 10 0 0 Q 80 10 120 70 L 140 160 L -140 160 Z" fill="#2A3340" />
+        {/* neck */}
+        <rect x={-18} y={-18} width={36} height={34} rx={12} fill="#6B7784" />
+        {/* hair spread wet */}
+        <path d="M -70 -20 Q -80 -80 -10 -90 Q 60 -86 72 -20 Q 60 30 0 36 Q -60 30 -70 -20 Z" fill="#06080C" />
+        <path d="M -70 -10 Q -90 30 -100 80 L -70 70 Q -60 20 -50 -5 Z" fill="#06080C" opacity={0.9} />
+        <path d="M 70 -10 Q 90 30 96 80 L 66 70 Q 58 20 50 -5 Z" fill="#06080C" opacity={0.9} />
+        {/* face */}
+        <ellipse cx={0} cy={-30} rx={44} ry={52} fill="#74808C" />
+        <path d="M -40 -40 Q -10 -60 20 -50 Q 40 -40 42 -20 Q 20 -34 -4 -26 Q -26 -30 -40 -40 Z" fill="#06080C" />
+        {/* closed/calm eyes */}
+        <path d="M -24 -34 q 10 4 18 0" stroke="#1A2028" strokeWidth={3} fill="none" strokeLinecap="round" />
+        <path d="M 6 -34 q 10 4 18 0" stroke="#1A2028" strokeWidth={3} fill="none" strokeLinecap="round" />
+        {/* red wound on left temple */}
+        <path d="M -38 -48 q 10 -6 16 4 q 0 10 -10 12 l -8 -6 Z" fill="#8E1B15" opacity={0.95} />
+        <path d="M -28 -36 q 2 10 -2 18" stroke="#6E1410" strokeWidth={2.5} strokeLinecap="round" opacity={0.8} />
+        {/* mouth calm/flat */}
+        <path d="M -10 -8 q 10 1 20 0" stroke="#2A313A" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+        {/* water/mud on skin */}
+        <ellipse cx={-10} cy={-14} rx={6} ry={3} fill="#9FB0BE" opacity={0.18} />
+      </g>
+    ) : null}
+
+    {/* concrete lip edge */}
+    <rect x={-420} y={-18} width={840} height={26} rx={4} fill="#3A4652" />
+    <rect x={-420} y={-18} width={840} height={8} rx={3} fill="#4A5866" opacity={0.5} />
   </g>
 );

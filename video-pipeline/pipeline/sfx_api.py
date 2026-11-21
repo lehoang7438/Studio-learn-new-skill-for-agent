@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -31,8 +32,11 @@ LICENSE_NOTE = (
 
 def _get(url: str, timeout: int = 30) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read()
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read()
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise SystemExit(f"sfx-api: request failed ({type(e).__name__})") from e
 
 
 def search(q: str, limit: int = 5) -> list[dict]:
@@ -57,14 +61,16 @@ def fetch(slug: str, sound_id: str, force: bool = False, name: str | None = None
     """Download one sample into public/<slug>/sfx-src/ and return the MP3 path."""
     meta = {s["id"]: s for s in load_json(pub_dir(slug) / "sfx-src" / "index.json", []) or []}
     label = name or (meta.get(sound_id) or {}).get("name", sound_id)
-    dest = pub_dir(slug, create=True) / "sfx-src" / f"{sound_id}-{_safe(label)}.mp3"
-    if dest.exists() and not force:
+    dest = pub_dir(slug, create=True) / "sfx-src" / f"{_safe(str(sound_id))}-{_safe(label)}.mp3"
+    if dest.exists() and not force and dest.stat().st_size > 1000:
         return dest
     url = resolve_stream(sound_id)
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with urllib.request.urlopen(req, timeout=60) as r, open(dest, "wb") as f:
+    part = dest.with_suffix(dest.suffix + ".part")
+    with urllib.request.urlopen(req, timeout=60) as r, open(part, "wb") as f:
         f.write(r.read())
+    part.replace(dest)
     return dest
 
 
@@ -82,26 +88,46 @@ def _remember(slug: str, row: dict) -> None:
         save_json(p, rows)
 
 
+def _remember_pick(slug: str, key: str, sid: str) -> None:
+    """Pin a query's pick so a later run resolves the same sample without searching again."""
+    p = pub_dir(slug) / "sfx-src" / "index.json"
+    rows = load_json(p, []) or []
+    if not any(r.get("kind") == "pick" and r.get("key") == key for r in rows):
+        rows.append({"kind": "pick", "key": key, "id": sid})
+        save_json(p, rows)
+
+
 def prepare(slug: str, cues: list[dict], force: bool = False) -> list[dict]:
     """Resolve each cue to a local MP3. A cue is {q, at, gain?, trim?, id?}."""
     project = load_project(slug)
     api_cfg = project.get("sfxApi", {}) or {}
+    index_rows = load_json(pub_dir(slug) / "sfx-src" / "index.json", []) or []
+    by_id = {str(r.get("id")): r for r in index_rows if r.get("id") and r.get("kind") != "pick"}
+    picks = {r.get("key"): r.get("id") for r in index_rows if r.get("kind") == "pick"}
     out: list[dict] = []
     for i, cue in enumerate(cues):
         q = str(cue.get("q", "")).strip()
         sid = str(cue.get("id", "")).strip()
         if not q and not sid:
             continue
-        row = None
+        row = by_id.get(sid) if sid else None
         if not sid:
-            limit = int(cue.get("limit", api_cfg.get("limit", 3)))
-            results = search(q, limit)
-            if not results:
-                print(f"  sfx-api: no sample for '{q}' — keeping the procedural bed")
-                continue
-            row = results[int(cue.get("pick", 0)) % len(results)]
-            sid = row["id"]
-        else:
+            pick = int(cue.get("pick", 0))
+            key = f"{q}|{pick}"
+            sid = str(picks.get(key) or "").strip()
+            if sid:
+                row = by_id.get(sid) or row or {"id": sid, "name": sid}
+            else:
+                limit = int(cue.get("limit", api_cfg.get("limit", 3)))
+                results = search(q, limit)
+                if not results:
+                    print(f"  sfx-api: no sample for '{q}' — keeping the procedural bed")
+                    continue
+                row = results[pick % len(results)]
+                sid = str(row["id"])
+                picks[key] = sid
+                _remember_pick(slug, key, sid)
+        if row is None:
             row = next((r for r in search(q or sid, 5) if r.get("id") == sid), None) or {
                 "id": sid,
                 "name": str(cue.get("name", sid)),

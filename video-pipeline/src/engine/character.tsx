@@ -3,7 +3,10 @@ import { staticFile } from 'remotion';
 import { clamp } from './anim';
 import { FONT } from './fonts';
 import { basePose, Look, Pose } from './rig';
-import { FLAT_LEG_LEN, FlatHero, FLAT_METRICS } from './flat';
+import { FLAT_LEG_LEN, FlatHero, FLAT_METRICS, flatHandR } from './flat';
+import { WheelHand } from './taxi';
+import { Renderer } from './metrics';
+import { describeLookGaps, handSpecFor, unsupportedLookFields } from './look';
 
 // Character reference, the drawn way. A reference image is a contract: palette, proportions and the
 // two or three shapes that make a face recognisable. `CharSpec` is that contract written down once;
@@ -22,6 +25,9 @@ export type CharSpec = {
   palette: Swatch[];
   /** Where the reference image lives (public/<slug>/ref/...), for the side-by-side check. */
   ref?: string;
+  /** Body Lock: which renderer owns this character. A spec drawn by `flat` must not be rendered by
+   *  `rig` in another scene — the two skeletons have different lengths and honour different Look fields. */
+  renderer?: Renderer;
 };
 
 /** The flat-vector cast, read off the two reference frames: warm skin, orange tee with short sleeves,
@@ -49,6 +55,7 @@ export const CHARACTERS: Record<string, CharSpec> = {
       eyes: 'round',
       sleeve: 0.46,
     },
+    renderer: 'flat',
     palette: [
       { hex: '#DFAE83', use: 'da' },
       { hex: '#C68F63', use: 'da · bóng' },
@@ -83,6 +90,7 @@ export const CHARACTERS: Record<string, CharSpec> = {
       headR: 56,
       longFace: true,
     },
+    renderer: 'flat',
     palette: [
       { hex: '#D6C2AB', use: 'da' },
       { hex: '#8F8F96', use: 'tóc bạc' },
@@ -121,6 +129,7 @@ export const CHARACTERS: Record<string, CharSpec> = {
       armW: 0.85,
       sleeve: 0,
     },
+    renderer: 'flat',
     palette: [
       { hex: '#C08A63', use: 'da' },
       { hex: '#A67150', use: 'da · bóng' },
@@ -130,6 +139,19 @@ export const CHARACTERS: Record<string, CharSpec> = {
       { hex: '#0B0F14', use: 'giày' },
     ],
   },
+};
+
+/** The "đối chiếu" lines are derived from the spec, not typed by hand on every sheet — otherwise a
+ *  sheet can claim a costume the renderer never draws. */
+export const characterChecklist = (spec: CharSpec): string[] => {
+  const S = spec.look;
+  const out: string[] = [];
+  if (S.eyes) out.push(`mắt ${S.eyes === 'round' ? 'tròn, có iris' : 'chấm'}${S.brow ? ', lông mày rõ' : ''}`);
+  if (S.extra) out.push(`tóc · phụ kiện: ${S.extra}`);
+  out.push(`áo: ${S.jacket}${S.sleeve ? ` · tay áo ${Math.round(S.sleeve * 100)}%` : ''}`);
+  out.push(`quần: ${S.leg ?? S.limb} · giày: ${S.shoe}`);
+  out.push(`da tay: ${handSpecFor(S).skin} (khớp bảng màu)`);
+  return out.slice(0, 4);
 };
 
 /** Four views, a palette and the proportions: the page you hold next to the reference image. */
@@ -145,8 +167,12 @@ export const CharacterSheet: React.FC<{
   refImage?: string;
   /** Vùng cắt của ảnh tham chiếu trong file gốc: x y w h. */
   refCrop?: [number, number, number, number];
-}> = ({ spec, t = 0, x = 420, y = -400, w = 1080, h = 1880, bg = '#14171C', refImage, refCrop = [50, 20, 360, 470] }) => {
+  /** Kích thước thật (pixel) của ảnh gốc — cần để `refCrop` cắt đúng. Mặc định suy từ crop. */
+  refSize?: [number, number];
+}> = ({ spec, t = 0, x = 420, y = -400, w = 1080, h = 1880, bg = '#14171C', refImage, refCrop = [50, 20, 360, 470], refSize }) => {
   const S = spec.look;
+  const R: Renderer = spec.renderer ?? 'flat';
+  const gaps = unsupportedLookFields(S, R);
   const inner = w - 88;
   const colW = inner / 4;
   const ground = 1150;
@@ -220,6 +246,11 @@ export const CharacterSheet: React.FC<{
       </text>
       <line x1={44} y1={222} x2={w - 44} y2={222} stroke="#2A303A" strokeWidth={2} />
 
+      {/* the renderer gate: if the spec sets fields this body silently ignores, the sheet is not a contract */}
+      <text x={w - 44} y={186} textAnchor="end" fontFamily={FONT.ui} fontSize={15} letterSpacing={2} fill={gaps.length ? '#FF7A59' : '#5E6874'}>
+        RENDERER: {R.toUpperCase()}{gaps.length ? ` · BỎ QUA: ${describeLookGaps(S, R)}` : ' · KHỚP'}
+      </text>
+
       {/* the four views */}
       {label(0, 'MẶT TRƯỚC')}
       {label(1, '3/4')}
@@ -269,14 +300,16 @@ export const CharacterSheet: React.FC<{
             ẢNH THAM CHIẾU
           </text>
           <svg x={0} y={14} width={127} height={166} viewBox={`${refCrop[0]} ${refCrop[1]} ${refCrop[2]} ${refCrop[3]}`} preserveAspectRatio="xMidYMid slice">
-            <image href={staticFile(refImage)} width={refCrop[2] + refCrop[0]} height={refCrop[3] + refCrop[1]} />
+            {/* width/height must be the NATURAL image size; the old code added the crop offset to the
+                crop size, which shifted the crop on any real photo. Pass `refSize` for an exact cut. */}
+            <image href={staticFile(refImage)} width={refSize?.[0] ?? refCrop[0] + refCrop[2]} height={refSize?.[1] ?? refCrop[1] + refCrop[3]} />
           </svg>
           <rect x={0} y={14} width={127} height={166} rx={8} fill="none" stroke="#2A303A" strokeWidth={2} />
           <g transform="translate(157 20)">
             <text fontFamily={FONT.ui} fontSize={16} letterSpacing={3} fill={S.jacket}>
               ĐỐI CHIẾU
             </text>
-            {['mắt tròn, lông mày đậm', 'tóc rối, mái lệch', 'áo thun cam, tay ngắn', 'quần bò xanh, giày kem'].map((line, i) => (
+            {characterChecklist(spec).map((line, i) => (
               <g key={line} transform={`translate(0 ${34 + i * 34})`}>
                 <text fontFamily={FONT.body} fontWeight={600} fontSize={24} fill={S.jacket}>
                   ✓

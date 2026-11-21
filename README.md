@@ -17,16 +17,17 @@ giọng đọc local, epilogue nối vũ trụ…) thì cập nhật thẳng và
 video-pipeline/                 # skill + engine (Remotion + Python)
 ├─ SKILL.md                     #   hướng dẫn cho agent (đọc file này trước)
 ├─ QUY-TRINH.md                 #   quy trình tiếng Việt, từng bước
-├─ video.py                     #   CLI: doctor/new/voice/subs/timeline/audio/stills/review/render/pack
+├─ video.py                     #   CLI: doctor/new/voice/subs/audio/timeline/stills/contract/review/render/pack
 ├─ pipeline/                    #   voice (edge-tts + VieNeu), subs, timeline, score, review, validate
 ├─ src/engine/                  #   rig.tsx (Hero), flat.tsx (FlatHero), character.tsx (spec + sheet),
 │                               #   firstPerson.tsx (Cabin, Hud, NightSea, Caption, ChoiceCard…),
-│                               #   taxi.tsx (CabinV, RoadV, Mirror, WomanInGlass, GripHand)
+│                               #   taxi.tsx (CabinV, RoadV, Mirror, WomanInGlass, GripHand),
+│                               #   metrics.ts (số đo chung), look.ts (field được renderer hỗ trợ)
 ├─ src/episodes/chuyen-pha/     #   9 cảnh, 42s — ví dụ gốc
 ├─ src/episodes/ref-nhan-vat/   #   nhân vật khoá theo ảnh: sheet 4 góc + 4 cảnh + thẻ A/B
 ├─ src/episodes/chuyen-pha-sau/ #   epilogue 19s nối vào chuyen-pha, dùng nhân vật của sheet
-├─ src/episodes/chuyen-xe/      #   phim 9 phút, 33 cảnh — ví dụ dài, 16:9 hoặc 9:16
-└─ reference/                   #   style.md, character-ref.md, qa.md, prompt-pack.md, set-xe-va-ma.md
+├─ src/episodes/chuyen-xe/      #   phim 9 phút, 33 cảnh — ví dụ dài, 9:16 (1080x1920)
+└─ reference/                   #   style.md, character-ref.md, continuity.md, qa.md, prompt-pack.md, set-xe-va-ma.md
 ```
 
 ## Ba thứ đáng học nhất
@@ -38,7 +39,9 @@ video-pipeline/                 # skill + engine (Remotion + Python)
 nhân vật không thể "trôi" giữa các cảnh.
 
 - Rig thứ hai `FlatHero` (`src/engine/flat.tsx`): cùng `Pose`, nhưng vẽ kiểu phẳng — khối tô kín,
-  không viền, tay áo ngắn, mắt tròn, tóc rối. `Hero` cũ vẫn dùng cho phim chalkboard.
+  không viền, tay áo ngắn, mắt tròn, tóc rối. `Hero` cũ vẫn dùng cho phim chalkboard. Hai rig **không
+  cùng metrics** (`src/engine/metrics.ts`) và không nghe cùng field `Look` (`src/engine/look.ts`), nên
+  `renderer` phải khoá trong spec cho toàn phim; xem `reference/continuity.md`.
 - `<CharacterSheet>` vẽ 4 góc nhìn + bảng màu + **ảnh gốc cạnh bên** + checklist 4 dòng. Đây là frame
   để duyệt trước khi dựng cảnh.
 - **Ánh sáng có hướng**: mỗi cảnh truyền `light={{ x, y, rim, shade, warm }}`; rig tự vẽ viền sáng ở
@@ -74,18 +77,18 @@ cd video-pipeline
 npm install
 python video.py doctor
 
-# video nhân vật (24s)
+# video nhân vật (24s) — audio trước timeline
 python video.py voice ref-nhan-vat
-python video.py timeline ref-nhan-vat
 python video.py audio ref-nhan-vat
+python video.py timeline ref-nhan-vat
 python video.py stills ref-nhan-vat --mid
 python video.py review ref-nhan-vat
 python video.py render ref-nhan-vat
 
 # epilogue nối chuyen-pha (19s)
 python video.py voice chuyen-pha-sau
-python video.py timeline chuyen-pha-sau
 python video.py audio chuyen-pha-sau
+python video.py timeline chuyen-pha-sau
 python video.py render chuyen-pha-sau
 ```
 
@@ -100,12 +103,16 @@ New-Item -ItemType Junction -Path .opencode\skills\video-pipeline -Target <repo>
 # hoặc copy cả folder
 ```
 
-Agent đọc `video-pipeline/SKILL.md`, rồi `reference/*.md` khi cần chi tiết.
+Agent đọc `video-pipeline/SKILL.md`, rồi `reference/*.md` khi cần chi tiết. Với phim có nhân vật, đọc thêm
+`reference/continuity.md` (Body Lock / tay / đạo cụ / ánh sáng, cổng G0..G4) và chạy
+`python video.py contract <slug>` trước `review`.
 
 ## Cấu trúc dữ liệu
 
 `project.json` là nguồn sự thật: `shots[]` (dur, key, caption), `captions[]`, `lines[]` (at tuyệt đối),
 `endCard`, `fx[]`. `timeline.json` do Python sinh ra, Remotion chỉ đọc — nên cắt cảnh không bao giờ trôi tiếng.
+**`timeline.total` là số frame (30fps), không phải giây; `totalSeconds` là giây.** `fps` trong project.json
+không có tác dụng (engine cố định 30fps).
 
 Caption: tĩnh, ALL CAPS, viền đen dày, một từ nhấn vàng/đỏ + gạch chân, `y` đổi theo cảnh để không che mặt.
 

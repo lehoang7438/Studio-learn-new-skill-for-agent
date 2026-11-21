@@ -258,14 +258,10 @@ def generate(slug: str) -> list[dict]:
 # ---------------------------------------------------------------- exchange formats
 
 def _stamp(sec: float, sep: str = ",") -> str:
-    sec = max(0.0, sec)
-    h = int(sec // 3600)
-    m = int((sec % 3600) // 60)
-    s = int(sec % 60)
-    ms = int(round((sec - math.floor(sec)) * 1000))
-    if ms == 1000:
-        s += 1
-        ms = 0
+    ms_total = int(round(max(0.0, sec) * 1000))
+    h, rem = divmod(ms_total, 3600000)
+    m, rem = divmod(rem, 60000)
+    s, ms = divmod(rem, 1000)
     return f"{h:02d}:{m:02d}:{s:02d}{sep}{ms:03d}"
 
 
@@ -296,7 +292,7 @@ WrapStyle: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Caption,Anton,{int(cfg['size'])},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,{int(cfg['size']*0.14)},4,2,40,40,{int(1920 - cfg['y'])},1
+Style: Caption,Anton,{int(cfg['size'])},&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,{int(cfg['size']*0.14)},4,2,40,40,{int(max(40, round(1920 - (cfg['y'] + 420 + float(cfg['size']) * 0.2))))},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

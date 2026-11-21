@@ -13,7 +13,9 @@ the same DSP in both cases, so a line sounds the same whichever engine spoke it.
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import math
+import re
 import tempfile
 import time
 import wave
@@ -36,6 +38,14 @@ VIENEU_ROLES = {
 
 
 def decode(path: Path) -> np.ndarray:
+    # fast path: our own write_wav output is 16-bit mono at SR — no ffmpeg round-trip.
+    try:
+        with wave.open(str(path), "rb") as w:
+            if w.getnchannels() == 1 and w.getsampwidth() == 2 and w.getframerate() == SR:
+                pcm = w.readframes(w.getnframes())
+                return np.frombuffer(pcm, dtype="<i2").astype(np.float64) / 32767.0
+    except (wave.Error, OSError):
+        pass
     import subprocess
 
     r = subprocess.run(
@@ -46,16 +56,35 @@ def decode(path: Path) -> np.ndarray:
     return np.frombuffer(r.stdout, dtype=np.float32).astype(np.float64)
 
 
-def write_wav(path: Path, x: np.ndarray, peak: float = 0.89) -> None:
+def write_wav(path: Path, x: np.ndarray, peak: float = 0.89, gain: float = 1.0) -> None:
     x = np.asarray(x, dtype=np.float64)
     m = float(np.abs(x).max()) if x.size else 0.0
     if m > 0:
         x = x / m * peak
+    x = x * gain
     with wave.open(str(path), "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
         w.setframerate(SR)
         w.writeframes((np.clip(x, -1, 1) * 32767).astype(np.int16).tobytes())
+
+
+def _voice_key(line: dict, role: dict, engine: str, voice_id: str) -> str:
+    """Content fingerprint of a line: any text/voice/DSP change invalidates its wav cache."""
+    parts = [
+        str(line.get("text", "")).strip(),
+        engine,
+        voice_id,
+        str(role.get("rate", "")),
+        str(role.get("pitch", "")),
+        str(role.get("volume", "")),
+        str(bool(role.get("loa"))),
+        str(bool(role.get("glass"))),
+        str(role.get("echo", "")),
+        str(role.get("reverb", "")),
+        str(bool(role.get("double"))),
+    ]
+    return hashlib.sha256("|".join(parts).encode("utf-8")).hexdigest()
 
 
 def _spectral_band(x: np.ndarray, lo: float, hi: float) -> np.ndarray:
@@ -227,17 +256,19 @@ def _loudness(path: Path, lufs: float = -15.0, tp: float = -1.5) -> None:
         capture_output=True,
         text=True,
     )
-    m = None
-    if "{" in probe.stderr:
-        try:
-            m = json.loads(probe.stderr[probe.stderr.rindex("{") :])
-        except json.JSONDecodeError:
-            m = None
+    m = re.search(r"\{\s*\"input_i\".*?\}", probe.stderr, re.S)
     if m:
-        chain += (
-            f":measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
-            f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true"
-        )
+        try:
+            measured = json.loads(m.group(0))
+            v = {k: float(measured[k]) for k in ("input_i", "input_tp", "input_lra", "input_thresh", "target_offset")}
+            chain += (
+                f":measured_I={v['input_i']}:measured_TP={v['input_tp']}:measured_LRA={v['input_lra']}"
+                f":measured_thresh={v['input_thresh']}:offset={v['target_offset']}:linear=true"
+            )
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError) as e:
+            print(f"  loudness: single pass ({e})")
+    else:
+        print("  loudness: single pass (no measurement)")
     tmp = path.with_suffix(".norm.wav")
     r = subprocess.run(
         [ffmpeg(), "-v", "error", "-y", "-i", str(path), "-af", chain, "-ar", str(SR), "-ac", "1", str(tmp)],
@@ -266,10 +297,10 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
     voice = np.zeros(n_total, dtype=np.float64)
     timing = []
 
+    existing = {str(row.get("id")): row for row in (load_json(pub_dir(slug) / "lines.json", []) or [])}
+
     for line in lines:
         lid = str(line.get("id", f"L{len(timing) + 1}"))
-        if only and lid != only:
-            continue
         who = line.get("who", "narrator")
         role = roles.get(who, roles.get("narrator", {}))
         text = str(line.get("text", "")).strip()
@@ -282,7 +313,14 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
             voice_id = role.get("id") or VOICES.get(role.get("gender", "male"), VOICES["male"])
             wav = lines_dir / f"{lid}.wav"
         mp3 = lines_dir / f"{lid}.mp3"
-        if force or not wav.exists():
+        sidecar = lines_dir / f"{lid}.key.json"
+        key = _voice_key(line, role, engine, str(voice_id))
+        cached = load_json(sidecar, None)
+        cached_key = cached.get("key") if isinstance(cached, dict) else cached
+        key_changed = cached_key != key
+        # `--only` re-synthesises its target but keeps every other line on its cached wav
+        need_synth = force or not wav.exists() or key_changed or (only is not None and lid == only)
+        if need_synth:
             print(f"  {lid} [{who}] {text[:56]}")
             if engine == "vieneu":
                 if tts is None:
@@ -300,8 +338,9 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
                 gain = max(0.2, min(3.0, 1.0 + float(vol) / 100.0))
             except ValueError:
                 gain = 1.0
-            x = _dsp(x * gain, role)
-            write_wav(wav, x)
+            x = _dsp(x, role)
+            write_wav(wav, x, gain=gain)
+            save_json(sidecar, {"key": key})
             dur = len(x) / SR
             word_rows = [
                 {"w": w["w"], "s": round(float(line.get("at", 0)) + w["s"], 3), "d": round(w["d"], 3)}
@@ -310,7 +349,8 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
         else:
             x = decode(wav)
             dur = len(x) / SR
-            word_rows = []
+            # cached lines keep their word timing (this is what makes --only safe)
+            word_rows = list((existing.get(lid) or {}).get("words", []) or [])
         at = float(line.get("at", 0))
         start = int(round(at * SR))
         end = min(n_total, start + len(x))
@@ -328,10 +368,6 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
             }
         )
 
-    if only:
-        # merge into the existing track by re-running the full mix from cached lines
-        return build_voice(slug, force=False, only=None)
-
     target = pub_dir(slug) / "voice.wav"
     write_wav(target, voice, peak=0.89)
     try:
@@ -340,8 +376,7 @@ def build_voice(slug: str, force: bool = False, only: str | None = None) -> dict
         print(f"  loudness: skipped ({e})")
     save_json(pub_dir(slug) / "lines.json", timing)
     all_words = [w for row in timing for w in row["words"]]
-    if all_words:
-        save_json(pub_dir(slug) / "words.json", sorted(all_words, key=lambda w: w["s"]))
+    save_json(pub_dir(slug) / "words.json", sorted(all_words, key=lambda w: w["s"]))
 
     print(f"voice: {len(timing)} lines -> {pub_dir(slug) / 'voice.wav'} ({total:.2f}s bed)")
     return {"lines": timing, "total": total}

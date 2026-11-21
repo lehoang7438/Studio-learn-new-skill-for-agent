@@ -91,8 +91,8 @@ Tổng hợp giọng:
 
 ```powershell
 python video.py voice ten-episode            # tất cả
-python video.py voice ten-episode --only L2  # sửa 1 câu
-python video.py voice ten-episode --force    # bỏ cache, đọc lại mọi line
+python video.py voice ten-episode --only L2  # tự force đúng line L2, giữ word timing các line khác
+python video.py voice ten-episode --force    # legacy: regenerate cả voice + audio (xem thêm --force-media ở build)
 ```
 
 Hai engine (chọn bằng `voice.engine`):
@@ -102,9 +102,11 @@ Hai engine (chọn bằng `voice.engine`):
 | `edge-tts` (mặc định) | mạng | `vi-VN-NamMinhNeural`, `vi-VN-HoaiMyNeural` |
 | `vieneu` | `pip install vieneu`, model tải lần đầu | `Hải Đăng`, `Mai Anh`, `Adam bựa`, `Thùy Dung`… |
 
-VieNeu chạy local (CPU được), 48 kHz, có 25 giọng và clone từ clip 3–8s. Đổi engine thì nhớ `--force`
-hoặc xoá `public/<slug>/lines/` — cache của hai engine nằm ở hai tên file khác nhau
-(`L1.wav` / `L1.vieneu.wav`) nên không lẫn, nhưng `voice.wav` cũ vẫn còn tới khi chạy lại.
+VieNeu chạy local (CPU được), 48 kHz, có 25 giọng và clone từ clip 3–8s. Cache giọng **tự invalidate**
+theo hash của text/voice/DSP params: sửa chữ, đổi giọng hay đổi `pitch` rồi chạy lại là được, không cần
+xoá `public/<slug>/lines/` bằng tay. Hai engine nằm ở hai tên file khác nhau (`L1.wav` /
+`L1.vieneu.wav`) nên không lẫn. `voice --only L2` giờ an toàn: chỉ regenerate L2, còn word timing của
+các line khác được giữ nguyên.
 
 edge-tts hay lỗi mạng (~30%); pipeline đã retry 12 lần với backoff. Nếu vẫn fail, chạy lại lệnh —
 file đã có sẽ được giữ, chỉ line thiếu được tạo.
@@ -188,15 +190,20 @@ Bộ storyboard mẫu `storyboard-mau` là chuẩn tham chiếu cho 4 loại khu
 
 ---
 
-## 5. VIDEO → TIMELINE, AUDIO, RENDER
+## 5. VIDEO → AUDIO, TIMELINE, RENDER
 
 ```powershell
+python video.py audio ten-episode       # trước timeline
 python video.py timeline ten-episode
-python video.py audio ten-episode
 ```
 
+Thứ tự build là `voice → subs → audio → timeline → stills → review → render`: **audio phải có trước
+timeline** thì phim mới có nhạc/SFX ngay lần build đầu.
+
 - `timeline.json`: cảnh + caption + đường dẫn audio; là hợp đồng giữa Python và Remotion.
+  `timeline.total` là **số frame** (30fps), không phải giây; dùng `totalSeconds` nếu cần giây.
 - `music.wav` / `sfx.wav`: tổng hợp procedural, khớp đúng độ dài video.
+- `fps` trong `project.json` không có tác dụng — engine cố định 30fps, đặt khác 30 chỉ bị WARN.
 
 SFX thật (tuỳ chọn):
 
@@ -208,6 +215,12 @@ python video.py audio ten-episode --remote --force
 ```
 
 Kiểm tra `public/ten-episode/sfx-src/ATTRIBUTION.md` trước khi đăng.
+
+Trước review, chạy static check kiến trúc nhân vật:
+
+```powershell
+python video.py contract ten-episode     # metrics không định nghĩa lại, có metrics.ts/look.ts, tay không gõ hex...
+```
 
 Render:
 
@@ -221,6 +234,9 @@ Hoặc một lệnh đầy đủ:
 ```powershell
 python video.py build ten-episode --mid
 ```
+
+`build` dừng nếu review FAIL; `--ignore-review` chỉ bỏ qua FAIL review, `--force-media` chỉ regenerate
+cache voice/audio. `--force` là cờ legacy = cả hai. Chi tiết cổng G0..G6: `SKILL.md`, `reference/continuity.md`.
 
 ---
 
@@ -236,9 +252,12 @@ python video.py review ten-episode
 
 | Lỗi | Sửa |
 |---|---|
-| caption tràn / quá to | giảm `size`, rút chữ, tăng `maxWidth` |
+| `caption.width` (tràn `maxWidth`) | giảm `size`, rút chữ, tăng `maxWidth` |
+| `caption.accent_overapplied` (tô rải rác) | chỉ giữ đúng 1 cụm nhấn trong `accent` |
 | caption đè HUD/dock | đổi `y`, hoặc dời chủ thể |
-| cảnh đứng yên | thêm `push`, mưa, nhấp nháy, chuyển tay |
+| cảnh đứng yên | thêm `push`, mưa, nhấp nháy, chuyển tay (so frame key vs `key + max(12, len/3)`, không phải frame 0) |
+| `timeline.audio_missing` / `timeline.shots` | chạy `audio` rồi `timeline` lại (audio trước timeline) |
+| `mix.lufs` / `mix.tp` | chỉnh `musicVol`/`sfxVol`, chừa headroom; voice vẫn -15 LUFS |
 | cảnh quá tối | tăng `LightPool`, `EyesInDark.o`, đèn nền |
 | line overrun | rút câu, hoặc tăng `dur` cảnh |
 | accent không tô màu | kiểm tra `accent` khớp từ trong `text` (đúng dấu, đúng hoa) |
@@ -274,5 +293,7 @@ New-Item -ItemType Junction -Path .opencode\skills\video-pipeline -Target D:\too
 - [ ] từ nhấn có màu + gạch chân, không quá 1 cụm/câu
 - [ ] giọng khớp cảnh, không bị cắt giữa từ
 - [ ] cảnh cuối có A/B + prompt bình luận
-- [ ] `review` PASS (0 fail)
+- [ ] `contract` sạch + `review` PASS (0 fail)
+- [ ] Tay/chân/silhouette/đạo cụ giống nhau qua các cảnh (`reference/continuity.md` G3)
+- [ ] Xuất bản: mix cuối đo quanh -14 LUFS (khuyến nghị lên kênh; voice vẫn -15 LUFS)
 - [ ] SFX có attribution nếu dùng mẫu ngoài

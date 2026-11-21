@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 
 from pipeline.common import ROOT, node, npm, out_dir, pub_dir, rel, require_slug
+from pipeline.contract import check_contract
 from pipeline import pack as pack_mod
 from pipeline import scaffold
 from pipeline.doctor import run_doctor
@@ -114,6 +115,15 @@ def cmd_validate(a: argparse.Namespace) -> int:
     return 0 if not fails else 1
 
 
+def cmd_contract(a: argparse.Namespace) -> int:
+    issues = check_contract(getattr(a, "slug", None))
+    for i in issues:
+        print(f"  [{i['level']}] {i['code']} {i.get('shot', '')}: {i['msg']}" + (f" -> {i['fix']}" if i.get("fix") else ""))
+    fails = sum(1 for i in issues if i["level"] == "FAIL")
+    print(f"contract: {'OK' if not fails else 'FAIL'} — {fails} fail, {len(issues) - fails} warn")
+    return 0 if not fails else 1
+
+
 def cmd_timeline(a: argparse.Namespace) -> int:
     _timeline(a.slug)
     return 0
@@ -171,14 +181,16 @@ def cmd_render(a: argparse.Namespace) -> int:
 def cmd_build(a: argparse.Namespace) -> int:
     slug = a.slug
     require_slug(slug)
-    _voice(slug, force=a.force)
+    force_media = a.force or a.force_media
+    ignore_review = a.force or a.ignore_review
+    _voice(slug, force=force_media)
     _subs(slug)
+    _audio(slug, force=force_media, remote=True if a.remote else (False if a.no_remote else None))
     _timeline(slug)
-    _audio(slug, force=a.force, remote=True if a.remote else (False if a.no_remote else None))
     _stills(slug, mid=a.mid)
     ok = _review(slug, strict=False)
-    if not ok and not a.force:
-        print("build stopped: review has FAIL issues. Fix them, or re-run with --force to render anyway.")
+    if not ok and not ignore_review:
+        print("build stopped: review has FAIL issues. Fix them, or re-run with --ignore-review to render anyway.")
         return 1
     if not a.no_render:
         _render(slug, preview=a.preview, concurrency=a.concurrency)
@@ -205,7 +217,8 @@ def cmd_clean(a: argparse.Namespace) -> int:
         print(f"clean: nothing at {rel(d)}")
     if a.media:
         for p in (pub_dir(a.slug) / "lines").glob("*"):
-            p.unlink()
+            if p.is_file():
+                p.unlink()
         for name in ("voice.wav", "music.wav", "sfx.wav", "lines.json", "words.json"):
             p = pub_dir(a.slug) / name
             if p.exists():
@@ -236,6 +249,10 @@ def main(argv: list[str] | None = None) -> int:
     v = sub.add_parser("validate", help="static checks on project.json")
     v.add_argument("slug")
     v.set_defaults(fn=cmd_validate)
+
+    c = sub.add_parser("contract", help="static checks on the character-source contract")
+    c.add_argument("slug", nargs="?", default=None, help="optional episode (scans its shots.tsx for raw hex)")
+    c.set_defaults(fn=cmd_contract)
 
     t = sub.add_parser("timeline", help="project.json -> timeline.json")
     t.add_argument("slug")
@@ -291,9 +308,11 @@ def main(argv: list[str] | None = None) -> int:
     rd.add_argument("--concurrency", type=int, default=4)
     rd.set_defaults(fn=cmd_render)
 
-    b = sub.add_parser("build", help="voice -> subs -> timeline -> audio -> stills -> review -> render")
+    b = sub.add_parser("build", help="voice -> subs -> audio -> timeline -> stills -> review -> render")
     b.add_argument("slug")
-    b.add_argument("--force", action="store_true")
+    b.add_argument("--force", action="store_true", help="legacy: force media regeneration AND bypass the review gate")
+    b.add_argument("--force-media", action="store_true", help="regenerate voice/audio only (leave cached media alone otherwise)")
+    b.add_argument("--ignore-review", action="store_true", help="render even when review has FAIL issues")
     b.add_argument("--mid", action="store_true")
     b.add_argument("--preview", action="store_true")
     b.add_argument("--no-render", action="store_true")
