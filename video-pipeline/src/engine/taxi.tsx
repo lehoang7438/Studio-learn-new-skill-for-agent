@@ -334,6 +334,18 @@ export const DriverAtWheel: React.FC<{
       <WheelHand x={hr.x} y={hr.y} mirror s={handS} torn={torn} />
       <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
       <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
+      {/* fingertips hooking over the rim toward the camera, like the POV shots */}
+      {[hl, hr].map((h, hi) => {
+        const inward = hi === 0 ? 1 : -1;
+        return (
+          <g key={hi}>
+            {[0, 1, 2, 3].map((i) => (
+              <rect key={i} x={h.x + inward * (12 + i * 17) - 9} y={rimY + 2} width={18} height={28} rx={9} fill="#C08A63" />
+            ))}
+            <ellipse cx={h.x + inward * 52} cy={rimY + 14} rx={11} ry={16} fill="#B47A55" />
+          </g>
+        );
+      })}
     </g>
   );
 };
