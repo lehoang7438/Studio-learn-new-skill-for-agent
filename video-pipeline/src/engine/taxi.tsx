@@ -3,6 +3,8 @@ import { FlatHero, FlatLight, flatHandL, flatHandR } from './flat';
 import { Look, Pose } from './rig';
 import { Mirror, WetGlass } from './wide';
 
+export { Mirror };
+
 // Vertical (1080x1920) set pieces for "Chuyến xe không có khách".
 //
 // The world is still 1920x1080 and the vertical stage shows the window x 420..1500, y -420..1500
@@ -177,9 +179,8 @@ export const CabinV: React.FC<{ t: number; wheel?: number; wipers?: number; spee
         <path d="M -300 0 Q 0 54 300 0" fill="none" stroke="#1D2A3E" strokeWidth={24} />
         <path d="M -18 40 L -12 150 M 18 40 L 12 150" stroke="#1D2A3E" strokeWidth={24} strokeLinecap="round" />
         <rect x={-62} y={-14} width={124} height={50} rx={15} fill="#131F30" stroke="#31445F" strokeWidth={3} />
-        <text y={22} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={16} fill="#5B6E86">
-          51B-234.56
-        </text>
+        <circle r={13} fill="none" stroke="#4A6078" strokeWidth={4} />
+        <path d="M -7 0 L 7 0" stroke="#4A6078" strokeWidth={3} />
       </g>
 
       {/* light from the instruments on the dash */}
@@ -194,6 +195,11 @@ export const Clock: React.FC<{ text: string; x?: number; y?: number; glow?: numb
     <rect x={-84} y={-26} width={168} height={52} rx={9} fill="#040B08" stroke="#16362A" strokeWidth={2} />
     <text x={0} y={9} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={30} letterSpacing={2} fill={TV.lcd} opacity={glow}>
       {text}
+    </text>
+    {/* a small plate decal stuck on the dash under the clock */}
+    <rect x={-64} y={40} width={128} height={30} rx={4} fill="#DDE4EA" opacity={0.8} />
+    <text x={0} y={61} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={17} fill="#0A1119">
+      51B-234.56
     </text>
   </g>
 );
@@ -278,12 +284,25 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
 };
 
 
-/** The wheel itself: three concentric strokes, nothing else. */
+/** The wheel itself: three concentric strokes, a hub and three spokes. */
 export const Wheel: React.FC<{ cx: number; cy: number; rx?: number; ry?: number }> = ({ cx, cy, rx = 300, ry = 136 }) => (
   <g transform={`translate(${cx} ${cy})`}>
     <ellipse rx={rx} ry={ry} fill="none" stroke="#070C14" strokeWidth={46} />
     <ellipse rx={rx} ry={ry} fill="none" stroke="#1B2838" strokeWidth={32} />
     <ellipse rx={rx} ry={ry} fill="none" stroke="#2A3B52" strokeWidth={3} opacity={0.6} />
+    <circle r={54} fill="#0B1119" stroke="#2A3B52" strokeWidth={4} />
+    {[195, 265, 340].map((deg) => (
+      <line
+        key={deg}
+        x1={Math.cos((deg * Math.PI) / 180) * 50}
+        y1={Math.sin((deg * Math.PI) / 180) * 50 * 0.72}
+        x2={Math.cos((deg * Math.PI) / 180) * (rx - 30)}
+        y2={Math.sin((deg * Math.PI) / 180) * (ry - 26)}
+        stroke="#10171F"
+        strokeWidth={24}
+        strokeLinecap="round"
+      />
+    ))}
   </g>
 );
 
@@ -310,10 +329,11 @@ export const DriverAtWheel: React.FC<{
       <FlatHero pose={pose} look={look} light={light} />
       {/* the lap: only between the two hands, so the arms stay visible */}
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
-      <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
-      <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
+      {/* hands on the far side of the rim: the wheel drawn after them hides the palms */}
       <WheelHand x={hl.x} y={hl.y} s={handS} />
       <WheelHand x={hr.x} y={hr.y} mirror s={handS} torn={torn} />
+      <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
+      <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
     </g>
   );
 };
@@ -372,8 +392,8 @@ export const WheelHand: React.FC<{
     {/* four fingers curling over the rim */}
     {[0, 1, 2, 3].map((i) => (
       <g key={i} transform={`translate(${-31 + i * 21} 0) rotate(${(1.5 - i) * 5})`}>
-        <rect x={-9.5} y={-4} width={19} height={66} rx={9.5} fill="#C08A63" />
-        <rect x={-9.5} y={46} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
+        <rect x={-9.5} y={-4} width={19} height={flip ? 38 : 66} rx={9.5} fill="#C08A63" />
+        <rect x={-9.5} y={flip ? 16 : 46} width={19} height={16} rx={8} fill="#A67150" opacity={0.5} />
       </g>
     ))}
     {/* thumb: a capsule off the inner edge, angled at the hub */}

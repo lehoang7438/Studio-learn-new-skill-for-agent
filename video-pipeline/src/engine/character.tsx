@@ -98,12 +98,12 @@ export const CHARACTERS: Record<string, CharSpec> = {
   hung: {
     id: 'hung',
     name: 'HÙNG',
-    note: '35 tuổi · tóc đen cắt sát · áo khoác đen · mắt mệt · sẹo trán phải',
+    note: '35 tuổi · tóc đen cắt sát · áo khoác đen dài tay xắn tới khuỷu · mắt mệt · sẹo trán phải',
     look: {
       skin: '#C08A63',
       skinShade: '#A67150',
       hand: '#C08A63',
-      arm: '#C08A63',
+      arm: '#181C24',
       jacket: '#181C24',
       jacketShade: '#0D1117',
       accent: '#2C3444',

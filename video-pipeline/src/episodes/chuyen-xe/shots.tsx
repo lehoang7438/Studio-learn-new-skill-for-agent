@@ -1,6 +1,6 @@
 import React from 'react';
 import { basePose, CHARACTERS, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, MirrorV,  RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -19,11 +19,17 @@ export const T03: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.025)}>
       <RoadV t={t} rain={0.7} speed={0.35} lamps={3} />
       <CabinV t={t} speed={0.35} wheel={Math.sin(t / 38) * 2} />
-      <WheelHand x={692} y={1284} s={1.6} rot={-16} flip />
-      <WheelHand x={1228} y={1284} mirror s={1.6} rot={-16} flip torn />
+      <WheelHand x={760} y={1308} s={1.6} rot={-16} flip />
+      <WheelHand x={1160} y={1308} mirror s={1.6} rot={-16} flip torn />
+      {/* the near rim passes in front of the palms */}
+      <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
       <Clock text="23:34" x={1290} y={1178} />
       <MirrorV t={t} occupant="none" />
-      <BloodDrop t={t} />
+      {/* blood: a smear at the very front of the lens, out of focus, running down from the brow */}
+      <g opacity={0.55}>
+        <path d="M 560 -420 q 26 120 16 240 q -8 90 -30 170 l 46 -26 q 24 -120 18 -220 q -6 -90 -18 -164 Z" fill="#B3261E" />
+        <path d="M 606 -160 q 10 60 2 120 l 18 -12 q 6 -60 -6 -110 Z" fill="#8E1B15" opacity={0.7} />
+      </g>
     </g>
   );
 };
@@ -64,6 +70,9 @@ export const T04: React.FC<ShotProps> = ({ t, len }) => {
       <rect x={1088} y={524} width={12} height={26} rx={6} fill="#A8C4DC" opacity={0.75} transform={`rotate(${Math.min(40, t * 0.8)} 1094 566)`} />
       {/* left hand: index and thumb bow into a C whose hole holds the knob; three fingers up */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 2})`}>
+        {/* forearm running out of the bottom-left frame edge, with a sleeve */}
+        <path d="M 900 700 Q 760 900 700 1080 L 640 1380 L 420 1420 L 420 1500 L 760 1480 Q 860 1200 960 1020 Z" fill="#10141B" />
+        <path d="M 700 1080 L 640 1380 L 420 1420 L 420 1340 L 660 1320 Q 780 1200 830 1060 Z" fill="#0B0F14" opacity={0.55} />
         {/* wrist */}
         <path d="M 872 640 L 796 840" stroke="#B47A55" strokeWidth={92} strokeLinecap="round" />
         {/* back of the hand */}
@@ -95,8 +104,10 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.045)}>
     <RoadV t={t} rain={0.55} speed={0.3} lamps={2} />
     <CabinV t={t} speed={0.3} wheel={Math.sin(t / 40) * 1.5} />
-    `r`n      <WheelHand x={692} y={1284} s={1.6} rot={-16} flip />
-    `r`n      <WheelHand x={1228} y={1284} mirror s={1.6} rot={-16} flip torn />
+    <WheelHand x={760} y={1308} s={1.6} rot={-16} flip />
+    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-16} flip torn />
+    {/* the near rim passes in front of the palms */}
+    <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
     <BigMirror t={t} occupant="woman" />
     <Clock text="23:34" x={1290} y={1178} />
   </g>
@@ -149,6 +160,11 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
           );
         })}
         <path d="M -124 34 q 32 -30 124 -30 q 92 0 124 30 l 0 140 l -248 0 Z" fill="#CFD8E0" opacity={0.82} />
+        {/* thumb, angled away on the right */}
+        <g transform="rotate(16 150 40)">
+          <rect x={132} y={-64} width={42} height={120} rx={21} fill="#D5DDE5" opacity={0.88} />
+          <rect x={132} y={-64} width={42} height={26} rx={13} fill="#EEF4F9" opacity={0.3} />
+        </g>
       </g>
 
       {/* rain running down the glass, in front of everything */}
@@ -157,6 +173,10 @@ export const T09: React.FC<ShotProps> = ({ t, len }) => {
         const y = -380 + ((i * 271 + t * (12 + (i % 5) * 7)) % 1800);
         return <rect key={i} x={x} y={y} width={2.2} height={10 + (i % 4) * 12} rx={1.1} fill="#CFE6FF" opacity={0.13} />;
       })}
+      {/* the rear window: rubber frame + sill, so she is pressed against a real window */}
+      <path d="M 430 -414 Q 960 -400 1490 -414 L 1490 1490 Q 960 1476 430 1490 Z" fill="none" stroke="#0A121C" strokeWidth={34} />
+      <path d="M 430 -420 L 1490 -420 L 1490 -330 Q 960 -300 430 -330 Z" fill="#080F17" opacity={0.9} />
+      <path d="M 430 1240 Q 960 1210 1490 1240 L 1490 1490 L 430 1490 Z" fill="#080F17" opacity={0.9} />
     </g>
   );
 };
@@ -169,8 +189,8 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
     y: 800,
     scale: 3.5,
     facing: 1,
-    yaw: -0.2 + turn * 0.4,
-    look: -0.4,
+    yaw: 0.15 + turn * 0.55,
+    look: 0.45 + turn * 0.35,
     expr: 'neutral',
     armL: { a: 8, b: -18 },
     armR: { a: 6, b: -20 },
@@ -200,7 +220,11 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
           look={{ ...CHARACTERS.hung.look, browStraight: true }}
           light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }}
         />
-        <path d="M 934 104 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
+        <path d="M 972 92 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
+        {/* the rear-view mirror hanging over the wheel: she is in it */}
+        <g transform="translate(960 -226) rotate(180)">
+          <Mirror t={t} occupant="woman" x={-96} y={-6} w={192} h={104} />
+        </g>
       </g>
       <rect x={420} y={1250} width={1080} height={700} fill="#070C13" />
     </g>
@@ -211,6 +235,11 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
 export const T02: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.03)}>
     <RoadV t={t} rain={0.9} speed={0.55} lamps={4} />
+    {/* headlight beams, thrown left across the wet lane */}
+    <g opacity={0.45}>
+      <path d="M 700 1050 L 260 960 L 180 1070 L 690 1080 Z" fill={TV.amber} opacity={0.1} />
+      <path d="M 706 1076 L 340 1010 L 300 1080 L 700 1090 Z" fill="#FFE7B8" opacity={0.07} />
+    </g>
     <g transform={`translate(${940 + Math.sin(t / 60) * 4} 1010)`}>
       {/* ground shadow */}
       <ellipse cx={0} cy={104} rx={196} ry={24} fill="#000" opacity={0.6} />
