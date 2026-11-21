@@ -550,6 +550,145 @@ export const T01: React.FC<ShotProps> = ({ t }) => (
 
 export const T33: React.FC<ShotProps> = () => <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} fill="#000" />;
 
+// T14 · 3P · wide road, KM17 sign passes, taxi alone
+export const T14: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.0, 1.03)}>
+    <RoadV t={t} rain={0.7} speed={0.5} lamps={3} />
+    {/* low roadside shoulder in foreground */}
+    <path d="M 420 1220 Q 960 1160 1500 1220 L 1500 1500 L 420 1500 Z" fill="#04090F" />
+    {/* KM17 sign at roadside, sliding past */}
+    <g transform={`translate(${1320 - t * 1.4} 980)`} opacity={0.85}>
+      <rect x={-6} y={-180} width={12} height={240} fill="#3A4654" />
+      <rect x={-70} y={-210} width={140} height={70} rx={6} fill="#1A2A3D" stroke="#3A506B" strokeWidth={3} />
+      <text x={0} y={-164} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={34} fill="#DCE8F2">KM 17</text>
+    </g>
+    {/* taxi passing in mid distance */}
+    <g transform={`translate(${760 + t * 0.6} 860) scale(0.55)`}>
+      <ellipse cx={0} cy={104} rx={190} ry={22} fill="#000" opacity={0.55} />
+      <path d="M -150 -46 q 6 -58 44 -66 l 24 -6 q 26 -14 82 -14 q 56 0 82 14 l 24 6 q 38 8 44 66 l 8 118 q -2 18 -22 18 l -264 0 q -20 0 -22 -18 Z" fill="#0A1220" />
+      <path d="M -112 -44 q 8 -40 38 -46 l 14 -3 q 24 -10 60 -10 q 36 0 60 10 l 14 3 q 30 6 38 46 Z" fill="#060B12" />
+      <rect x={-30} y={-118} width={60} height={18} rx={4} fill={TV.amber} opacity={0.95} />
+      <rect x={-136} y={-6} width={34} height={44} rx={8} fill={TV.amber} opacity={0.45} />
+      <rect x={102} y={-6} width={34} height={44} rx={8} fill={TV.amber} opacity={0.45} />
+      <ellipse cx={0} cy={112} rx={150} ry={18} fill={TV.amber} opacity={0.05} />
+    </g>
+  </g>
+);
+
+// T15 · POV-H · same KM17 sign again, clock 23:34, phone on passenger seat no signal
+export const T15: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.0, 1.02)}>
+    <RoadV t={t} rain={0.7} speed={0.45} lamps={3} />
+    {/* KM17 sign ahead again */}
+    <g transform={`translate(${980 + Math.sin(t / 60) * 6} 700) scale(${0.9 + t * 0.0006})`} opacity={0.9}>
+      <rect x={-5} y={-120} width={10} height={170} fill="#3A4654" />
+      <rect x={-64} y={-150} width={128} height={64} rx={6} fill="#1A2A3D" stroke="#3A506B" strokeWidth={3} />
+      <text x={0} y={-108} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={30} fill="#DCE8F2">KM 17</text>
+    </g>
+    <CabinV t={t} speed={0.45} wheel={Math.sin(t / 50) * 1.2} />
+    <MirrorV t={t} occupant="none" />
+    <Clock text="23:34" />
+    {/* phone lying on passenger seat, no signal */}
+    <g transform="translate(1320 1180) rotate(12)">
+      <rect x={-36} y={-70} width={72} height={140} rx={10} fill="#0A0E14" stroke="#1A2636" strokeWidth={2} />
+      <rect x={-28} y={-58} width={56} height={112} rx={6} fill="#0B1420" />
+      {/* no-signal icon */}
+      <g transform="translate(0 -10)" stroke="#7A93A8" strokeWidth={3} fill="none" strokeLinecap="round">
+        <path d="M -18 10 l 8 -8 l 8 8 l 8 -8 l 8 8" opacity={0.25} />
+        <line x1={-14} y1={-14} x2={14} y2={14} stroke="#B3261E" strokeWidth={3} />
+        <line x1={14} y1={-14} x2={-14} y2={14} stroke="#B3261E" strokeWidth={3} />
+      </g>
+      <text x={0} y={34} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={11} fill="#7A93A8" opacity={0.8}>NO SIGNAL</text>
+    </g>
+  </g>
+);
+
+// T16 · 3P · roadside B3: billboard, gas station, bent red bike, taxi stopped (woman in mirror)
+export const T16: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.0, 1.03)}>
+    <rect x={420} y={-420} width={1080} height={1920} fill="#050910" />
+    {/* night sky / far treeline */}
+    <rect x={420} y={-420} width={1080} height={900} fill="#07111D" />
+    <path d="M 420 420 Q 700 360 960 400 Q 1240 340 1500 410 L 1500 520 L 420 520 Z" fill="#040A12" />
+    {/* abandoned gas station silhouette */}
+    <g opacity={0.7}>
+      <rect x={470} y={260} width={220} height={150} fill="#060B12" />
+      <path d="M 450 260 L 710 260 L 700 230 L 460 230 Z" fill="#0A121C" />
+      <rect x={520} y={320} width={40} height={90} fill="#04080E" />
+      <rect x={600} y={300} width={60} height={40} fill="#08131E" opacity={0.5} />
+    </g>
+    {/* old faded billboard */}
+    <g transform="translate(1180 180)" opacity={0.6}>
+      <rect x={-10} y={0} width={12} height={260} fill="#2A3440" />
+      <rect x={140} y={0} width={12} height={260} fill="#2A3440" />
+      <rect x={-30} y={-40} width={210} height={110} rx={4} fill="#162230" stroke="#243446" strokeWidth={3} />
+      <rect x={-20} y={-28} width={190} height={86} fill="#1E3042" opacity={0.7} />
+      <rect x={0} y={-10} width={120} height={10} fill="#2E465C" opacity={0.5} />
+      <rect x={10} y={12} width={90} height={8} fill="#2E465C" opacity={0.4} />
+    </g>
+    {/* wet road */}
+    <rect x={420} y={520} width={1080} height={980} fill="#05090F" />
+    <rect x={420} y={520} width={1080} height={4} fill="#16283A" opacity={0.4} />
+    {Array.from({ length: 8 }).map((_, i) => {
+      const y = 560 + i * 110;
+      return <rect key={i} x={945} y={y} width={30} height={40} fill="#122334" opacity={0.25} />;
+    })}
+    <ellipse cx={960} cy={980} rx={420} ry={60} fill={TV.amber} opacity={0.05} />
+
+    {/* taxi stopped in middle distance, headlights on the bike */}
+    <g transform="translate(920 820) scale(0.7)">
+      <TaxiSide t={t} speed={0} rain={0.7} driver mirror="woman" x={960} y={430} s={1} />
+    </g>
+    {/* headlight cones reaching the bike on shoulder */}
+    <path d="M 760 980 L 520 1280 L 760 1320 Z" fill="#F2B33D" opacity={0.08} />
+    <path d="M 820 980 L 620 1280 L 820 1310 Z" fill="#FFE7B8" opacity={0.06} />
+
+    {/* red bicycle lying on wet shoulder, front wheel bent - only red object */}
+    <g transform="translate(640 1290) rotate(78)">
+      {/* rear wheel */}
+      <circle cx={-48} cy={0} r={34} fill="none" stroke="#B3261E" strokeWidth={7} />
+      <circle cx={-48} cy={0} r={5} fill="#3A1A18" />
+      {/* front wheel, bent */}
+      <ellipse cx={52} cy={6} rx={28} ry={36} fill="none" stroke="#B3261E" strokeWidth={7} transform="rotate(18 52 6)" />
+      <circle cx={52} cy={6} r={5} fill="#3A1A18" />
+      {/* frame */}
+      <path d="M -48 0 L 0 -30 L 52 6 L 6 12 Z" fill="none" stroke="#A32018" strokeWidth={7} strokeLinejoin="round" />
+      <line x1={0} y1={-30} x2={-8} y2={-52} stroke="#A32018" strokeWidth={6} />
+      <rect x={-24} y={-58} width={40} height={7} rx={3} fill="#A32018" />
+      <line x1={-48} y1={0} x2={-30} y2={36} stroke="#A32018" strokeWidth={5} />
+      {/* seat */}
+      <rect x={-40} y={34} width={26} height={8} rx={4} fill="#3A1A18" />
+    </g>
+
+    {/* rain */}
+    {Array.from({ length: 70 }).map((_, i) => {
+      const x = 420 + ((i * 163) % 1100);
+      const y = -420 + ((i * 293 + t * (500 + (i % 5) * 140)) % 2200);
+      return <line key={i} x1={x} y1={y} x2={x - 10} y2={y + 44} stroke="#CFE6FF" strokeWidth={1.8} opacity={0.07 + (i % 4) * 0.03} />;
+    })}
+  </g>
+);
+
+// T17 · POV-H · hard braking, wipers stopped mid-sweep, woman still in mirror, brake light reflected
+export const T17: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.03, 1.0)}>
+    <RoadV t={t} rain={0.65} speed={0.05} lamps={3} />
+    {/* brake light red reflection on wet road ahead */}
+    <ellipse cx={960} cy={980} rx={260} ry={50} fill="#B3261E" opacity={0.12} />
+    <ellipse cx={960} cy={1010} rx={180} ry={26} fill="#B3261E" opacity={0.08} />
+
+    <CabinV t={t} speed={0.02} wheel={-2} />
+    {/* wipers stopped mid-sweep overlay suggestion: a fixed blade over animated area feel is limited, but still frame reads */}
+    <g transform="translate(700 1086) rotate(18)" opacity={0.35}>
+      <rect x={0} y={-8} width={470} height={9} rx={4.5} fill="#04080E" />
+    </g>
+    <MirrorV t={t} occupant="woman" />
+    {/* woman very still reinforced by a steady big mirror hint? no, keep single mirror rule simple */}
+    <WheelHand x={760} y={1308} s={1.6} rot={10} flip />
+    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-10} flip torn />
+  </g>
+);
+
 /** Everything not drawn yet: a card that names the shot, so the board never lies. */
 const pending = (id: string, label: string): React.FC<ShotProps> => () => (
   <g>
@@ -578,10 +717,10 @@ export const SHOTS: Record<string, React.FC<ShotProps>> = {
   T11,
   T12,
   T13,
-  T14: pending('T14', '3P wide'),
-  T15: pending('T15', 'POV-H KM17'),
-  T16: pending('T16', '3P wide'),
-  T17: pending('T17', 'POV-H phanh'),
+  T14,
+  T15,
+  T16,
+  T17,
   T18: pending('T18', '3P đèn pin'),
   T19: pending('T19', 'INS bánh xe'),
   T20: pending('T20', 'POV-HW cống'),
