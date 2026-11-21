@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatHero, FlatLight, flatHandL, flatHandR } from './flat';
+import { FlatHero, FlatLight, flatHandL, flatHandR, flatJoints } from './flat';
 import { Look, Pose } from './rig';
 import { Mirror, WetGlass } from './wide';
 
@@ -322,15 +322,28 @@ export const DriverAtWheel: React.FC<{
   const hl = flatHandL(pose, look.armLen ?? 1);
   const hr = flatHandR(pose, look.armLen ?? 1);
   const rimY = (hl.y + hr.y) / 2;
+  // the wrist must be as wide as the forearm where they meet, or a step shows at the cuff
+  const handS = 0.95;
+  const wristW = (16 * (look.armW ?? 1) * pose.scale) / handS;
+  // and it must sit on the forearm's own axis: the hand is level, the arm is not
+  const j = flatJoints(pose, look.armLen ?? 1);
+  const up = (a: { mid: { x: number; y: number }; end: { x: number; y: number } }) => {
+    const dx = a.mid.x - a.end.x;
+    const dy = a.mid.y - a.end.y;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: dx / len, y: dy / len };
+  };
+  const upL = up(j.armL);
+  const upR = up(j.armR);
   return (
     <g>
-      <FlatHero pose={pose} look={look} light={light} />
+      <FlatHero pose={pose} look={look} light={light} hands={false} />
       {/* the lap: only between the two hands, so the arms stay visible */}
       <rect x={hl.x + 44} y={rimY - 96} width={Math.max(0, hr.x - hl.x - 88)} height={820} fill={lap} />
       <rect x={420} y={rimY + 26} width={1080} height={900} fill={lap} />
       <Wheel cx={960} cy={rimY + wheelRy} rx={wheelRx} ry={wheelRy} />
-      <WheelHand x={hl.x} y={hl.y} s={0.95} />
-      <WheelHand x={hr.x} y={hr.y} mirror s={0.95} torn={torn} />
+      <WheelHand x={hl.x} y={hl.y} s={handS} wristW={wristW} cuff={upL} />
+      <WheelHand x={hr.x} y={hr.y} mirror s={handS} wristW={wristW} cuff={{ x: -upR.x, y: upR.y }} torn={torn} />
     </g>
   );
 };
@@ -366,9 +379,15 @@ export const WheelHand: React.FC<{
   s?: number;
   rot?: number;
   torn?: boolean;
+  /** width of the wrist at the top, before `s` (48 = the rig's default). Pass the forearm's width so
+   *  the wrist tapers out of the arm instead of stepping in from it. */
+  wristW?: number;
+  /** which way the forearm runs from this hand, in local units (default {0,-1} = straight up). The cup
+   *  of the wrist is drawn on that axis, so a slanted arm and a level hand meet with no wedge. */
+  cuff?: { x: number; y: number };
   /** true = the hand is on the far side of the rim: back of the hand behind the wheel, fingers hooking over it */
   flip?: boolean;
-}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, flip = false }) => (
+}> = ({ x, y, mirror = false, s = 1, rot = 0, torn = false, wristW = 48, cuff, flip = false }) => (
   <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${mirror ? -s : s} ${flip ? -s : s})`}>
     {flip ? (
       <g>
@@ -381,8 +400,30 @@ export const WheelHand: React.FC<{
         <rect x={-49} y={-574} width={98} height={16} rx={8} fill="#0B0F14" />
       </g>
     ) : null}
-    {/* wrist: starts well inside the sleeve so there is no seam to see */}
-    <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
+    {/* wrist: starts well inside the sleeve so there is no seam to see. With a `wristW` it reaches the
+        forearm's full width and tapers down into the palm, so no step shows at the cuff */}
+    {wristW === 48 ? (
+      <path d="M -24 -78 q 24 -8 48 0 l 6 62 q -30 10 -60 0 Z" fill="#C08A63" />
+    ) : (
+      (() => {
+        // the cuff continues the forearm: its top edge sits square across the arm's own axis, at the
+        // arm's own width, so the two silhouettes meet with no wedge and no step
+        const W = wristW / 2;
+        const ux = cuff?.x ?? 0;
+        const uy = cuff?.y ?? -1;
+        const H = 74;
+        const cx = ux * H;
+        const cy = uy * H;
+        const px = -uy;
+        const py = ux;
+        return (
+          <path
+            d={`M ${cx - px * W} ${cy - py * W} L ${cx + px * W} ${cy + py * W} L ${W} -24 L ${-W} -24 Z`}
+            fill="#C08A63"
+          />
+        );
+      })()
+    )}
     {/* palm */}
     <path d="M -40 -30 q 40 -18 78 2 q 12 26 0 46 q -38 16 -78 2 q -12 -24 0 -50 Z" fill="#C08A63" />
     <path d="M -40 -30 q 40 -18 78 2 q 2 6 0 12 q -38 -16 -78 -2 Z" fill="#B47A55" opacity={0.28} />

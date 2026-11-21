@@ -81,13 +81,22 @@ const shade = (hex: string, amount: number) => {
 /** Directional light for the flat body: x/y in -1..1 (0,0 = flat), rim/shade 0..1, warm = light colour. */
 export type FlatLight = { x?: number; y?: number; rim?: number; shade?: number; warm?: string };
 
-/** The flat body. Same props as `Hero`, so a scene can swap one line and keep its blocking. */
-export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimId?: string | null; light?: FlatLight }> = ({
+/** The flat body. Same props as `Hero`, so a scene can swap one line and keep its blocking.
+ *  `hands` false drops the mitten at the end of each arm, for a shot that draws its own hand on top. */
+export const FlatHero: React.FC<{
+  pose: Pose;
+  look?: Look;
+  shadow?: number;
+  rimId?: string | null;
+  light?: FlatLight;
+  hands?: boolean;
+}> = ({
   pose,
   look = LOOKS.pipHood,
   shadow = 1,
   rimId,
   light = {},
+  hands = true,
 }) => {
   const L = look;
   const lx = Math.max(-1, Math.min(1, light.x ?? -0.6));
@@ -180,15 +189,33 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
     <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={color} strokeWidth={w} strokeLinecap="round" />
   );
 
+  /** a limb that narrows from one end to the other, so a forearm flows into a wrist instead of ending
+   *  in a fat round cap that the hand then has to cover */
+  const taperLimb = (a: Pt, b: Pt, w0: number, w1: number, color: string) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const n = Math.hypot(dx, dy) || 1;
+    const nx = -dy / n;
+    const ny = dx / n;
+    return (
+      <path
+        d={`M ${a.x - nx * w0} ${a.y - ny * w0} L ${b.x - nx * w1} ${b.y - ny * w1} L ${b.x + nx * w1} ${b.y + ny * w1} L ${a.x + nx * w0} ${a.y + ny * w0} Z`}
+        fill={color}
+      />
+    );
+  };
+
   const arm = (o: { root: Pt; mid: Pt; end: Pt }, side: 1 | -1, kind: 'open' | 'point') => {
     const elbow = lerpPt(o.root, o.mid, 0.56);
     const ang = (Math.atan2(o.end.x - o.mid.x, o.end.y - o.mid.y) * 180) / Math.PI;
+    const aw = L.armW ?? 1;
     return (
       <g>
-        {capsule(o.root, o.mid, 30, L.arm ?? L.skin)}
-        {limbLight(o.root, o.mid, 30, shade(L.arm ?? L.skin, -42))}
-        {capsule(o.mid, o.end, 26, L.arm ?? L.skin)}
-        {limbLight(o.mid, o.end, 26, shade(L.arm ?? L.skin, -42))}
+        {capsule(o.root, o.mid, 30 * aw, L.arm ?? L.skin)}
+        {limbLight(o.root, o.mid, 30 * aw, shade(L.arm ?? L.skin, -42))}
+        {/* the forearm narrows to the wrist: a hand drawn on top then meets a wrist, not a fat stump */}
+        {taperLimb(o.mid, o.end, 13 * aw, 8 * aw, L.arm ?? L.skin)}
+        {limbLight(o.mid, o.end, 21 * aw, shade(L.arm ?? L.skin, -42))}
         {/* the short sleeve: the tee's colour over the top half of the upper arm, with a stitched hem */}
         <circle cx={o.root.x} cy={o.root.y} r={sleeveR} fill={L.jacket} />
         {capsule(o.root, elbow, sleeveR * 2, L.jacket)}
@@ -199,13 +226,16 @@ export const FlatHero: React.FC<{ pose: Pose; look?: Look; shadow?: number; rimI
           fill="none"
           opacity={0.55}
         />
-        {/* the hand: a soft mitten, the thumb toward the body */}
-        <g transform={`translate(${o.end.x} ${o.end.y}) rotate(${-ang})`}>
-          <ellipse cx={0} cy={13} rx={13.5} ry={17} fill={L.hand} />
-          <ellipse cx={side * 12} cy={8} rx={6} ry={9} transform={`rotate(${side * -26} ${side * 12} 8)`} fill={L.hand} />
-          {kind === 'point' ? <rect x={-4} y={12} width={8} height={22} rx={4} fill={L.hand} /> : null}
-          <path d="M -5 20 Q 0 24 5 20" stroke={shade(L.hand, -22)} strokeWidth={2.2} fill="none" strokeLinecap="round" opacity={0.7} />
-        </g>
+        {/* the hand: a soft mitten, the thumb toward the body. A shot that draws its own hand on the
+            rim passes hands={false}, so the mitten never bulges out around it */}
+        {hands ? (
+          <g transform={`translate(${o.end.x} ${o.end.y}) rotate(${-ang})`}>
+            <ellipse cx={0} cy={13} rx={13.5} ry={17} fill={L.hand} />
+            <ellipse cx={side * 12} cy={8} rx={6} ry={9} transform={`rotate(${side * -26} ${side * 12} 8)`} fill={L.hand} />
+            {kind === 'point' ? <rect x={-4} y={12} width={8} height={22} rx={4} fill={L.hand} /> : null}
+            <path d="M -5 20 Q 0 24 5 20" stroke={shade(L.hand, -22)} strokeWidth={2.2} fill="none" strokeLinecap="round" opacity={0.7} />
+          </g>
+        ) : null}
       </g>
     );
   };

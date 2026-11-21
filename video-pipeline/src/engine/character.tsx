@@ -118,6 +118,7 @@ export const CHARACTERS: Record<string, CharSpec> = {
       brow: 1,
       browStraight: true,
       armLen: 1.35,
+      armW: 0.85,
       sleeve: 0,
     },
     palette: [

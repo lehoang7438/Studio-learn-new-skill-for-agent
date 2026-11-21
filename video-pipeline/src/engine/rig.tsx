@@ -44,6 +44,8 @@ export type Look = {
   browStraight?: boolean;
   /** arm length multiplier (1 = the rig's default cartoon arm). A human driver needs ~1.3. */
   armLen?: number;
+  /** arm thickness multiplier (1 = the rig's default cartoon arm). 0.85 = a lean adult forearm. */
+  armW?: number;
   /** 1 = the character's own eyes have gone white/cloudy (the pupil rolls up under the lid). */
   whiteEyes?: number;
   extra?: 'hood' | 'hoodBun' | 'curls' | 'bunches' | 'bob' | 'suit' | 'cap' | 'long' | 'pony' | 'short' | 'messy' | 'slick';
