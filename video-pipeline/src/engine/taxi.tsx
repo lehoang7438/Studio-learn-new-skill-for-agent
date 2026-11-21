@@ -301,7 +301,7 @@ export const DriverAtWheel: React.FC<{
   lap?: string;
   /** hand scale: the POV driver's own hands are ~1.05, a person seen at 3 m needs ~1.8 */
   handS?: number;
-}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.8 }) => {
+}> = ({ t, pose, look, wheelRx = 300, wheelRy = 136, torn = true, light, lap = '#070C13', handS = 1.6 }) => {
   const hl = flatHandL(pose, look.armLen ?? 1);
   const hr = flatHandR(pose, look.armLen ?? 1);
   const rimY = (hl.y + hr.y) / 2;
