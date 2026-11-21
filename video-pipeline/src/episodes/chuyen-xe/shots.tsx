@@ -1,6 +1,6 @@
 import React from 'react';
 import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
-import { BackOfDriver, BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TaxiSide, TV, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { BackOfDriver, BigMirror, BloodDrop, CabinV, Clock, DashcamHud, DashcamRearEmpty, DriverAtWheel, Mirror, MirrorV, PhoneHeld, RadioPanel, RoadV, TaxiSide, TV, VideoNoise, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -255,6 +255,245 @@ export const T08: React.FC<ShotProps> = ({ t, len }) => (
   </g>
 );
 
+// T10 · INS · phone in hand, dashcam app opening, only screen light
+export const T10: React.FC<ShotProps> = ({ t, len }) => {
+  const fade = Math.min(1, t / 18);
+  const tap = t > len * 0.45 ? 1 : 0;
+  return (
+    <g transform={push(t, len, 1.0, 1.03)}>
+      <rect x={420} y={-420} width={1080} height={1920} fill="#020407" />
+      {/* faint rain on the side window behind, barely caught by screen light */}
+      {Array.from({ length: 26 }).map((_, i) => {
+        const x = 430 + ((i * 151) % 1060);
+        const y = -420 + ((i * 277 + t * 40) % 2000);
+        return <rect key={i} x={x} y={y} width={2} height={12 + (i % 4) * 10} rx={1} fill="#7FE8FF" opacity={0.03} />;
+      })}
+      {/* cold spill from the screen onto the cabin void */}
+      <ellipse cx={940} cy={760} rx={380} ry={460} fill="#7FE8FF" opacity={0.07 * fade} />
+
+      <PhoneHeld x={720} y={280} w={420} rot={-6}>
+        <rect width={382} height={787} fill="#040A12" />
+        {/* dashcam app opening */}
+        <rect x={24} y={40} width={334} height={60} rx={10} fill="#0C1A28" />
+        <circle cx={54} cy={70} r={10} fill="#7FE8FF" opacity={0.8} />
+        <text x={76} y={78} fontFamily="ui-monospace, Consolas, monospace" fontSize={22} letterSpacing={2} fill="#CFE6FF" opacity={0.9}>CAMERA HÀNH TRÌNH</text>
+        <rect x={24} y={130} width={334} height={420} rx={8} fill="#050B12" stroke="#163048" strokeWidth={2} />
+        {/* a live preview suggestion: dark road streaks */}
+        <rect x={24} y={300} width={334} height={120} fill="#07131F" />
+        <path d={`M ${191 + Math.sin(t / 18) * 14} 360 L 120 520 L 262 520 Z`} fill="#0B1E30" opacity={0.7} />
+        <circle cx={191} cy={520} r={5} fill="#E24B3B" opacity={0.75 + 0.25 * Math.sin(t / 7)} />
+        <text x={206} y={526} fontFamily="ui-monospace, Consolas, monospace" fontSize={16} fill="#E24B3B" opacity={0.85}>REC</text>
+        <rect x={54} y={590} width={274} height={64} rx={32} fill={tap ? '#163048' : '#0C1A28'} stroke="#2A4A66" strokeWidth={2} />
+        <text x={191} y={630} textAnchor="middle" fontFamily="ui-monospace, Consolas, monospace" fontSize={24} fill="#EAF4FF" opacity={0.95}>MỞ VIDEO</text>
+        {/* thumb reaching to tap */}
+        <g transform={`translate(${tap ? 210 : 250} ${tap ? 610 : 700}) rotate(-18)`} opacity={0.85}>
+          <ellipse cx={0} cy={0} rx={34} ry={22} fill="#9B7656" />
+        </g>
+        <VideoNoise w={382} h={787} t={t} o={0.6} />
+      </PhoneHeld>
+
+      {/* left hand gripping the phone: fingers along left edge, torn red knuckles lit by screen */}
+      <g transform="translate(705 520) rotate(-6)">
+        {/* sleeve edge */}
+        <path d="M -40 260 L 40 260 L 30 420 L -30 420 Z" fill="#0B0F14" />
+        {/* fingers curling over the phone edge */}
+        {[0, 1, 2, 3].map((i) => {
+          const y = 20 + i * 92;
+          return (
+            <g key={i} transform={`translate(18 ${y})`}>
+              <rect x={-18} y={-26} width={72} height={52} rx={22} fill="#8A6448" />
+              <rect x={-8} y={-18} width={30} height={36} rx={12} fill="#9B7656" opacity={0.55} />
+              {/* torn red skin on the knuckles */}
+              <path d={`M ${-6 + (i % 2) * 8} ${-10} l 16 6 l -6 10 l -14 -4 Z`} fill="#B3261E" opacity={0.85} />
+              <path d={`M ${4 + (i % 2) * 4} ${2} l 10 -2`} stroke="#7A1410" strokeWidth={2} strokeLinecap="round" opacity={0.7} />
+            </g>
+          );
+        })}
+        {/* thumb on the near side */}
+        <g transform="translate(56 420) rotate(22)">
+          <rect x={-16} y={-70} width={36} height={90} rx={18} fill="#8A6448" />
+          <path d="M -4 -40 l 18 8 l -8 12" fill="#B3261E" opacity={0.75} />
+        </g>
+      </g>
+
+      {/* right thumb tapping from below-right edge */}
+      <g transform={`translate(1110 ${tap ? 760 : 820}) rotate(18)`} opacity={0.55}>
+        <rect x={-18} y={-90} width={40} height={140} rx={20} fill="#7A583E" />
+      </g>
+    </g>
+  );
+};
+
+// T11 · POV-CAM · phone playback: rear bench completely empty, but her voice in the audio
+export const T11: React.FC<ShotProps> = ({ t, len }) => {
+  const scrubbing = t < len * 0.35;
+  const progress = scrubbing ? 0.25 + (t / (len * 0.35)) * 0.15 : 0.42;
+  return (
+    <g transform={push(t, len, 1.0, 1.02)}>
+      <rect x={420} y={-420} width={1080} height={1920} fill="#020407" />
+      <ellipse cx={960} cy={760} rx={420} ry={520} fill="#7FE8FF" opacity={0.06} />
+
+      <PhoneHeld x={660} y={180} w={520} rot={-3}>
+        <DashcamRearEmpty w={473} h={976} t={t} />
+        <DashcamHud w={473} h={976} t={t} stamp="23:31:20" rec={false} progress={progress} />
+        {/* playback UI chrome */}
+        <g transform="translate(0 0)">
+          <rect x={0} y={0} width={473} height={46} fill="#040A12" opacity={0.7} />
+          <polygon points="26,14 26,32 42,23" fill="#EAF4FF" opacity={0.9} />
+          <text x={56} y={30} fontFamily="ui-monospace, Consolas, monospace" fontSize={18} fill="#CFE6FF" opacity={0.9}>PHÁT LẠI</text>
+        </g>
+        {/* "audio only" hint: a small waveform at the moment her voice appears */}
+        {!scrubbing ? (
+          <g transform="translate(120 860)" opacity={0.5 + 0.3 * Math.sin(t / 5)}>
+            {Array.from({ length: 18 }).map((_, i) => {
+              const h = 6 + Math.abs(Math.sin(t / 4 + i * 0.9)) * 22;
+              return <rect key={i} x={i * 14} y={-h / 2} width={6} height={h} rx={3} fill="#CFE6FF" />;
+            })}
+          </g>
+        ) : null}
+        <VideoNoise w={473} h={976} t={t} o={0.85} />
+      </PhoneHeld>
+
+      {/* fingers holding the phone at edges, lit cold */}
+      <g opacity={0.7}>
+        <path d="M 650 600 q -40 40 -30 120 l 30 0 q -6 -70 18 -104 Z" fill="#6E523D" />
+        <path d="M 1192 620 q 36 50 22 130 l -30 0 q 8 -70 -10 -112 Z" fill="#6E523D" />
+        <path d="M 700 1180 q 80 30 180 20 l -10 40 q -110 8 -190 -24 Z" fill="#5E4634" />
+      </g>
+    </g>
+  );
+};
+
+// T12 · POV-CAM · the crash footage: red bike, living woman, Hùng still clean (pre 23:34:06)
+export const T12: React.FC<ShotProps> = ({ t, len }) => {
+  const impact = t > len * 0.55;
+  const stamp = impact ? '23:31:40' : '23:31:08';
+  return (
+    <g transform={push(t, len, impact ? 1.02 : 1.0, impact ? 1.08 : 1.03)}>
+      <rect x={420} y={-420} width={1080} height={1920} fill="#020407" />
+      <ellipse cx={960} cy={760} rx={440} ry={540} fill="#7FE8FF" opacity={0.05} />
+
+      <PhoneHeld x={640} y={140} w={560} rot={-2}>
+        <rect width={509} height={1050} fill="#050A11" />
+        {!impact ? (
+          <g>
+            {/* dashcam forward view: road, rain, headlights flaring, red bicycle crossing left */}
+            <rect x={0} y={0} width={509} height={620} fill="#071320" />
+            <rect x={0} y={420} width={509} height={220} fill="#081420" />
+            <path d="M 255 420 L 60 620 L 450 620 Z" fill="#0A1C2C" opacity={0.7} />
+            {/* headlight flare on wet road */}
+            <ellipse cx={255} cy={560} rx={200} ry={40} fill="#F2B33D" opacity={0.16} />
+            <ellipse cx={255} cy={540} rx={120} ry={22} fill="#FFE7B8" opacity={0.12} />
+            {/* red bicycle crossing from left - the only red in frame */}
+            <g transform={`translate(${140 + t * 1.8} 500) rotate(${-18 - t * 0.15})`} opacity={0.95}>
+              <circle cx={-46} cy={0} r={28} fill="none" stroke="#C0392B" strokeWidth={6} />
+              <circle cx={46} cy={0} r={28} fill="none" stroke="#C0392B" strokeWidth={6} />
+              <path d="M -46 0 L 0 -34 L 46 0 L 0 10 Z" fill="none" stroke="#C0392B" strokeWidth={6} strokeLinejoin="round" />
+              <line x1={0} y1={-34} x2={-6} y2={-52} stroke="#C0392B" strokeWidth={5} />
+              <rect x={-18} y={-58} width={36} height={6} rx={3} fill="#C0392B" />
+            </g>
+            {/* woman thrown toward drain mouth at roadside, living, dark jacket */}
+            <g transform={`translate(${320 + t * 0.9} ${460 - Math.min(t, 40) * 0.6}) rotate(${20 + t * 0.3})`} opacity={0.9}>
+              <ellipse cx={0} cy={0} rx={18} ry={26} fill="#1A2430" />
+              <circle cx={-4} cy={-30} r={10} fill="#8A6448" />
+              <path d="M -14 -34 q 10 -14 24 0 q -4 10 -18 8 Z" fill="#111820" />
+              <rect x={-10} y={18} width={8} height={28} rx={4} fill="#1A2430" transform="rotate(30)" />
+              <rect x={6} y={16} width={8} height={26} rx={4} fill="#1A2430" transform="rotate(-20)" />
+            </g>
+            {/* drain mouth at roadside */}
+            <rect x={360} y={585} width={90} height={18} rx={3} fill="#04080E" />
+            <rect x={360} y={585} width={90} height={4} fill="#16283A" opacity={0.6} />
+            {/* rain streaks across lens */}
+            {Array.from({ length: 40 }).map((_, i) => {
+              const x = ((i * 67 + t * 18) % 520);
+              const y = ((i * 143 + t * 120) % 640);
+              return <line key={i} x1={x} y1={y} x2={x - 6} y2={y + 26} stroke="#CFE6FF" strokeWidth={1.4} opacity={0.12} />;
+            })}
+          </g>
+        ) : (
+          <g>
+            {/* after impact: wet road, open driver door, her hand gripping trouser leg, Hùng pulling away */}
+            <rect x={0} y={0} width={509} height={620} fill="#060C14" />
+            <rect x={0} y={360} width={509} height={300} fill="#071018" />
+            <ellipse cx={260} cy={520} rx={220} ry={50} fill="#0A1824" />
+            {/* drain mouth */}
+            <rect x={40} y={500} width={120} height={22} rx={3} fill="#03060A" />
+            <rect x={40} y={500} width={120} height={4} fill="#16283A" opacity={0.5} />
+            {/* open driver door edge */}
+            <path d="M 360 180 L 500 260 L 500 640 L 320 640 Z" fill="#0A1220" stroke="#1D2A3E" strokeWidth={3} />
+            {/* Hùng's leg pulling away - no wounds, clean */}
+            <g transform={`translate(${300 - Math.min((t - len * 0.55) * 1.2, 40)} 520)`}>
+              <path d="M 0 0 L 120 -20 L 140 30 L 10 50 Z" fill="#1A2230" />
+              <rect x={110} y={-22} width={50} height={54} rx={8} fill="#20242C" />
+            </g>
+            {/* her hand gripping his trouser leg, pale, fingers wrapped */}
+            <g transform="translate(280 505)">
+              <path d="M -10 -8 q 16 -18 40 -6 q 12 10 4 24 q -18 14 -40 2 q -10 -10 -4 -20 Z" fill="#7A8896" />
+              {[0, 1, 2, 3].map((i) => (
+                <rect key={i} x={-2 + i * 10} y={-18} width={8} height={26} rx={4} fill="#8694A2" transform={`rotate(${-10 + i * 6} ${2 + i * 10} -5)`} />
+              ))}
+            </g>
+            {/* rain on road */}
+            {Array.from({ length: 30 }).map((_, i) => {
+              const x = ((i * 71 + t * 14) % 520);
+              const y = ((i * 157 + t * 90) % 640);
+              return <line key={i} x1={x} y1={y} x2={x - 4} y2={y + 18} stroke="#CFE6FF" strokeWidth={1.2} opacity={0.1} />;
+            })}
+          </g>
+        )}
+        <DashcamHud w={509} h={1050} t={t} stamp={stamp} rec={false} progress={impact ? 0.62 : 0.18} />
+        <VideoNoise w={509} h={1050} t={t} o={0.9} />
+      </PhoneHeld>
+
+      <g opacity={0.65}>
+        <path d="M 630 620 q -36 40 -26 120 l 30 0 q -6 -70 16 -104 Z" fill="#6E523D" />
+        <path d="M 1210 640 q 34 50 20 130 l -30 0 q 8 -70 -10 -112 Z" fill="#6E523D" />
+      </g>
+    </g>
+  );
+};
+
+// T13 · 3P · cabin: Hùng stares at phone, woman calm in mirror behind him
+export const T13: React.FC<ShotProps> = ({ t, len }) => {
+  const hung = basePose;
+  return (
+    <g transform={push(t, len, 1.0, 1.02)}>
+      <rect x={420} y={-420} width={1080} height={1920} fill="#04080E" />
+      {/* dark rear window suggestion */}
+      <rect x={470} y={-300} width={980} height={520} rx={24} fill="#06101A" stroke="#16283A" strokeWidth={3} />
+      {Array.from({ length: 24 }).map((_, i) => {
+        const x = 490 + ((i * 157) % 940);
+        const y = -290 + ((i * 211 + t * 8) % 500);
+        return <rect key={i} x={x} y={y} width={2} height={10 + (i % 3) * 8} rx={1} fill="#CFE6FF" opacity={0.1} />;
+      })}
+      {/* empty rear bench */}
+      <path d="M 470 380 q 490 -40 980 0 l 0 170 l -980 0 Z" fill="#080E17" />
+
+      {/* mirror above/behind with the woman, calm, watching */}
+      <BigMirror t={t} occupant="woman" x={760} y={-180} w={420} h={210} />
+
+      {/* Hùng in driver seat, slumped forward staring down at phone in his hands */}
+      <g transform="translate(0 40)">
+        <DriverAtWheel
+          t={t}
+          pose={{ ...hung, x: 980, y: 760, scale: 3.3, yaw: 0.05, look: 0.7, expr: 'neutral', armL: { a: 22, b: 55 }, armR: { a: 20, b: 55 } }}
+          look={{ ...CHARACTERS.hung.look, browStraight: true }}
+          light={{ x: -0.2, y: 0.6, rim: 0.18, shade: 0.3, warm: '#7FE8FF' }}
+          torn
+        />
+        {/* phone in his hands, blue-white light on his face/chest */}
+        <g transform="translate(910 980) rotate(-8)">
+          <rect width={120} height={210} rx={14} fill="#0A0E14" stroke="#1A2636" strokeWidth={3} />
+          <rect x={8} y={8} width={104} height={194} rx={10} fill="#7FE8FF" opacity={0.85} />
+          <rect x={8} y={8} width={104} height={194} rx={10} fill="#0C2234" opacity={0.35} />
+        </g>
+        <ellipse cx={960} cy={900} rx={180} ry={140} fill="#7FE8FF" opacity={0.08} />
+      </g>
+      <rect x={420} y={1280} width={1080} height={700} fill="#060A10" />
+    </g>
+  );
+};
+
 // T02 · 3P · from behind: the taxi's tail on a road that runs away from the camera
 export const T02: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.03)}>
@@ -335,10 +574,10 @@ export const SHOTS: Record<string, React.FC<ShotProps>> = {
   T07,
   T08,
   T09: T09,
-  T10: pending('T10', 'INS điện thoại'),
-  T11: pending('T11', 'POV-CAM'),
-  T12: pending('T12', 'POV-CAM va chạm'),
-  T13: pending('T13', '3P cabin'),
+  T10,
+  T11,
+  T12,
+  T13,
   T14: pending('T14', '3P wide'),
   T15: pending('T15', 'POV-H KM17'),
   T16: pending('T16', '3P wide'),

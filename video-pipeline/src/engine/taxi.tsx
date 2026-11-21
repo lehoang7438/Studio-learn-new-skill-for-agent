@@ -734,3 +734,93 @@ export const TaxiSide: React.FC<{
   );
 };
 
+
+// ------------------------------------------------------------------ phone & dashcam screens
+
+/** A phone held in the hand: dark body, bright screen, with `children` drawn inside the screen area
+ *  (local 0,0 is screen top-left, w x h). `glow` tints the light spilling off the glass. */
+export const PhoneHeld: React.FC<{
+  x: number; y: number; w?: number; rot?: number; glow?: string; children?: React.ReactNode;
+}> = ({ x, y, w = 360, rot = -8, glow = '#7FE8FF', children }) => {
+  const h = w * 2.06;
+  const r = w * 0.12;
+  const pad = w * 0.045;
+  const sw = w - pad * 2;
+  const sh = h - pad * 2;
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot})`}>
+      <ellipse cx={w * 0.5} cy={h * 0.55} rx={w * 0.9} ry={h * 0.6} fill={glow} opacity={0.08} />
+      <rect width={w} height={h} rx={r} fill="#0A0E14" stroke="#1A2636" strokeWidth={4} />
+      <rect x={pad} y={pad} width={sw} height={sh} rx={r - pad * 0.6} fill="#07111C" />
+      <g transform={`translate(${pad} ${pad})`} clipPath={`url(#phc${Math.round(x)}${Math.round(y)})`}>
+        <defs>
+          <clipPath id={`phc${Math.round(x)}${Math.round(y)}`}>
+            <rect width={sw} height={sh} rx={r - pad * 0.6} />
+          </clipPath>
+        </defs>
+        {children}
+      </g>
+      <rect x={w * 0.38} y={pad + 10} width={w * 0.24} height={w * 0.04} rx={w * 0.02} fill="#02060A" />
+    </g>
+  );
+};
+
+/** Scanlines + compression noise over a video frame, to sell "dashcam playback". */
+export const VideoNoise: React.FC<{ w: number; h: number; t: number; o?: number }> = ({ w, h, t, o = 1 }) => (
+  <g opacity={o} pointerEvents="none">
+    {Array.from({ length: Math.round(h / 10) }).map((_, i) => (
+      <rect key={i} x={0} y={i * 10} width={w} height={1} fill="#000" opacity={0.12} />
+    ))}
+    {Array.from({ length: 30 }).map((_, i) => {
+      const x = ((i * 97 + t * 13) % (w + 40)) - 20;
+      const y = ((i * 211 + t * 7) % (h + 20)) - 10;
+      return <rect key={`n${i}`} x={x} y={y} width={20 + (i % 5) * 18} height={2 + (i % 3)} fill="#CFE6FF" opacity={0.03 + (i % 4) * 0.015} />;
+    })}
+    <rect width={w} height={h} fill="#081422" opacity={0.12} style={{ mixBlendMode: 'screen' }} />
+  </g>
+);
+
+/** Dashcam overlay: REC dot, timestamp, and a playback scrub bar. */
+export const DashcamHud: React.FC<{ w: number; h: number; t: number; stamp: string; rec?: boolean; progress?: number }> = ({ w, h, t, stamp, rec = true, progress }) => (
+  <g>
+    {rec ? (
+      <g transform={`translate(${w - 86} 26)`}>
+        <circle cx={0} cy={8} r={7} fill="#E24B3B" opacity={0.8 + 0.2 * Math.sin(t / 8)} />
+        <text x={14} y={14} fontFamily="ui-monospace, Consolas, monospace" fontSize={18} fill="#E24B3B" opacity={0.9}>REC</text>
+      </g>
+    ) : null}
+    <text x={18} y={h - 18} fontFamily="ui-monospace, Consolas, monospace" fontSize={20} letterSpacing={2} fill="#EAF4FF" opacity={0.92}>
+      {stamp}
+    </text>
+    {progress != null ? (
+      <g transform={`translate(18 ${h - 44})`}>
+        <rect width={w - 36} height={6} rx={3} fill="#1A2A3D" opacity={0.9} />
+        <rect width={(w - 36) * Math.max(0, Math.min(1, progress))} height={6} rx={3} fill="#CFE6FF" opacity={0.85} />
+        <circle cx={(w - 36) * Math.max(0, Math.min(1, progress))} cy={3} r={7} fill="#EAF4FF" opacity={0.9} />
+      </g>
+    ) : null}
+  </g>
+);
+
+/** A dark, empty rear bench as seen from a dashcam mounted on the dashboard looking back. */
+export const DashcamRearEmpty: React.FC<{ w: number; h: number; t: number }> = ({ w, h, t }) => (
+  <g>
+    <rect width={w} height={h} fill="#050A11" />
+    <rect x={w * 0.08} y={h * 0.08} width={w * 0.84} height={h * 0.34} rx={10} fill="#071320" stroke="#16283A" strokeWidth={3} />
+    <rect x={w * 0.08} y={h * 0.27} width={w * 0.84} height={2} fill="#2E4A66" opacity={0.35} />
+    <circle cx={w * 0.78} cy={h * 0.24} r={3} fill={TV.amber} opacity={0.3} />
+    <path d={`M ${w * 0.06} ${h * 0.64} q ${w * 0.44} ${-h * 0.05} ${w * 0.88} 0 l 0 ${h * 0.16} l ${-w * 0.88} 0 Z`} fill="#080E17" />
+    <path d={`M ${w * 0.1} ${h * 0.64} q ${w * 0.4} ${-h * 0.04} ${w * 0.8} 0`} stroke="#16283A" strokeWidth={2} fill="none" opacity={0.6} />
+    {/* headrests, but no one between them */}
+    <rect x={w * 0.22} y={h * 0.46} width={w * 0.14} height={h * 0.12} rx={10} fill="#0A121C" />
+    <rect x={w * 0.64} y={h * 0.46} width={w * 0.14} height={h * 0.12} rx={10} fill="#0A121C" />
+    {/* dash/steering wheel edge at bottom of frame */}
+    <path d={`M 0 ${h * 0.82} Q ${w * 0.5} ${h * 0.74} ${w} ${h * 0.82} L ${w} ${h} L 0 ${h} Z`} fill="#070C13" />
+    <path d={`M ${w * 0.35} ${h * 0.84} A ${w * 0.15} ${w * 0.08} 0 0 1 ${w * 0.65} ${h * 0.84}`} fill="none" stroke="#1D2A3E" strokeWidth={8} />
+    {Array.from({ length: 24 }).map((_, i) => {
+      const x = w * 0.1 + ((i * 73) % (w * 0.8));
+      const y = h * 0.08 + ((i * 131 + t * 8) % (h * 0.34));
+      return <rect key={i} x={x} y={y} width={2} height={8 + (i % 3) * 5} rx={1} fill="#CFE6FF" opacity={0.1} />;
+    })}
+  </g>
+);
