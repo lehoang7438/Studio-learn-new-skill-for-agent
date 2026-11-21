@@ -19,8 +19,8 @@ export const T03: React.FC<ShotProps> = ({ t, len }) => {
     <g transform={push(t, len, 1.0, 1.025)}>
       <RoadV t={t} rain={0.7} speed={0.35} lamps={3} />
       <CabinV t={t} speed={0.35} wheel={Math.sin(t / 38) * 2} />
-      <WheelHand x={760} y={1308} s={1.6} rot={-16} flip />
-      <WheelHand x={1160} y={1308} mirror s={1.6} rot={-16} flip torn />
+      <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
+      <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
       {/* the near rim passes in front of the palms */}
       <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
       <Clock text="23:34" x={1290} y={1178} />
@@ -104,12 +104,11 @@ export const T05: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.045)}>
     <RoadV t={t} rain={0.55} speed={0.3} lamps={2} />
     <CabinV t={t} speed={0.3} wheel={Math.sin(t / 40) * 1.5} />
-    <WheelHand x={760} y={1308} s={1.6} rot={-16} flip />
-    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-16} flip torn />
+    <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
+    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
     {/* the near rim passes in front of the palms */}
     <path d="M 620 1280 A 340 150 0 0 1 1300 1280" stroke="#1B2838" strokeWidth={40} fill="none" strokeLinecap="round" />
     <BigMirror t={t} occupant="woman" />
-    <MirrorV t={t} occupant="woman" />
     <Clock text="23:34" x={1290} y={1178} />
   </g>
 );

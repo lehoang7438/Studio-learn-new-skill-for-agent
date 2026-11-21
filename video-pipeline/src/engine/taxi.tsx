@@ -255,12 +255,10 @@ export const WomanInGlass: React.FC<{ t: number; s?: number; drop?: boolean; fac
         <circle cx={-15} cy={38} r={2} fill="#7A1712" />
         {/* the fringe sits over the top of the blood */}
         <path d="M -32 -22 Q -36 -50 0 -52 Q 36 -50 32 -22 L 30 4 Q 24 18 18 4 Q 10 18 2 4 Q -6 18 -14 4 Q -22 18 -28 4 Z" fill="#05070A" />
-        {/* eyes: black rim, one red point */}
+        {/* eyes: black rims, and only one of them carries a red point */}
         <ellipse cx={-8} cy={13} rx={5.2} ry={3.2} fill="#05070A" />
         <ellipse cx={10} cy={12} rx={5.4} ry={3.4} fill="#05070A" />
-        <circle cx={-8} cy={13} r={1.7} fill="#C0392B" />
         <circle cx={10} cy={12} r={1.8} fill="#C0392B" />
-        <circle cx={-8} cy={13} r={9} fill="#E8402F" opacity={0.16} />
         <circle cx={10} cy={12} r={9.4} fill="#E8402F" opacity={0.16} />
         {/* mouth, open a little wider */}
         <ellipse cx={2} cy={27} rx={6.2} ry={3.4} fill="#1E181C" />
