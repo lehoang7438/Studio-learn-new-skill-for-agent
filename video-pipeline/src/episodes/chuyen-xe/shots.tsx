@@ -1,5 +1,5 @@
 import React from 'react';
-import { basePose, CHARACTERS, Pose, ShotProps, push } from '../../engine';
+import { basePose, CHARACTERS, FlatHero, Pose, ShotProps, push } from '../../engine';
 import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TV, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
@@ -186,8 +186,8 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
   const pose: Pose = {
     ...basePose,
     x: 960,
-    y: 800,
-    scale: 3.5,
+    y: 690,
+    scale: 2.6,
     facing: 1,
     yaw: 0.15 + turn * 0.55,
     look: 0.45 + turn * 0.35,
@@ -212,16 +212,11 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
       {/* rear bench, empty */}
       <path d="M 470 520 q 490 -48 980 0 l 0 190 l -980 0 Z" fill="#080E17" />
       <path d="M 510 522 q 450 -38 900 0" stroke="#16283A" strokeWidth={3} fill="none" opacity={0.6} />
-      {/* him, at the wheel, turning to look back */}
+      {/* him, seated, turning to look back at the empty bench */}
       <g transform={`translate(0 ${Math.sin(t / 40) * 1.5})`}>
-        <DriverAtWheel
-          t={t}
-          pose={pose}
-          look={{ ...CHARACTERS.hung.look, browStraight: true }}
-          light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }}
-        />
-        <path d="M 972 92 l 44 12" stroke="#B3261E" strokeWidth={8} strokeLinecap="round" />
-        {/* the rear-view mirror hanging over the wheel: she is in it */}
+        <FlatHero pose={pose} look={{ ...CHARACTERS.hung.look, browStraight: true }} light={{ x: 0.12, y: -0.3, rim: 0.28, shade: 0.26, warm: '#FFE7C2' }} />
+        <path d="M 952 84 l 38 11" stroke="#B3261E" strokeWidth={7} strokeLinecap="round" />
+        {/* the rear-view mirror hanging over the seat: she is in it */}
         <g transform="translate(960 -226) rotate(180)">
           <Mirror t={t} occupant="woman" x={-96} y={-6} w={192} h={104} />
         </g>
