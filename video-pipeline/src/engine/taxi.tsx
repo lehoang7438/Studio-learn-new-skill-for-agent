@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatHero, FlatLight, flatHandL, flatHandR, flatJoints } from './flat';
 import { Look, Pose } from './rig';
-import { Mirror, WetGlass } from './wide';
+import { Mirror, MirrorEyes, WetGlass } from './wide';
 
 export { Mirror };
 
@@ -218,7 +218,7 @@ export const BloodDrop: React.FC<{ t: number; x?: number }> = ({ t, x = 700 }) =
 };
 
 /** Rear-view mirror, parked under the roof edge of the vertical window. */
-export const MirrorV: React.FC<{ t: number; occupant?: 'none' | 'woman' }> = ({ t, occupant = 'none' }) => (
+export const MirrorV: React.FC<{ t: number; occupant?: 'none' | 'woman' | 'hung' }> = ({ t, occupant = 'none' }) => (
   <Mirror t={t} occupant={occupant} x={872} y={-198} w={176} h={104} />
 );
 
@@ -466,8 +466,8 @@ export const GripHand: React.FC<{ x: number; y: number; side: 1 | -1; t: number;
   </g>
 );
 
-/** A big mirror close-up: the frame, the glass, her inside it. Used when the mirror is the subject. */
-export const BigMirror: React.FC<{ t: number; occupant?: 'none' | 'woman'; x?: number; y?: number; w?: number; h?: number }> = ({
+/** A big mirror close-up: the frame, the glass, whoever is inside it. Used when the mirror is the subject. */
+export const BigMirror: React.FC<{ t: number; occupant?: 'none' | 'woman' | 'hung'; x?: number; y?: number; w?: number; h?: number }> = ({
   t,
   occupant = 'woman',
   x = 640,
@@ -495,6 +495,7 @@ export const BigMirror: React.FC<{ t: number; occupant?: 'none' | 'woman'; x?: n
           <WomanInGlass t={t} s={1.85} drop face />
         </g>
       ) : null}
+      {occupant === 'hung' ? <g transform={`translate(${x} ${y})`}><MirrorEyes w={w} h={h} /></g> : null}
       <rect x={x} y={y} width={w} height={h} fill="url(#bmSheen)" opacity={0.14} />
       {/* the glass is murky: a dark veil and a vignette, so she is hard to read */}
       <rect x={x} y={y} width={w} height={h} fill="#02060B" opacity={0.26} />
@@ -546,3 +547,190 @@ export const RadioPanel: React.FC<{ t: number; on?: number }> = ({ t, on = 0.2 }
     </g>
   );
 };
+
+// ------------------------------------------------------------------ the driver from behind
+
+/** H�ng from behind: the whole back of the skull is cap-hair, so no face draws here at all - only the
+ *  nape, the collar and the shoulders. For a camera in the rear seat (POV-W). */
+export const BackOfDriver: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}>
+    {/* shoulders and jacket: the nearest mass, cut off by the bottom of the frame */}
+    <path d="M -330 300 Q -336 150 -196 116 L 196 116 Q 336 150 330 300 L 330 470 L -330 470 Z" fill="#0B0F14" />
+    <path d="M -330 300 Q -336 150 -196 116 L 196 116 Q 336 150 330 300" fill="none" stroke="#1B2838" strokeWidth={4} opacity={0.65} />
+    {/* collar over the nape */}
+    <path d="M -100 92 L 100 92 L 76 148 L -76 148 Z" fill="#14181F" />
+    {/* nape: a short neck, darker than the face, disappearing under the hair */}
+    <path d="M -80 108 L 80 108 L 66 -52 L -66 -52 Z" fill="#A67150" />
+    <path d="M -80 108 L 80 108 L 74 40 L -74 40 Z" fill="#8A5A3C" opacity={0.5} />
+    {/* the back of the head: one solid mass of cap-hair, flat on top */}
+    <path d="M -208 -30 Q -220 -252 0 -266 Q 220 -252 208 -30 Q 168 92 0 102 Q -168 92 -208 -30 Z" fill="#04070B" />
+    <path d="M -184 -208 Q 0 -240 184 -208 L 178 -184 Q 0 -214 -178 -184 Z" fill="#0A0F16" opacity={0.85} />
+    {/* amber rim from the dash, on the side the dash is lit */}
+    <path d="M 156 -176 Q 208 -110 198 48" fill="none" stroke="#F2B33D" strokeWidth={5} opacity={0.2} strokeLinecap="round" />
+  </g>
+);
+
+// ------------------------------------------------------------------ her head, small
+
+/** Her bowed head at mirror scale: the dome of hair, the pale wedge of face under the fringe, and one
+ *  red point. Drawn at the size it will actually be seen at, so the eye still reads. */
+export const MirrorHead: React.FC<{ s?: number }> = ({ s = 1 }) => (
+  <g transform={`scale(${s})`}>
+    {/* hair: a dome, falling past the jaw on both sides */}
+    <path d="M -27 12 Q -32 -28 0 -32 Q 32 -28 27 12 Q 22 24 13 22 Q 21 8 15 0 Q 7 -12 -1 -14 Q -13 -12 -15 1 Q -20 9 -13 22 Q -22 24 -27 12 Z" fill="#04060A" />
+    {/* the face, a pale wedge under the fringe */}
+    <path d="M -14 3 Q -10 21 0 23 Q 10 21 14 3 L 9 -5 L -9 -5 Z" fill="#6C7784" />
+    {/* one red point, under the fringe */}
+    <circle cx={7} cy={5} r={3} fill="#C0392B" />
+    {/* blood smeared up into the hair */}
+    <path d="M -19 -7 q 8 -4 13 2 q 2 7 -4 9 l -7 -2 Z" fill="#8E1B15" opacity={0.9} />
+  </g>
+);
+
+// ------------------------------------------------------------------ the taxi from the side
+
+/** The taxi in profile at night, in the rain, the near side window open to us. For the exterior 3P
+ *  shots. `driver` puts Hùng at the wheel (his face lit by the dash), `mirror` decides who the
+ *  rear-view mirror is showing - and it is always inside the glass, never in a seat. */
+export const TaxiSide: React.FC<{
+  t: number;
+  speed?: number;
+  rain?: number;
+  driver?: boolean;
+  mirror?: 'none' | 'woman';
+  x?: number;
+  y?: number;
+  s?: number;
+}> = ({ t, speed = 0.5, rain = 0.8, driver = true, mirror = 'none', x = 960, y = 430, s = 1 }) => {
+  const gid = React.useId().replace(/[:]/g, '');
+  const bob = Math.sin(t * 1.1) * 2.4 * speed;
+  const smear = (t * speed * 780) % 2600;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s}) translate(-960 -430)`}>
+      <g transform={`translate(0 ${bob})`}>
+        <defs>
+          <linearGradient id={`tsGlass${gid}`} x1="0" y1="0" x2="0.7" y2="1">
+            <stop offset="0%" stopColor="#0D1A28" />
+            <stop offset="55%" stopColor="#081220" />
+            <stop offset="100%" stopColor="#04090F" />
+          </linearGradient>
+          <clipPath id={`tsClip${gid}`}>
+            <path d="M 612 936 L 700 690 L 1246 672 L 1388 936 Z" />
+          </clipPath>
+        </defs>
+
+        {/* night behind the car, and the lights of the street smearing past */}
+        <rect x={420} y={-420} width={1080} height={1500} fill="#04070D" />
+        {Array.from({ length: 8 }).map((_, i) => {
+          const y = 250 + i * 74 + (i % 2) * 26;
+          const x = 420 + ((i * 347 - smear) % 1400);
+          return <rect key={i} x={x} y={y} width={190 + (i % 3) * 110} height={5} rx={2.5} fill={TV.amber} opacity={0.09 + (i % 3) * 0.05} />;
+        })}
+        {Array.from({ length: 5 }).map((_, i) => {
+          const y = 300 + i * 120;
+          const x = 420 + ((i * 521 - smear * 1.4) % 1500);
+          return <rect key={i} x={x} y={y} width={90} height={120} fill={TV.amber} opacity={0.035} />;
+        })}
+
+        {/* the road, and the wet reflection of the car */}
+        <rect x={420} y={1100} width={1080} height={400} fill="#05090F" />
+        <rect x={420} y={1100} width={1080} height={4} fill="#16283A" opacity={0.5} />
+        <ellipse cx={950} cy={1170} rx={430} ry={34} fill="#000" opacity={0.55} />
+
+        {/* the body: one silhouette, the wheels drawn over its lower edge */}
+        <path
+          d="M 452 1110 L 452 950 Q 452 900 520 884 L 578 758 Q 610 692 706 676 L 1180 662 Q 1246 666 1284 706 L 1400 902 Q 1426 934 1434 982 L 1452 994 Q 1466 1014 1454 1044 L 1452 1110 Z"
+          fill="#0A1220"
+        />
+        <path d="M 578 758 Q 610 692 706 676 L 1180 662 Q 1246 666 1284 706" fill="none" stroke="#3A506B" strokeWidth={3} opacity={0.6} />
+        {/* the beltline, and a warm streak of streetlight running along the flank */}
+        <path d="M 452 1000 L 1452 1000" stroke="#16283A" strokeWidth={4} opacity={0.7} />
+        <path d="M 500 1036 L 1380 1036" stroke={TV.amber} strokeWidth={10} opacity={0.05} />
+
+        {/* the glasshouse: one opening, the pillars drawn over it */}
+        <path d="M 612 936 L 700 690 L 1246 672 L 1388 936 Z" fill={`url(#tsGlass${gid})`} />
+
+        {/* inside: seat backs first, so whoever sits there is in front of them */}
+        <g clipPath={`url(#tsClip${gid})`}>
+          <rect x={600} y={900} width={820} height={120} fill="#04080E" />
+          <path d="M 640 902 q 60 -44 130 -40 l 20 140 l -150 0 Z" fill="#080D15" />
+          <path d="M 1010 906 q 60 -46 132 -42 l 22 136 l -154 0 Z" fill="#080D15" />
+          {driver ? (
+            <g>
+              {/* his near arm reaches forward to the wheel, lit by the dash from below */}
+              <path d="M 1064 906 Q 1180 886 1268 940 L 1252 966 Q 1170 924 1078 938 Z" fill="#14181F" />
+              <path d="M 1078 938 Q 1170 924 1252 966 L 1244 980 Q 1164 944 1086 954 Z" fill="#C08A63" opacity={0.55} />
+              {/* the wheel, seen edge-on through the glass */}
+              <g transform="translate(1324 946)">
+                <ellipse rx={86} ry={40} fill="none" stroke="#0A1220" strokeWidth={22} />
+                <ellipse rx={86} ry={40} fill="none" stroke="#2A3B52" strokeWidth={14} />
+                <path d="M -76 0 Q 0 16 76 0" fill="none" stroke="#2A3B52" strokeWidth={9} />
+              </g>
+              {/* both hands on the rim, the knuckles picked out pale */}
+              <path d="M 1246 910 q 26 -12 46 4 q 6 16 -8 26 q -26 8 -44 -6 q -6 -14 6 -24 Z" fill="#C98E68" />
+              <path d="M 1254 918 q 18 -8 34 2" fill="none" stroke="#F0D6BC" strokeWidth={3.4} opacity={0.8} strokeLinecap="round" />
+              <path d="M 1398 906 q 24 -10 42 6 q 4 16 -10 24 q -24 6 -40 -8 q -4 -12 8 -22 Z" fill="#BE8663" />
+              <path d="M 1404 914 q 16 -6 30 3" fill="none" stroke="#E8CDB4" strokeWidth={3} opacity={0.7} strokeLinecap="round" />
+              {/* Hùng: head and shoulders, the dash throwing amber up into his face */}
+              <path d="M 1010 1010 q 30 -96 146 -104 q 116 8 146 104 Z" fill="#0A0E14" />
+              <g transform="translate(1156 838)">
+                <ellipse cx={0} cy={0} rx={66} ry={74} fill="#8A6448" />
+                {/* the cap hair, flat on top, over the forehead */}
+                <path d="M -66 -16 Q -60 -78 0 -82 Q 60 -78 66 -16 L 46 -30 Q 20 -44 0 -30 Q -26 -46 -48 -28 Z" fill="#04070B" />
+                <path d="M -66 -16 Q -60 -78 0 -82 Q 60 -78 66 -16 L 58 -8 Q 30 -26 0 -12 Q -34 -28 -58 -8 Z" fill="#0A0F16" opacity={0.6} />
+                {/* the cut on the forehead, under the hairline */}
+                <path d="M -24 -34 l 30 8" stroke="#B3261E" strokeWidth={4.4} strokeLinecap="round" />
+                {/* dot eyes, straight brows: the fright is in the brows, not the mouth */}
+                <circle cx={-22} cy={6} r={5.6} fill="#05080D" />
+                <circle cx={24} cy={6} r={5.6} fill="#05080D" />
+                <path d="M -34 -8 L -12 -10" stroke="#05080D" strokeWidth={5} strokeLinecap="round" />
+                <path d="M 12 -10 L 36 -8" stroke="#05080D" strokeWidth={5} strokeLinecap="round" />
+                <path d="M -6 22 q 10 4 20 0" stroke="#3A2418" strokeWidth={4} fill="none" strokeLinecap="round" />
+                {/* dash light: the right side of his face is warm, the left falls to black */}
+                <path d="M 66 0 Q 60 60 0 74 Q -60 60 -66 0 Q -60 -60 0 -74 Q 60 -60 66 0 Z" fill="#F2B33D" opacity={0.16} />
+                <path d="M 0 -74 Q 60 -60 66 0 L 20 0 Q 10 -40 0 -74 Z" fill="#F2B33D" opacity={0.14} />
+              </g>
+            </g>
+          ) : null}
+
+          {/* the rear-view mirror, hanging from the roof rail: only the glass is drawn, never a seat */}
+          <g transform="translate(1175 700)">
+            <rect x={-6} y={-30} width={12} height={30} fill="#05080E" />
+            <rect x={-70} y={-6} width={140} height={72} rx={12} fill="#0A121C" stroke="#1A2838" strokeWidth={3} />
+            <rect x={-62} y={2} width={124} height={60} rx={8} fill="#071018" />
+            {mirror === 'woman' ? (
+              <g transform="translate(0 30)"><MirrorHead s={1.15} /></g>
+            ) : (
+              <g>
+                <rect x={-62} y={30} width={124} height={32} fill="#08131F" />
+                <rect x={-62} y={30} width={124} height={2} fill="#3A5A78" opacity={0.5} />
+              </g>
+            )}
+          </g>
+        </g>
+
+        {/* the pillars and the beltline, over the glass */}
+        <path d="M 700 690 L 1246 672 L 1388 936 L 612 936 Z" fill="none" stroke="#04070C" strokeWidth={16} />
+        <path d="M 700 690 L 1246 672" stroke="#04070C" strokeWidth={14} />
+        <path d="M 612 936 L 1388 936" stroke="#04070C" strokeWidth={18} />
+        <rect x={946} y={684} width={40} height={254} fill="#0A1220" />
+        <rect x={950} y={688} width={32} height={248} fill="#0E1728" opacity={0.8} />
+
+        {/* rain on the glass, and the sheen of a streetlight crossing it */}
+        {Array.from({ length: Math.round(70 * rain) }).map((_, i) => {
+          const x = 620 + ((i * 89) % 740);
+          const y = 690 + ((i * 137 + t * (150 + (i % 5) * 60)) % 250);
+          return <line key={i} x1={x} y1={y} x2={x - 5} y2={y + 16} stroke="#CFE6FF" strokeWidth={1.6} opacity={0.08 + (i % 4) * 0.04} />;
+        })}
+        <path d="M 640 936 L 900 690 L 980 690 L 720 936 Z" fill="#CFE6FF" opacity={0.035} />
+
+        {/* the wheels */}
+        <circle cx={650} cy={1110} r={92} fill="#04070C" />
+        <circle cx={650} cy={1110} r={40} fill="#0A1119" stroke="#1D2A3E" strokeWidth={4} />
+        <circle cx={1330} cy={1110} r={92} fill="#04070C" />
+        <circle cx={1330} cy={1110} r={40} fill="#0A1119" stroke="#1D2A3E" strokeWidth={4} />
+      </g>
+    </g>
+  );
+};
+

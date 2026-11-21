@@ -1,6 +1,6 @@
 import React from 'react';
 import { basePose, CHARACTERS, FlatHero, flatHandL, flatHandR, Pose, ShotProps, push } from '../../engine';
-import { BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TV, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
+import { BackOfDriver, BigMirror, BloodDrop, CabinV, Clock, DriverAtWheel, Mirror, MirrorV, RoadV, TaxiSide, TV, Wheel, WheelHand, WomanInGlass } from '../../engine/taxi';
 
 
 // "CHUYẾN XE KHÔNG CÓ KHÁCH" — 33 shots, 540s, 1080x1920.
@@ -227,6 +227,34 @@ export const T06: React.FC<ShotProps> = ({ t, len }) => {
   );
 };
 
+// T07 · POV-W · over his shoulder: the mirror hands his own fear back to him
+export const T07: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.0, 1.02)}>
+    <RoadV t={t} rain={0.8} speed={0.5} lamps={3} />
+    <CabinV t={t} speed={0.5} wheel={Math.sin(t / 44) * 1.6} />
+    {/* the mirror, and his eyes in it: for once he is the one being looked back at */}
+    <BigMirror t={t} occupant="hung" x={760} y={-220} w={560} h={250} />
+    {/* his two hands on the rim, seen over his shoulder */}
+    <WheelHand x={760} y={1308} s={1.6} rot={14} flip />
+    <WheelHand x={1160} y={1308} mirror s={1.6} rot={-14} flip torn />
+    {/* and him between us and the road: no face, only the back of the head and the shoulders */}
+    <BackOfDriver x={980} y={1300} s={1.02} />
+  </g>
+);
+
+// T08 · 3P · the taxi in profile, in the rain, her bowed head inside the mirror
+export const T08: React.FC<ShotProps> = ({ t, len }) => (
+  <g transform={push(t, len, 1.0, 1.05)}>
+    <TaxiSide t={t} speed={0.62} rain={0.9} driver mirror="woman" x={950} y={60} s={1.3} />
+    {/* rain past the lens, in front of the car */}
+    {Array.from({ length: 90 }).map((_, i) => {
+      const x = 420 + ((i * 173) % 1120);
+      const y = -420 + ((i * 311 + t * (820 + (i % 5) * 240)) % 2400);
+      return <line key={i} x1={x} y1={y} x2={x - 14} y2={y + 60} stroke="#CFE6FF" strokeWidth={2} opacity={0.06 + (i % 4) * 0.03} />;
+    })}
+  </g>
+);
+
 // T02 · 3P · from behind: the taxi's tail on a road that runs away from the camera
 export const T02: React.FC<ShotProps> = ({ t, len }) => (
   <g transform={push(t, len, 1.0, 1.03)}>
@@ -304,8 +332,8 @@ export const SHOTS: Record<string, React.FC<ShotProps>> = {
   T04,
   T05: T05,
   T06,
-  T07: pending('T07', 'POV-W'),
-  T08: pending('T08', '3P hông xe'),
+  T07,
+  T08,
   T09: T09,
   T10: pending('T10', 'INS điện thoại'),
   T11: pending('T11', 'POV-CAM'),

@@ -139,8 +139,48 @@ const WomanMirror: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s })
   </g>
 );
 
-/** Rear-view mirror on its stalk. `occupant` is drawn inside the glass only — never in the seat. */
-export const Mirror: React.FC<{ t: number; occupant?: 'none' | 'woman'; x?: number; y?: number; w?: number; h?: number }> = ({
+/** The driver's own eyes, reflected back at him: a dark band of face, straight brows lifted clear of the
+ *  eyes, the cut on the forehead. For when the camera sits behind him (POV-W) and the mirror gives his
+ *  fear back to us instead of hers. Drawn inside a w x h box, in local units. */
+export const MirrorEyes: React.FC<{ w: number; h: number; cut?: boolean }> = ({ w, h, cut = true }) => {
+  const gid = React.useId().replace(/[:]/g, '');
+  const cx = w / 2;
+  const ey = h * 0.64;
+  const dx = w * 0.17;
+  const er = Math.min(w * 0.082, h * 0.3);
+  return (
+    <g>
+      <rect width={w} height={h} fill="#04080E" />
+      <defs>
+        <linearGradient id={`meFace${gid}`} x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#7A5A38" />
+          <stop offset="42%" stopColor="#2A1D12" />
+          <stop offset="100%" stopColor="#05080D" />
+        </linearGradient>
+      </defs>
+      {/* his head: lit from the dash below, so the light dies out under the cap */}
+      <ellipse cx={cx} cy={h * 0.74} rx={w * 0.29} ry={h * 0.62} fill={`url(#meFace${gid})`} />
+      {/* the cap, flat on top, over the forehead */}
+      <rect x={cx - w * 0.29} y={h * 0.06} width={w * 0.58} height={h * 0.26} rx={w * 0.11} fill="#04070B" />
+      {cut ? <path d={`M ${cx - w * 0.09} ${h * 0.37} l ${w * 0.09} ${h * 0.02}`} stroke="#B3261E" strokeWidth={Math.max(2, h * 0.024)} strokeLinecap="round" /> : null}
+      {/* brows: straight, and lifted clear of the eyes — the whole read is fright */}
+      <path d={`M ${cx - dx - er * 1.3} ${ey - er * 1.5} L ${cx - dx + er * 1.3} ${ey - er * 1.62}`} stroke="#04070B" strokeWidth={Math.max(2.4, h * 0.045)} strokeLinecap="round" />
+      <path d={`M ${cx + dx - er * 1.3} ${ey - er * 1.62} L ${cx + dx + er * 1.3} ${ey - er * 1.5}`} stroke="#04070B" strokeWidth={Math.max(2.4, h * 0.045)} strokeLinecap="round" />
+      {/* eyes, wide open */}
+      <ellipse cx={cx - dx} cy={ey} rx={er} ry={er * 0.86} fill="#C6D2DC" />
+      <ellipse cx={cx + dx} cy={ey} rx={er} ry={er * 0.86} fill="#C6D2DC" />
+      <circle cx={cx - dx} cy={ey + er * 0.08} r={er * 0.34} fill="#070B11" />
+      <circle cx={cx + dx} cy={ey + er * 0.08} r={er * 0.34} fill="#070B11" />
+      <circle cx={cx - dx - er * 0.3} cy={ey - er * 0.3} r={er * 0.12} fill="#fff" opacity={0.5} />
+      <circle cx={cx + dx - er * 0.3} cy={ey - er * 0.3} r={er * 0.12} fill="#fff" opacity={0.5} />
+      {/* the nose bridge, so the two eyes sit in one face and not on a mask */}
+      <path d={`M ${cx} ${ey + er * 0.4} l 0 ${er * 1.3}`} stroke="#1A222C" strokeWidth={Math.max(2, h * 0.03)} strokeLinecap="round" opacity={0.7} />
+    </g>
+  );
+};
+
+/** Rear-view mirror on its stalk. `occupant` is drawn inside the glass only - never in the seat. */
+export const Mirror: React.FC<{ t: number; occupant?: 'none' | 'woman' | 'hung'; x?: number; y?: number; w?: number; h?: number }> = ({
   t,
   occupant = 'none',
   x = 860,
@@ -156,6 +196,11 @@ export const Mirror: React.FC<{ t: number; occupant?: 'none' | 'woman'; x?: numb
       <rect x={x} y={y} width={w} height={h} rx={8} fill="#0B2033" />
       <rect x={x} y={y} width={w} height={h} rx={8} fill="#123" opacity={0.5} />
       {occupant === 'woman' ? <WomanMirror x={x + w / 2} y={y + 32} s={1.05} /> : (
+        occupant === 'hung' ? (
+          <g transform={`translate(${x} ${y})`}>
+            <MirrorEyes w={w} h={h} />
+          </g>
+        ) : (
         <g>
           {/* empty road behind: a faint horizon and one far lamp, never a person */}
           <rect x={x} y={y + h * 0.42} width={w} height={h * 0.58} fill="#08131F" />
@@ -163,6 +208,7 @@ export const Mirror: React.FC<{ t: number; occupant?: 'none' | 'woman'; x?: numb
           <rect x={x + w * 0.62} y={y + h * 0.55} width={26} height={3} fill={W.amber} opacity={0.35} />
           <rect x={x} y={y + h * 0.55} width={w} height={h * 0.45} fill="#050C14" opacity={0.75} />
         </g>
+        )
       )}
       <rect x={x} y={y} width={w} height={h} rx={8} fill="url(#mirSheen)" opacity={0.25} />
     </g>
